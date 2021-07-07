@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace vl.Core.Domain
+namespace vl.Core.Domain.EventData
 {
     public static class EventDataFilterSerializer
     {
