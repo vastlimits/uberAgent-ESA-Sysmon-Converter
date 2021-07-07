@@ -9,5 +9,7 @@
                                                      "# GitHub repository at https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml\n" +
                                                      "# Git Commit: cbc22e8\n" +
                                                      "#\n";
+
+      public const string SysmonExcludeOnMatchString = "exclude";
    }
 }

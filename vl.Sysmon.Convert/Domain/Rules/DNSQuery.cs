@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using vl.Core.Domain;
+using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain.Extensions;
 
 namespace vl.Sysmon.Convert.Domain.Rules
 {
    public class DNSQuery : Rule
    {
-      public static EventDataFilter[] ConvertExcludeRulesForDNS(Sysmon config)
+      public static EventDataFilter[] ConvertExcludeRules(Sysmon config)
       {
-         var dnsRules = GetExcludeRulesForDNS(config);
+         var dnsRules = GetExcludeRules(config);
          if (dnsRules == null || dnsRules.Length == 0)
          {
             return new EventDataFilter[0];
          }
 
-         var filters = ConvertExcludeRulesForDNS(dnsRules);
+         var filters = ConvertExcludeRules(dnsRules);
          if (filters == null || filters.Length == 0)
          {
             return new EventDataFilter[0];
@@ -24,7 +25,22 @@ namespace vl.Sysmon.Convert.Domain.Rules
          return filters;
       }
 
-      private static object[] GetExcludeRulesForDNS(Sysmon config)
+      private static EventDataFilter Convert(SysmonEventFilteringRuleGroupDnsQueryQueryName rule, string comment)
+      {
+         return new()
+         {
+            Action = EventDataFilterAction.Deny,
+            Fields = new List<string>(),
+            Sourcetypes = new List<string>
+            {
+               MetricNames.ProcessDnsQuery
+            },
+            Query = ConvertQuery(rule),
+            Comment = comment
+         };
+      }
+
+      private static object[] GetExcludeRules(Sysmon config)
       {
          try
          {
@@ -43,7 +59,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          return null;
       }
 
-      private static EventDataFilter[] ConvertExcludeRulesForDNS(object[] dnsRules)
+      private static EventDataFilter[] ConvertExcludeRules(object[] dnsRules)
       {
          try
          {
@@ -59,7 +75,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                      break;
                   case SysmonEventFilteringRuleGroupDnsQueryQueryName c:
                   {
-                     var filter = c.Convert(Constants.ConversionComment);
+                     var filter = Convert(c, Constants.ConversionComment);
                      result.Add(filter);
 
                      Log.Information("Rule <{query}>", filter.Query);
@@ -80,6 +96,21 @@ namespace vl.Sysmon.Convert.Domain.Rules
          }
 
          return null;
+      }
+
+      private static string ConvertQuery(SysmonEventFilteringRuleGroupDnsQueryQueryName rule)
+      {
+         switch (rule.condition)
+         {
+            case "begin with":
+               return $"istartswith(DnsRequest, \"{rule.Value}\")";
+            case "end with":
+               return $"iendswith(DnsRequest, \"{rule.Value}\")";
+            case "is":
+               return $"DnsRequest == \"{rule.Value}\"";
+            default:
+               throw new NotImplementedException();
+         }
       }
    }
 }
