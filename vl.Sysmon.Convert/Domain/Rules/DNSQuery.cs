@@ -1,14 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using Serilog;
 using vl.Core.Domain;
 using vl.Sysmon.Convert.Domain.Extensions;
 
 namespace vl.Sysmon.Convert.Domain.Rules
 {
-   public static class DNSQuery
+   public class DNSQuery : Rule
    {
-      public static object[] GetExcludeRulesForDNS(Sysmon config)
+      public static EventDataFilter[] ConvertExcludeRulesForDNS(Sysmon config)
+      {
+         var dnsRules = GetExcludeRulesForDNS(config);
+         if (dnsRules == null || dnsRules.Length == 0)
+         {
+            return new EventDataFilter[0];
+         }
+
+         var filters = ConvertExcludeRulesForDNS(dnsRules);
+         if (filters == null || filters.Length == 0)
+         {
+            return new EventDataFilter[0];
+         }
+
+         return filters;
+      }
+
+      private static object[] GetExcludeRulesForDNS(Sysmon config)
       {
          try
          {
@@ -27,13 +43,13 @@ namespace vl.Sysmon.Convert.Domain.Rules
          return null;
       }
 
-      public static EventDataFilter[] ConvertExcludeRulesForDNS(object[] dnsRules)
+      private static EventDataFilter[] ConvertExcludeRulesForDNS(object[] dnsRules)
       {
          try
          {
             Log.Information("Convert exclude rules for DNS..");
 
-            List<EventDataFilter> result = new List<EventDataFilter>();
+            var result = new List<EventDataFilter>();
             foreach (var item in dnsRules)
             {
                switch (item)
@@ -47,9 +63,10 @@ namespace vl.Sysmon.Convert.Domain.Rules
                      result.Add(filter);
 
                      Log.Information("Rule <{query}>", filter.Query);
-                  }
                      break;
+                  }
                   default:
+                     Log.Warning("DNS filter rule not implemented: {item}", item);
                      break;
                }
             }
