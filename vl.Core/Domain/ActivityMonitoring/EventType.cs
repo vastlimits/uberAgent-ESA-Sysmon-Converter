@@ -1,0 +1,30 @@
+﻿namespace vl.Core.Domain.ActivityMonitoring
+{
+   public enum EventType
+   {
+      Unknown,
+      ProcessStart,
+      ProcessStop,
+      ImageLoad, 
+      NetConnect,
+      NetReceive,
+      NetReconnect,
+      NetRetransmit,
+      NetSend,
+      RegKeyCreate,
+      RegValueWrite,
+      RegDelete,
+      RegKeyDelete,
+      RegValueDelete,
+      RegKeySecurityChange,
+      RegKeyRename,
+      RegKeySetInformation,
+      RegKeyLoad,
+      RegKeyUnload,
+      RegKeyRestore,
+      RegKeySave,
+      RegKeyReplace,
+      RegAny,
+      DnsQuery,
+   }
+}
