@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using vl.Core.Domain;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain.Extensions;
@@ -49,30 +47,44 @@ namespace vl.Sysmon.Convert.Domain.Rules
             Log.Information("Convert exclude rules for ProcessStartup..");
 
             var result = new List<EventDataFilter>();
+            var action = EventDataFilterAction.Deny;
+
             foreach (var item in processStartupRules)
             {
+               var property = string.Empty;
+               EventDataFilter filter = null;
+               
                switch (item)
                {
                   case SysmonEventFilteringRuleGroupProcessCreateImage c:
-                     var property = c.Value.IndexOf('\\') > -1 ? "Process.Path" : "Process.Name";
-
-                     var filter = Convert(property, c.condition, c.Value, Constants.ConversionComment);
-                     result.Add(filter);
+                     property = c.Value.IndexOf('\\') > -1 ? "Process.Path" : "Process.Name";
+                     filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
                      break;
                   case SysmonEventFilteringRuleGroupProcessCreateCommandLine c:
+                     property = "Process.CommandLine";
+                     filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
                      break;
                   case SysmonEventFilteringRuleGroupProcessCreateOriginalFileName c:
+                     // We cannot convert this rule because we currently do not read the original name from PE.
                      break;
                   case SysmonEventFilteringRuleGroupProcessCreateIntegrityLevel c:
+                     // We cannot convert this rule because we currently do not read the IntegrityLevel of an image.
                      break;
                   case SysmonEventFilteringRuleGroupProcessCreateParentImage c:
+                     property = c.Value.IndexOf('\\') > -1 ? "Parent.Path" : "Parent.Name";
+                     filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
                      break;
                   case SysmonEventFilteringRuleGroupProcessCreateParentCommandLine c:
+                     property = "Parent.CommandLine";
+                     filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
                      break;
                   default:
                      Log.Warning("DNS filter rule not implemented: {item}", item);
                      break;
                }
+
+               if (filter != null)
+                  result.Add(filter);
             }
 
             Log.Information("Converted {count} rules.", result.Count);
@@ -86,11 +98,11 @@ namespace vl.Sysmon.Convert.Domain.Rules
          return null;
       }
 
-      public static EventDataFilter Convert(string property, string condition, string value, string comment)
+      public static EventDataFilter Convert(EventDataFilterAction action, string property, string condition, string value, string comment)
       {
          return new()
          {
-            Action = EventDataFilterAction.Deny,
+            Action = action,
             Fields = new List<string>(),
             Sourcetypes = new List<string>
             {
@@ -101,14 +113,5 @@ namespace vl.Sysmon.Convert.Domain.Rules
          };
       }
 
-      private static string ConvertQuery(string property, string condition, string value)
-      {
-         return condition switch
-         {
-            "is" => $"{property} == \"{value}\"",
-
-            _ => throw new NotImplementedException()
-         };
-      }
    }
 }

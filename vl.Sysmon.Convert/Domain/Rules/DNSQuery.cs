@@ -25,7 +25,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          return filters;
       }
 
-      private static EventDataFilter Convert(SysmonEventFilteringRuleGroupDnsQueryQueryName rule, string comment)
+      public static EventDataFilter Convert(string property, string condition, string value, string comment)
       {
          return new()
          {
@@ -35,7 +35,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
             {
                MetricNames.ProcessDnsQuery
             },
-            Query = ConvertQuery(rule),
+            Query = ConvertQuery(property, condition, value),
             Comment = comment
          };
       }
@@ -68,6 +68,9 @@ namespace vl.Sysmon.Convert.Domain.Rules
             var result = new List<EventDataFilter>();
             foreach (var item in dnsRules)
             {
+               string property;
+               EventDataFilter filter;
+
                switch (item)
                {
                   case SysmonEventFilteringRuleGroupDnsQueryImage c:
@@ -75,7 +78,9 @@ namespace vl.Sysmon.Convert.Domain.Rules
                      break;
                   case SysmonEventFilteringRuleGroupDnsQueryQueryName c:
                   {
-                     var filter = Convert(c, Constants.ConversionComment);
+                     property = "DnsRequest";
+
+                     filter = Convert(property, c.condition, c.Value, Constants.ConversionComment);
                      result.Add(filter);
 
                      Log.Information("Rule <{query}>", filter.Query);
@@ -96,21 +101,6 @@ namespace vl.Sysmon.Convert.Domain.Rules
          }
 
          return null;
-      }
-
-      private static string ConvertQuery(SysmonEventFilteringRuleGroupDnsQueryQueryName rule)
-      {
-         switch (rule.condition)
-         {
-            case "begin with":
-               return $"istartswith(DnsRequest, \"{rule.Value}\")";
-            case "end with":
-               return $"iendswith(DnsRequest, \"{rule.Value}\")";
-            case "is":
-               return $"DnsRequest == \"{rule.Value}\"";
-            default:
-               throw new NotImplementedException();
-         }
       }
    }
 }
