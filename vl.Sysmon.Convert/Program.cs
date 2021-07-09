@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using vl.Core.Domain;
+using vl.Core.Domain.ActivityMonitoring;
+using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain;
 using vl.Sysmon.Convert.Domain.Rules;
 
@@ -36,8 +37,10 @@ namespace vl.Sysmon.Convert
       private static bool ConvertConfiguration(Domain.Sysmon config)
       {
          var eventDataFilters = new List<EventDataFilter>();
-         eventDataFilters.AddRange(DNSQuery.ConvertExcludeRulesForDNS(config));
-
+         var activityMonitoringRules = new List<ActivityMonitoringRule>();
+         
+         eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(config));
+         eventDataFilters.AddRange(ProcessStartup.ConvertExcludeRules(config));
 
          return Serialize(eventDataFilters.ToArray());
       }

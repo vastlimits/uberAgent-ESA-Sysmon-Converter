@@ -30,11 +30,11 @@ namespace vl.Sysmon.Convert.Domain.Rules
          }
          catch (NotImplementedException ex)
          {
-            Log.Error(ex, $"A new DNS exclude rule type is present that is not implemented.");
+            Log.Error(ex, $"A new ProcessStartup exclude rule type is present that is not implemented.");
          }
          catch (Exception ex)
          {
-            Log.Error(ex, $"Failure to get exclude rules for DNS.");
+            Log.Error(ex, $"Failure to get exclude rules for ProcessStartup.");
          }
 
          return null;
@@ -79,7 +79,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                      filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
                      break;
                   default:
-                     Log.Warning("DNS filter rule not implemented: {item}", item);
+                     Log.Warning("ProcessStartup filter rule not implemented: {item}", item);
                      break;
                }
 
@@ -92,7 +92,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          }
          catch (Exception ex)
          {
-            Log.Error(ex, $"Failure to convert exclude rules for DNS.");
+            Log.Error(ex, $"Failure to convert exclude rules for ProcessStartup.");
          }
 
          return null;

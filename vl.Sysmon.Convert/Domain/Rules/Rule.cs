@@ -17,7 +17,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
             "begin with" => $"istartswith({property}, \"{value}\")",
             "end with" => $"iendswith({property}, \"{value}\")",
             "contains" => $"icontains({property}, \"{value}\")",
-
+            "image" => $"icontains({property}, \"{value}\")",
             _ => throw new NotImplementedException()
          };
       }
