@@ -4,5 +4,6 @@
     {
         public const string ProcessDnsQuery = "Process:DnsQuery";
         public const string ProcessStartup = "Process:ProcessStartup";
-    }
+        public const string ProcessStop = "Process:ProcessStop";
+}
 }

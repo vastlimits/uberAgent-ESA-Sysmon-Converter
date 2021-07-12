@@ -6,6 +6,31 @@ namespace vl.Sysmon.Convert.Domain.Extensions
 {
    internal static class SysmonConfigExtensions
    {
+      internal static object[] GetExcludeRulesForProcessStop(this Sysmon config)
+      {
+         var objects = new List<object>();
+         var excluded = config.EventFiltering.Items
+                              .OfType<SysmonEventFilteringRuleGroup>()
+                              .Where(c => c.ProcessTerminate?.Image.Length > 0 && c.ProcessTerminate?.onmatch == Constants.SysmonExcludeOnMatchString)
+                              .Select(c => c.ProcessTerminate)
+                              .ToList();
+
+         foreach (var item in excluded.SelectMany(processStopExcludeGroup => processStopExcludeGroup.Image))
+         {
+            switch (item)
+            {
+               case SysmonEventFilteringRuleGroupProcessTerminateImage s:
+                  objects.Add(item);
+                  break;
+               default:
+                  throw new NotImplementedException();
+            }
+         }
+
+
+         return objects.ToArray();
+      }
+
       internal static object[] GetExcludeRulesForProcessStartup(this Sysmon config)
       {
          var objects = new List<object>();
