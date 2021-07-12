@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using CommandLine;
 using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain;
@@ -14,44 +15,61 @@ namespace vl.Sysmon.Convert
       private static readonly ILogger Log = new LoggerConfiguration()
                                             .WriteTo.Console()
                                             .CreateLogger();
-
-      private const string TestFile = @"C:\tmp\sysmonconfig-export.xml";
-      private const string TestOutputFile = @"C:\tmp\uberAgent-eventdata-filter-sysmon.conf";
-
+      private static Options _options = new();
 
       private static void Main(string[] args)
       {
          Log.Information("vl.Sysmon.Convert starting..");
+         
+         var configurations = new List<Domain.Sysmon>();
 
-         var config = ParseConfiguration(TestFile);
-         if (config == null)
-            Environment.Exit(-1);
+         Parser.Default.ParseArguments<Options>(args)
+               .WithParsed<Options>(o =>
+               {
+                  _options = o;
+               })
+               .WithNotParsed<Options>(e =>
+               {
+                  Environment.Exit(-1);
+               });
 
-         var result = ConvertConfiguration(config);
+         foreach (var file in _options.InputFiles)
+         {
+            var config = ParseConfiguration(file);
+            if (config == null)
+               Environment.Exit(-1);
+
+            configurations.Add(config);
+         }
+         
+         var result = ConvertConfiguration(configurations);
          if (!result)
             Environment.Exit(-1);
 
          Log.Information("Done.");
       }
 
-      private static bool ConvertConfiguration(Domain.Sysmon config)
+      private static bool ConvertConfiguration(IEnumerable<Domain.Sysmon> configs)
       {
          var eventDataFilters = new List<EventDataFilter>();
          var activityMonitoringRules = new List<ActivityMonitoringRule>();
-         
-         eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(config));
-         eventDataFilters.AddRange(ProcessStartup.ConvertExcludeRules(config));
 
-         return Serialize(eventDataFilters.ToArray());
+         foreach (var config in configs)
+         {
+            eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(config));
+            eventDataFilters.AddRange(ProcessStartup.ConvertExcludeRules(config));
+         }
+
+         return Serialize(_options.OutputFile, eventDataFilters.ToArray());
       }
 
-      private static bool Serialize(EventDataFilter[] filters)
+      private static bool Serialize(string outputFile, IEnumerable<EventDataFilter> filters)
       {
          try
          {
-            Log.Information("Serialize rules to {file}", TestOutputFile);
+            Log.Information("Serialize rules to {file}", outputFile);
 
-            using (var fs = new FileStream(TestOutputFile, FileMode.Create))
+            using (var fs = new FileStream(outputFile, FileMode.Create))
             {
                EventDataFilterSerializer.Serialize(fs, filters, Constants.ConversionHeaderComment);
                return true;
@@ -59,7 +77,7 @@ namespace vl.Sysmon.Convert
          }
          catch (Exception ex)
          {
-            Log.Error(ex, $"Failure to serialize rules for DNS to {TestOutputFile}.");
+            Log.Error(ex, $"Failure to serialize rules to {outputFile}.");
          }
 
          return false;
