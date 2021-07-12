@@ -1,90 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using vl.Sysmon.Convert.Domain.Filter;
 
 namespace vl.Sysmon.Convert.Domain.Extensions
 {
    internal static class SysmonConfigExtensions
    {
-      internal static object[] GetExcludeRulesForProcessStop(this Sysmon config)
+      internal static SysmonEventFilteringRuleListed GetSysmonRulesListed(this Sysmon config)
       {
-         var objects = new List<object>();
-         var excluded = config.EventFiltering.Items
-                              .OfType<SysmonEventFilteringRuleGroup>()
-                              .Where(c => c.ProcessTerminate?.Image.Length > 0 && c.ProcessTerminate?.onmatch == Constants.SysmonExcludeOnMatchString)
-                              .Select(c => c.ProcessTerminate)
-                              .ToList();
+         var filteringRulesListed = new SysmonEventFilteringRuleListed();
+         var filteringRulesListedProperties = filteringRulesListed.GetType().GetProperties();
+         var filteringRuleGroups = config.EventFiltering.Items.OfType<SysmonEventFilteringRuleGroup>();
 
-         foreach (var item in excluded.SelectMany(processStopExcludeGroup => processStopExcludeGroup.Image))
+         var properties = typeof(SysmonEventFilteringRuleGroup).GetProperties();
+
+         foreach (var rule in filteringRuleGroups)
          {
-            switch (item)
-            {
-               case SysmonEventFilteringRuleGroupProcessTerminateImage s:
-                  objects.Add(item);
-                  break;
-               default:
-                  throw new NotImplementedException();
-            }
+            var (currentRuleName, currentRuleValue) = properties.ToDictionary(prop => prop.Name, prop => prop.GetValue(rule, null))
+                                                                               .FirstOrDefault(c => c.Value != null);
+            var filteringRulesListedProperty = filteringRulesListedProperties
+                                               .FirstOrDefault(c => c.Name.Equals(currentRuleName))
+                                               ?.GetValue(filteringRulesListed, null);
+            
+            filteringRulesListedProperty?.GetType().GetMethod("Add")
+                                        ?.Invoke(filteringRulesListedProperty, new[] {currentRuleValue});
+
+            if (currentRuleValue == null)
+               continue;
+
+            var filteringRuleExtendedProperties = currentRuleValue.GetType().GetProperties();
+
+            var filteringRuleExtendedName = filteringRuleExtendedProperties.FirstOrDefault(c => c.Name.Equals("name"));
+            var filteringRuleExtendedGroupRelation =
+               filteringRuleExtendedProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"));
+
+            filteringRuleExtendedName?.SetValue(currentRuleValue, rule.name);
+            filteringRuleExtendedGroupRelation?.SetValue(currentRuleValue, rule.groupRelation);
          }
 
-
-         return objects.ToArray();
+         return filteringRulesListed;
       }
-
-      internal static object[] GetExcludeRulesForProcessStartup(this Sysmon config)
-      {
-         var objects = new List<object>();
-         var excluded = config.EventFiltering.Items
-                              .OfType<SysmonEventFilteringRuleGroup>()
-                              .Where(c => c.ProcessCreate?.Items?.Length > 0 && c.ProcessCreate?.onmatch == Constants.SysmonExcludeOnMatchString)
-                              .Select(c => c.ProcessCreate)
-                              .ToList();
-
-         foreach (var item in excluded.SelectMany(processStartupExcludeGroup => processStartupExcludeGroup.Items))
-         {
-            switch (item)
-            {
-               case SysmonEventFilteringRuleGroupProcessCreateImage:
-               case SysmonEventFilteringRuleGroupProcessCreateCommandLine:
-               case SysmonEventFilteringRuleGroupProcessCreateOriginalFileName:
-               case SysmonEventFilteringRuleGroupProcessCreateIntegrityLevel:
-               case SysmonEventFilteringRuleGroupProcessCreateParentImage:
-               case SysmonEventFilteringRuleGroupProcessCreateParentCommandLine:
-                  objects.Add(item);
-                  break;
-               default:
-                  throw new NotImplementedException();
-            }
-         }
-
-         return objects.ToArray();
-      }
-
-      internal static object[] GetExcludeRulesForDNS(this Sysmon config)
-      {
-         var objects = new List<object>();
-
-         var excluded = config.EventFiltering.Items
-                              .OfType<SysmonEventFilteringRuleGroup>()
-                              .Where(c => c.DnsQuery?.Items.Length > 0 && c.DnsQuery?.onmatch == Constants.SysmonExcludeOnMatchString)
-                              .Select(c => c.DnsQuery)
-                              .ToList();
-
-         foreach (var item in excluded.SelectMany(dnsExcludeGroup => dnsExcludeGroup.Items))
-         {
-            switch (item)
-            {
-               case SysmonEventFilteringRuleGroupDnsQueryImage:
-               case SysmonEventFilteringRuleGroupDnsQueryQueryName:
-                  objects.Add(item);
-                  break;
-               default:
-                  throw new NotImplementedException();
-            }
-         }
-
-         return objects.ToArray();
-      }
-      
    }
 }

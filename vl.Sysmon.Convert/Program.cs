@@ -6,6 +6,7 @@ using CommandLine;
 using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain;
+using vl.Sysmon.Convert.Domain.Extensions;
 using vl.Sysmon.Convert.Domain.Rules;
 
 namespace vl.Sysmon.Convert
@@ -56,8 +57,11 @@ namespace vl.Sysmon.Convert
 
          foreach (var config in configs)
          {
-            eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(config));
-            eventDataFilters.AddRange(ProcessStartup.ConvertExcludeRules(config));
+            var configListedRules = config.GetSysmonRulesListed();
+
+            eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
+            eventDataFilters.AddRange(ProcessStartup.ConvertExcludeRules(configListedRules.ProcessCreate));
+            eventDataFilters.AddRange(ProcessStop.ConvertExcludeRules(configListedRules.ProcessTerminate));
          }
 
          return Serialize(_options.OutputFile, eventDataFilters.ToArray());
