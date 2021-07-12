@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace vl.Core.Domain
+namespace vl.Core.Domain.EventData
 {
     public class EventDataFilter
     {

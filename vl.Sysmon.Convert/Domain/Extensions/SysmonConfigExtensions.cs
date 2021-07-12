@@ -1,73 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using vl.Core.Domain;
 
 namespace vl.Sysmon.Convert.Domain.Extensions
 {
-    internal static class SysmonConfigExtensions
-    {
-        const string SysmonExcludeOnMatchString = "exclude";
+   internal static class SysmonConfigExtensions
+   {
+      internal static object[] GetExcludeRulesForProcessStartup(this Sysmon config)
+      {
+         var objects = new List<object>();
+         var excluded = config.EventFiltering.Items
+                              .OfType<SysmonEventFilteringRuleGroup>()
+                              .Where(c => c.ProcessCreate?.Items?.Length > 0 && c.ProcessCreate?.onmatch == Constants.SysmonExcludeOnMatchString)
+                              .Select(c => c.ProcessCreate)
+                              .ToList();
 
-        internal static object[] GetExcludeRulesForDNS(this Sysmon config)
-        {
-            var objects = new List<object>();
-
-            var excluded = config.EventFiltering.Items
-                .Where(x => x.GetType() == typeof(SysmonEventFilteringRuleGroup))
-                .Select(x => x as SysmonEventFilteringRuleGroup)
-                .Where(x => x.DnsQuery != null && x.DnsQuery.onmatch == SysmonExcludeOnMatchString)
-                .Select(x => x.DnsQuery)
-                .ToList();
-
-            foreach (var item in excluded.SelectMany(dnsExcludeGroup => dnsExcludeGroup.Items))
+         foreach (var item in excluded.SelectMany(processStartupExcludeGroup => processStartupExcludeGroup.Items))
+         {
+            switch (item)
             {
-               switch (item)
-               {
-                  case SysmonEventFilteringRuleGroupDnsQueryImage c:
-                     objects.Add(c);
-                     break;
-                  case SysmonEventFilteringRuleGroupDnsQueryQueryName c:
-                     objects.Add(c);
-                     break;
-                  default:
-                     throw new NotImplementedException();
-               }
+               case SysmonEventFilteringRuleGroupProcessCreateImage:
+               case SysmonEventFilteringRuleGroupProcessCreateCommandLine:
+               case SysmonEventFilteringRuleGroupProcessCreateOriginalFileName:
+               case SysmonEventFilteringRuleGroupProcessCreateIntegrityLevel:
+               case SysmonEventFilteringRuleGroupProcessCreateParentImage:
+               case SysmonEventFilteringRuleGroupProcessCreateParentCommandLine:
+                  objects.Add(item);
+                  break;
+               default:
+                  throw new NotImplementedException();
             }
+         }
 
-            return objects.ToArray();
-        }
+         return objects.ToArray();
+      }
 
-        internal static EventDataFilter Convert(this SysmonEventFilteringRuleGroupDnsQueryQueryName rule, string comment)
-        {
-            return new EventDataFilter()
+      internal static object[] GetExcludeRulesForDNS(this Sysmon config)
+      {
+         var objects = new List<object>();
+
+         var excluded = config.EventFiltering.Items
+                              .OfType<SysmonEventFilteringRuleGroup>()
+                              .Where(c => c.DnsQuery?.Items.Length > 0 && c.DnsQuery?.onmatch == Constants.SysmonExcludeOnMatchString)
+                              .Select(c => c.DnsQuery)
+                              .ToList();
+
+         foreach (var item in excluded.SelectMany(dnsExcludeGroup => dnsExcludeGroup.Items))
+         {
+            switch (item)
             {
-                Action = EventDataFilterAction.Deny,
-                Fields = new List<string>(),
-                Sourcetypes = new List<string>()
-                {
-                    MetricNames.ProcessDnsQuery
-                },
-                Query = rule.ConvertQuery(),
-                Comment = comment
-            };
-        }
-
-        private static string ConvertQuery(this SysmonEventFilteringRuleGroupDnsQueryQueryName rule)
-        {
-            switch (rule.condition)
-            {
-                case "begin with":
-                    return $"istartswith(DnsRequest, \"{rule.Value}\")";
-                case "end with":
-                    return $"iendswith(DnsRequest, \"{rule.Value}\")";
-                case "is":
-                    return $"DnsRequest == \"{rule.Value}\"";
-                default:
-                    throw new NotImplementedException();
+               case SysmonEventFilteringRuleGroupDnsQueryImage:
+               case SysmonEventFilteringRuleGroupDnsQueryQueryName:
+                  objects.Add(item);
+                  break;
+               default:
+                  throw new NotImplementedException();
             }
-        }
-    }
+         }
+
+         return objects.ToArray();
+      }
+      
+   }
 }
