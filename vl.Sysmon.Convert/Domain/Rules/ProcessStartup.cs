@@ -33,11 +33,11 @@ namespace vl.Sysmon.Convert.Domain.Rules
                   switch (item)
                   {
                      case SysmonEventFilteringRuleGroupProcessCreateImage c:
-                        property = c.Value.IndexOf('\\') > -1 ? "Process.Path" : "Process.Name";
+                        property = c.Value.IndexOf('\\') > -1 ? "ProcPath" : "ProcName";
                         filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
                         break;
                      case SysmonEventFilteringRuleGroupProcessCreateCommandLine c:
-                        property = "Process.CommandLine";
+                        property = "ProcCmdline";
                         filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
                         break;
                      case SysmonEventFilteringRuleGroupProcessCreateOriginalFileName c:
@@ -47,12 +47,16 @@ namespace vl.Sysmon.Convert.Domain.Rules
                         // We cannot convert this rule because we currently do not read the IntegrityLevel of an image.
                         break;
                      case SysmonEventFilteringRuleGroupProcessCreateParentImage c:
-                        property = c.Value.IndexOf('\\') > -1 ? "Parent.Path" : "Parent.Name";
+                        property = c.Value.IndexOf('\\') > -1 ? string.Empty : "ProcParentName";
+
+                        // We cannot fully convert this rule because we currently do not have the parent path in this metric
+                        if (string.IsNullOrEmpty(property))
+                           continue;
+
                         filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
                         break;
                      case SysmonEventFilteringRuleGroupProcessCreateParentCommandLine c:
-                        property = "Parent.CommandLine";
-                        filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
+                        // We cannot convert this rule because we currently do not have the Parent commandline in this metric
                         break;
                      default:
                         Log.Warning("ProcessStartup filter rule not implemented: {item}", item);

@@ -32,7 +32,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                   switch (item)
                   {
                      case SysmonEventFilteringRuleGroupProcessTerminateImage c:
-                        property = "Process.Path";
+                        property = "ProcPath";
                         filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
                         break;
                      default:
