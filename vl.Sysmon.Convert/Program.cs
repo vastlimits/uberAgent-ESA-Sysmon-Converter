@@ -62,6 +62,7 @@ namespace vl.Sysmon.Convert
             eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
             eventDataFilters.AddRange(ProcessStartup.ConvertExcludeRules(configListedRules.ProcessCreate));
             eventDataFilters.AddRange(ProcessStop.ConvertExcludeRules(configListedRules.ProcessTerminate));
+            eventDataFilters.AddRange(ProcessNetwork.ConvertExcludeRules(configListedRules.NetworkConnect));
          }
 
          return Serialize(_options.OutputFile, eventDataFilters.ToArray());

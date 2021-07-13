@@ -11,5 +11,6 @@
                                                      "#\n";
 
       public const string SysmonExcludeOnMatchString = "exclude";
+      public const string SysmonOrGroupRelationString = "or";
    }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using vl.Core.Domain;
 using vl.Core.Domain.EventData;
+using vl.Sysmon.Convert.Domain.Helpers;
 
 namespace vl.Sysmon.Convert.Domain.Rules
 {
@@ -19,6 +20,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
             var result = new List<EventDataFilter>();
             var action = EventDataFilterAction.Deny;
+            var sourcetypes = new List<string> { MetricNames.ProcessStartup };
 
             foreach (var rule in processCreateRules)
             {
@@ -27,18 +29,26 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
                foreach (var item in rule.Items)
                {
-                  var property = string.Empty;
+                  var uberAgentMetricField = string.Empty;
                   EventDataFilter filter = null;
 
                   switch (item)
                   {
                      case SysmonEventFilteringRuleGroupProcessCreateImage c:
-                        property = c.Value.IndexOf('\\') > -1 ? "ProcPath" : "ProcName";
-                        filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
+                        uberAgentMetricField = c.Value.IndexOf('\\') > -1 ? "ProcPath" : "ProcName";
+                        filter = Convert(new ConverterSettings
+                        {
+                           Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
+                           Sourcetypes = sourcetypes, Comment = Constants.ConversionComment
+                        });
                         break;
                      case SysmonEventFilteringRuleGroupProcessCreateCommandLine c:
-                        property = "ProcCmdline";
-                        filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
+                        uberAgentMetricField = "ProcCmdline";
+                        filter = Convert(new ConverterSettings
+                        {
+                           Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
+                           Sourcetypes = sourcetypes, Comment = Constants.ConversionComment
+                        });
                         break;
                      case SysmonEventFilteringRuleGroupProcessCreateOriginalFileName c:
                         // We cannot convert this rule because we currently do not read the original name from PE.
@@ -47,16 +57,20 @@ namespace vl.Sysmon.Convert.Domain.Rules
                         // We cannot convert this rule because we currently do not read the IntegrityLevel of an image.
                         break;
                      case SysmonEventFilteringRuleGroupProcessCreateParentImage c:
-                        property = c.Value.IndexOf('\\') > -1 ? string.Empty : "ProcParentName";
+                        uberAgentMetricField = c.Value.IndexOf('\\') > -1 ? string.Empty : "ProcParentName";
 
-                        // We cannot fully convert this rule because we currently do not have the parent path in this metric
-                        if (string.IsNullOrEmpty(property))
+                        // We cannot fully convert this rule because we currently do not have the parent path in this metric.
+                        if (string.IsNullOrEmpty(uberAgentMetricField))
                            continue;
 
-                        filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
+                        filter = Convert(new ConverterSettings
+                        {
+                           Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
+                           Sourcetypes = sourcetypes, Comment = Constants.ConversionComment
+                        });
                         break;
                      case SysmonEventFilteringRuleGroupProcessCreateParentCommandLine c:
-                        // We cannot convert this rule because we currently do not have the Parent commandline in this metric
+                        // We cannot convert this rule because we currently do not have the Parent commandline in this metric.
                         break;
                      default:
                         Log.Warning("ProcessStartup filter rule not implemented: {item}", item);
@@ -78,22 +92,5 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
          return new EventDataFilter[0];
       }
-
-
-      public static EventDataFilter Convert(EventDataFilterAction action, string property, string condition, string value, string comment)
-      {
-         return new()
-         {
-            Action = action,
-            Fields = new List<string>(),
-            Sourcetypes = new List<string>
-            {
-               MetricNames.ProcessStartup
-            },
-            Query = ConvertQuery(property, condition, value),
-            Comment = comment
-         };
-      }
-
    }
 }

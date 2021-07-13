@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using vl.Sysmon.Convert.Domain.Filter;
+using vl.Sysmon.Convert.Domain.Helpers;
 
 namespace vl.Sysmon.Convert.Domain.Extensions
 {

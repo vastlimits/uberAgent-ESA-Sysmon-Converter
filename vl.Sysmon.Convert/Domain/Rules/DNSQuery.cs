@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using vl.Core.Domain;
 using vl.Core.Domain.EventData;
+using vl.Sysmon.Convert.Domain.Helpers;
 
 namespace vl.Sysmon.Convert.Domain.Rules
 {
@@ -11,13 +12,14 @@ namespace vl.Sysmon.Convert.Domain.Rules
       {
          if (dnsRules == null || dnsRules.Count == 0)
             return new EventDataFilter[0];
-         
+
          try
          {
             Log.Information("Convert exclude rules for DNS..");
 
             var result = new List<EventDataFilter>();
             var action = EventDataFilterAction.Deny;
+            var sourcetypes = new List<string> {MetricNames.ProcessDnsQuery};
 
             foreach (var rule in dnsRules)
             {
@@ -26,7 +28,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
                foreach (var item in rule.Items)
                {
-                  var property = string.Empty;
+                  var uberAgentMetricField = string.Empty;
                   EventDataFilter filter = null;
 
                   switch (item)
@@ -35,18 +37,21 @@ namespace vl.Sysmon.Convert.Domain.Rules
                         // We cannot convert this rule because we are not able to access the full image path in this sourcetype.
                         break;
                      case SysmonEventFilteringRuleGroupDnsQueryQueryName c:
-                        property = "DnsRequest";
+                        uberAgentMetricField = "DnsRequest";
 
-                        filter = Convert(property, c.condition, c.Value, Constants.ConversionComment);
+                        filter = Convert(new ConverterSettings
+                        {
+                           Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
+                           Sourcetypes = sourcetypes, Comment = Constants.ConversionComment
+                        });
                         break;
-                        
+
                      default:
                         Log.Warning("DNS filter rule not implemented: {item}", item);
                         break;
                   }
 
-
-                  if (filter == null) 
+                  if (filter == null)
                      continue;
 
                   Log.Verbose("Rule <{query}>", filter.Query);
@@ -63,21 +68,6 @@ namespace vl.Sysmon.Convert.Domain.Rules
          }
 
          return null;
-      }
-
-      public static EventDataFilter Convert(string property, string condition, string value, string comment)
-      {
-         return new()
-         {
-            Action = EventDataFilterAction.Deny,
-            Fields = new List<string>(),
-            Sourcetypes = new List<string>
-            {
-               MetricNames.ProcessDnsQuery
-            },
-            Query = ConvertQuery(property, condition, value),
-            Comment = comment
-         };
       }
    }
 }

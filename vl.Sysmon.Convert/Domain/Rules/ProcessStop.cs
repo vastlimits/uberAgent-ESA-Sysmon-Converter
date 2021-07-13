@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using vl.Core.Domain;
 using vl.Core.Domain.EventData;
+using vl.Sysmon.Convert.Domain.Helpers;
 
 namespace vl.Sysmon.Convert.Domain.Rules
 {
    public class ProcessStop : Rule
    {
-      public static EventDataFilter[] ConvertExcludeRules(List<SysmonEventFilteringRuleGroupProcessTerminate> processTerminateRules)
+      public static EventDataFilter[] ConvertExcludeRules(
+         List<SysmonEventFilteringRuleGroupProcessTerminate> processTerminateRules)
       {
          if (processTerminateRules == null || processTerminateRules.Count == 0)
             return new EventDataFilter[0];
@@ -18,22 +20,27 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
             var result = new List<EventDataFilter>();
             var action = EventDataFilterAction.Deny;
+            var sourcetypes = new List<string> {MetricNames.ProcessStop};
 
             foreach (var rule in processTerminateRules)
             {
                if (!rule.onmatch.Equals(Constants.SysmonExcludeOnMatchString))
                   continue;
-               
+
                foreach (var item in rule.Image)
                {
-                  var property = string.Empty;
+                  var uberAgentMetricField = string.Empty;
                   EventDataFilter filter = null;
 
                   switch (item)
                   {
                      case SysmonEventFilteringRuleGroupProcessTerminateImage c:
-                        property = "ProcPath";
-                        filter = Convert(action, property, c.condition, c.Value, Constants.ConversionComment);
+                        uberAgentMetricField = "ProcPath";
+                        filter = Convert(new ConverterSettings
+                        {
+                           Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
+                           Sourcetypes = sourcetypes, Comment = Constants.ConversionComment
+                        });
                         break;
                      default:
                         Log.Warning("ProcessStop filter rule not implemented: {item}", rule);
@@ -55,22 +62,5 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
          return new EventDataFilter[0];
       }
-
-
-      public static EventDataFilter Convert(EventDataFilterAction action, string property, string condition, string value, string comment)
-      {
-         return new()
-         {
-            Action = action,
-            Fields = new List<string>(),
-            Sourcetypes = new List<string>
-            {
-               MetricNames.ProcessStop
-            },
-            Query = ConvertQuery(property, condition, value),
-            Comment = comment
-         };
-      }
-
    }
 }

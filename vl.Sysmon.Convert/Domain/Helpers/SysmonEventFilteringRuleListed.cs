@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace vl.Sysmon.Convert.Domain.Filter
+namespace vl.Sysmon.Convert.Domain.Helpers
 {
    public class SysmonEventFilteringRuleListed
    {
