@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Serilog;
-using vl.Core.Domain;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain.Helpers;
 
@@ -17,11 +16,11 @@ namespace vl.Sysmon.Convert.Domain.Rules
       {
          return condition switch
          {
-            "is" => $"{field} == \"{value}\"",
-            "begin with" => $"istartswith({field}, \"{value}\")",
-            "end with" => $"iendswith({field}, \"{value}\")",
-            "contains" => $"icontains({field}, \"{value}\")",
-            "image" => $"icontains({field}, \"{value}\")",
+            "is" => $"{field} == r\"{value}\"",
+            "begin with" => $"istartswith({field}, r\"{value}\")",
+            "end with" => $"iendswith({field}, r\"{value}\")",
+            "contains" => $"icontains({field}, r\"{value}\")",
+            "image" => $"icontains({field}, r\"{value}\")",
             _ => throw new NotImplementedException()
          };
       }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using vl.Core.Domain;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain.Helpers;
@@ -44,6 +45,11 @@ namespace vl.Sysmon.Convert.Domain.Rules
                         break;
                      case SysmonEventFilteringRuleGroupProcessCreateCommandLine c:
                         uberAgentMetricField = "ProcCmdline";
+
+                        var quotes = c.Value.Count(c => c == '"');
+                        if (quotes > 2 || !c.Value.TrimEnd().EndsWith('"'))
+                           c.Value = c.Value.Trim().Replace("\"", "\\\"");
+
                         filter = Convert(new ConverterSettings
                         {
                            Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
