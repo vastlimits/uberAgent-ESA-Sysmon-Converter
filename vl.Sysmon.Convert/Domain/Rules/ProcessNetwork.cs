@@ -57,7 +57,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                      if (string.IsNullOrEmpty(uberAgentMetricField))
                         continue;
 
-                     filter = Convert(new ConverterSettings
+                     filter = Convert(new EventFilterConverterSettings
                      {
                         Action = action,
                         Field = uberAgentMetricField,
@@ -69,7 +69,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                      break;
                   case SysmonEventFilteringRuleGroupNetworkConnectDestinationHostname c:
                      uberAgentMetricField = "NetTargetRemoteName";
-                     filter = Convert(new ConverterSettings
+                     filter = Convert(new EventFilterConverterSettings
                      {
                         Action = action,
                         Field = uberAgentMetricField,
@@ -81,7 +81,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                      break;
                   case SysmonEventFilteringRuleGroupNetworkConnectDestinationIp c:
                      uberAgentMetricField = "NetTargetRemoteAddress";
-                     filter = Convert(new ConverterSettings
+                     filter = Convert(new EventFilterConverterSettings
                      {
                         Action = action,
                         Field = uberAgentMetricField,
@@ -93,7 +93,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                      break;
                   case SysmonEventFilteringRuleGroupNetworkConnectDestinationPort c:
                      uberAgentMetricField = "NetTargetRemotePort";
-                     filter = Convert(new ConverterSettings
+                     filter = Convert(new EventFilterConverterSettings
                      {
                         Action = action,
                         Field = uberAgentMetricField,

@@ -60,7 +60,7 @@ namespace vl.Sysmon.Convert
             var configListedRules = config.GetSysmonRulesListed();
 
             eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
-            eventDataFilters.AddRange(ProcessStartup.ConvertExcludeRules(configListedRules.ProcessCreate));
+            activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
             eventDataFilters.AddRange(ProcessStop.ConvertExcludeRules(configListedRules.ProcessTerminate));
             eventDataFilters.AddRange(ProcessNetwork.ConvertExcludeRules(configListedRules.NetworkConnect));
          }

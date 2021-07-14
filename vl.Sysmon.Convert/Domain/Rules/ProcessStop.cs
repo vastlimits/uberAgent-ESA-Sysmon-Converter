@@ -36,7 +36,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                   {
                      case SysmonEventFilteringRuleGroupProcessTerminateImage c:
                         uberAgentMetricField = "ProcPath";
-                        filter = Convert(new ConverterSettings
+                        filter = Convert(new EventFilterConverterSettings
                         {
                            Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
                            Sourcetypes = sourcetypes, Comment = Constants.ConversionComment

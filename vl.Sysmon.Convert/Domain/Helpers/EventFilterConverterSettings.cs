@@ -3,7 +3,7 @@ using vl.Core.Domain.EventData;
 
 namespace vl.Sysmon.Convert.Domain.Helpers
 {
-   public class ConverterSettings
+   public class EventFilterConverterSettings
    {
       public EventDataFilterAction Action { get; set; }
       public List<string> Sourcetypes { get; set; } = new();
