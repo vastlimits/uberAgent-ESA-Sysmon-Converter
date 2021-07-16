@@ -29,7 +29,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          };
       }
 
-      private static string ConvertQuery(IReadOnlyList<SysmonCondition> conditions)
+      private static string ConvertQuery(IReadOnlyList<SysmonCondition> conditions, string mainGroupRelation)
       {
          if (conditions == null || conditions.Count == 0)
             return string.Empty;
@@ -38,32 +38,50 @@ namespace vl.Sysmon.Convert.Domain.Rules
          var exclude = conditions[0].OnMatch.Equals(Constants.SysmonExcludeOnMatchString);
          
          if (exclude)
-            queryBuilder.Append("not (");
+            queryBuilder.Append("not ");
 
-         for (var i = 0; i < conditions.Count; i++)
+         var conditionsGrouped = conditions.GroupBy(c => c.RuleId).ToDictionary(c => c.Key, c=> c.ToList());
+
+         for (var groupIndex = 0; groupIndex < conditionsGrouped.Count; groupIndex++)
          {
-            var item = conditions[i];
-            var groupRelation = i + 1 < conditions.Count ? $" {item.GroupRelation} " : string.Empty;
+            var (_, value) = conditionsGrouped.ElementAt(groupIndex);
+            var lastGroup = groupIndex + 1 == conditionsGrouped.Count;
 
-            item.Value = item.Value.Replace("%%", "%");
-
-            switch (item.Condition)
+            for (var i = 0; i < value.Count; i++)
             {
-               case "is":
-                  queryBuilder.Append($"{item.Field} == r\"{item.Value}\"{groupRelation}");
-                  break;
-               case "begin with":
-                  queryBuilder.Append($"istartswith({item.Field}, r\"{item.Value}\"){groupRelation}");
-                  break;
-               case "end with":
-                  queryBuilder.Append($"iendswith({item.Field}, r\"{item.Value}\"){groupRelation}");
-                  break;
-               case "image":
-               case "contains":
-                  queryBuilder.Append($"icontains({item.Field}, r\"{item.Value}\"){groupRelation}");
-                  break;
-               default:
-                  throw new NotImplementedException();
+               var item = value[i];
+               var lastValueInGroup = i + 1 == value.Count;
+               var groupRelation = lastValueInGroup ? string.Empty : $" {item.GroupRelation} ";
+               var query = string.Empty;
+               item.Value = item.Value.Replace("%%", "%");
+
+               switch (item.Condition)
+               {
+                  case "is":
+                     query = $"{item.Field} == r\"{item.Value}\"{groupRelation}";
+                     break;
+                  case "begin with":
+                     query = $"istartswith({item.Field}, r\"{item.Value}\"){groupRelation}";
+                     break;
+                  case "end with":
+                     query = $"iendswith({item.Field}, r\"{item.Value}\"){groupRelation}";
+                     break;
+                  case "image":
+                  case "contains":
+                     query = $"icontains({item.Field}, r\"{item.Value}\"){groupRelation}";
+                     break;
+                  case "is not":
+                     query = $"{item.Field} != r\"{item.Value}\"{groupRelation}";
+                     break;
+                  default:
+                     Log.Error("Condition: {condition} is not implemented.", item.Condition);
+                     throw new NotImplementedException();
+               }
+
+               if (string.IsNullOrEmpty(query))
+                  continue;
+
+               queryBuilder.Append(i == 0 ? $"({query}" : lastValueInGroup && !lastGroup ? $"{query}) {mainGroupRelation} " : lastValueInGroup && lastGroup ? $"{query})" : $"{query}");
             }
          }
 
@@ -80,7 +98,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
             EventType = settings.EventType,
             RuleName = settings.Name,
             Tag = settings.Name,
-            Query = ConvertQuery(settings.Conditions),
+            Query = ConvertQuery(settings.Conditions, settings.MainGroupRelation),
          };
       }
 

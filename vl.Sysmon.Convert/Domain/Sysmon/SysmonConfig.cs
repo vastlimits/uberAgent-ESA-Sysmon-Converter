@@ -4,9 +4,6 @@
 //
 namespace vl.Sysmon.Convert.Domain
 {
-
-   // HINWEIS: Für den generierten Code ist möglicherweise mindestens .NET Framework 4.5 oder .NET Core/Standard 2.0 erforderlich.
-   /// <remarks/>
    [System.SerializableAttribute()]
    [System.ComponentModel.DesignerCategoryAttribute("code")]
    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
@@ -1462,19 +1459,11 @@ namespace vl.Sysmon.Convert.Domain
    public partial class SysmonEventFilteringRuleGroupProcessCreateParentImage
    {
 
-      private string conditionField;
-
       private string nameField;
 
-      private string valueField;
+      private string conditionField;
 
-      /// <remarks/>
-      [System.Xml.Serialization.XmlAttributeAttribute()]
-      public string condition
-      {
-         get { return this.conditionField; }
-         set { this.conditionField = value; }
-      }
+      private string valueField;
 
       /// <remarks/>
       [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -1482,6 +1471,14 @@ namespace vl.Sysmon.Convert.Domain
       {
          get { return this.nameField; }
          set { this.nameField = value; }
+      }
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlAttributeAttribute()]
+      public string condition
+      {
+         get { return this.conditionField; }
+         set { this.conditionField = value; }
       }
 
       /// <remarks/>
@@ -1500,44 +1497,32 @@ namespace vl.Sysmon.Convert.Domain
    public partial class SysmonEventFilteringRuleGroupProcessCreateRule
    {
 
-      private SysmonEventFilteringRuleGroupProcessCreateRuleOriginalFileName originalFileNameField;
-
-      private SysmonEventFilteringRuleGroupProcessCreateRuleCommandLine commandLineField;
-
-      private SysmonEventFilteringRuleGroupProcessCreateRuleParentImage parentImageField;
-
-      private SysmonEventFilteringRuleGroupProcessCreateRuleImage imageField;
+      private object[] itemsField;
 
       private string nameField;
 
       private string groupRelationField;
 
       /// <remarks/>
-      public SysmonEventFilteringRuleGroupProcessCreateRuleOriginalFileName OriginalFileName
+      [System.Xml.Serialization.XmlElementAttribute("CommandLine",
+                                                    typeof(SysmonEventFilteringRuleGroupProcessCreateRuleCommandLine))]
+      [System.Xml.Serialization.XmlElementAttribute(
+         "Image", typeof(SysmonEventFilteringRuleGroupProcessCreateRuleImage))]
+      [System.Xml.Serialization.XmlElementAttribute("IntegrityLevel",
+                                                    typeof(
+                                                       SysmonEventFilteringRuleGroupProcessCreateRuleIntegrityLevel))]
+      [System.Xml.Serialization.XmlElementAttribute("OriginalFileName",
+                                                    typeof(
+                                                       SysmonEventFilteringRuleGroupProcessCreateRuleOriginalFileName))]
+      [System.Xml.Serialization.XmlElementAttribute("ParentCommandLine",
+                                                    typeof(
+                                                       SysmonEventFilteringRuleGroupProcessCreateRuleParentCommandLine))]
+      [System.Xml.Serialization.XmlElementAttribute("ParentImage",
+                                                    typeof(SysmonEventFilteringRuleGroupProcessCreateRuleParentImage))]
+      public object[] Items
       {
-         get { return this.originalFileNameField; }
-         set { this.originalFileNameField = value; }
-      }
-
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupProcessCreateRuleCommandLine CommandLine
-      {
-         get { return this.commandLineField; }
-         set { this.commandLineField = value; }
-      }
-
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupProcessCreateRuleParentImage ParentImage
-      {
-         get { return this.parentImageField; }
-         set { this.parentImageField = value; }
-      }
-
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupProcessCreateRuleImage Image
-      {
-         get { return this.imageField; }
-         set { this.imageField = value; }
+         get { return this.itemsField; }
+         set { this.itemsField = value; }
       }
 
       /// <remarks/>
@@ -1554,44 +1539,6 @@ namespace vl.Sysmon.Convert.Domain
       {
          get { return this.groupRelationField; }
          set { this.groupRelationField = value; }
-      }
-   }
-
-   /// <remarks/>
-   [System.SerializableAttribute()]
-   [System.ComponentModel.DesignerCategoryAttribute("code")]
-   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-   public partial class SysmonEventFilteringRuleGroupProcessCreateRuleOriginalFileName
-   {
-
-      private string nameField;
-
-      private string conditionField;
-
-      private string valueField;
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlAttributeAttribute()]
-      public string name
-      {
-         get { return this.nameField; }
-         set { this.nameField = value; }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlAttributeAttribute()]
-      public string condition
-      {
-         get { return this.conditionField; }
-         set { this.conditionField = value; }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlTextAttribute()]
-      public string Value
-      {
-         get { return this.valueField; }
-         set { this.valueField = value; }
       }
    }
 
@@ -1637,7 +1584,63 @@ namespace vl.Sysmon.Convert.Domain
    [System.SerializableAttribute()]
    [System.ComponentModel.DesignerCategoryAttribute("code")]
    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-   public partial class SysmonEventFilteringRuleGroupProcessCreateRuleParentImage
+   public partial class SysmonEventFilteringRuleGroupProcessCreateRuleImage
+   {
+
+      private string conditionField;
+
+      private string valueField;
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlAttributeAttribute()]
+      public string condition
+      {
+         get { return this.conditionField; }
+         set { this.conditionField = value; }
+      }
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlTextAttribute()]
+      public string Value
+      {
+         get { return this.valueField; }
+         set { this.valueField = value; }
+      }
+   }
+
+   /// <remarks/>
+   [System.SerializableAttribute()]
+   [System.ComponentModel.DesignerCategoryAttribute("code")]
+   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+   public partial class SysmonEventFilteringRuleGroupProcessCreateRuleIntegrityLevel
+   {
+
+      private string conditionField;
+
+      private string valueField;
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlAttributeAttribute()]
+      public string condition
+      {
+         get { return this.conditionField; }
+         set { this.conditionField = value; }
+      }
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlTextAttribute()]
+      public string Value
+      {
+         get { return this.valueField; }
+         set { this.valueField = value; }
+      }
+   }
+
+   /// <remarks/>
+   [System.SerializableAttribute()]
+   [System.ComponentModel.DesignerCategoryAttribute("code")]
+   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+   public partial class SysmonEventFilteringRuleGroupProcessCreateRuleOriginalFileName
    {
 
       private string nameField;
@@ -1675,12 +1678,50 @@ namespace vl.Sysmon.Convert.Domain
    [System.SerializableAttribute()]
    [System.ComponentModel.DesignerCategoryAttribute("code")]
    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-   public partial class SysmonEventFilteringRuleGroupProcessCreateRuleImage
+   public partial class SysmonEventFilteringRuleGroupProcessCreateRuleParentCommandLine
    {
 
       private string conditionField;
 
       private string valueField;
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlAttributeAttribute()]
+      public string condition
+      {
+         get { return this.conditionField; }
+         set { this.conditionField = value; }
+      }
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlTextAttribute()]
+      public string Value
+      {
+         get { return this.valueField; }
+         set { this.valueField = value; }
+      }
+   }
+
+   /// <remarks/>
+   [System.SerializableAttribute()]
+   [System.ComponentModel.DesignerCategoryAttribute("code")]
+   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+   public partial class SysmonEventFilteringRuleGroupProcessCreateRuleParentImage
+   {
+
+      private string nameField;
+
+      private string conditionField;
+
+      private string valueField;
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlAttributeAttribute()]
+      public string name
+      {
+         get { return this.nameField; }
+         set { this.nameField = value; }
+      }
 
       /// <remarks/>
       [System.Xml.Serialization.XmlAttributeAttribute()]

@@ -8,11 +8,13 @@ namespace vl.Sysmon.Convert.Domain.Helpers
       public string Name { get; set; }
       public string Tag { get; set; }
       public SysmonCondition[] Conditions { get; set; }
+      public string MainGroupRelation { get; set; }
       public string Comment { get; set; }
    }
 
    public class SysmonCondition
    {
+      public int RuleId { get; set; }
       public string Condition { get; set; }
       public string Field { get; set; }
       public string Value { get; set; }
