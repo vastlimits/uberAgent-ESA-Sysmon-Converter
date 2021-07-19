@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using vl.Core.Domain;
+using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain.Helpers;
 
@@ -8,51 +10,40 @@ namespace vl.Sysmon.Convert.Domain.Rules
 {
    public class ProcessStop : Rule
    {
-      public static EventDataFilter[] ConvertExcludeRules(
+      public static ActivityMonitoringRule[] ConvertRules(
          List<SysmonEventFilteringRuleGroupProcessTerminate> processTerminateRules)
       {
          if (processTerminateRules == null || processTerminateRules.Count == 0)
-            return new EventDataFilter[0];
+            return new ActivityMonitoringRule[0];
 
          try
          {
-            Log.Information("Convert exclude rules for ProcessStop..");
-
-            var result = new List<EventDataFilter>();
-            var action = EventDataFilterAction.Deny;
-            var sourcetypes = new List<string> {MetricNames.ProcessStop};
+            Log.Information("Converting rules for ProcessStop..");
+            var result = new List<ActivityMonitoringRule>();
 
             foreach (var rule in processTerminateRules)
             {
-               if (!rule.onmatch.Equals(Constants.SysmonExcludeOnMatchString))
+               var onMatch = rule.onmatch.ToLower();
+               if (!onMatch.Equals(Constants.SysmonExcludeOnMatchString) &&
+                   !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
                   continue;
 
-               foreach (var item in rule.Image)
+               var activityConverterSettings = new ActivityMonitoringConverterSettings
                {
-                  var uberAgentMetricField = string.Empty;
-                  EventDataFilter filter = null;
+                  EventType = EventType.ProcessStop,
+                  Name = rule.name,
+                  Tag = rule.name,
+                  Conditions = ParseRule(rule).ToArray(),
+                  MainGroupRelation = rule.groupRelation
+               };
 
-                  switch (item)
-                  {
-                     case SysmonEventFilteringRuleGroupProcessTerminateImage c:
-                        uberAgentMetricField = "ProcPath";
-                        filter = Convert(new EventFilterConverterSettings
-                        {
-                           Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
-                           Sourcetypes = sourcetypes, Comment = Constants.ConversionComment
-                        });
-                        break;
-                     default:
-                        Log.Warning("ProcessStop filter rule not implemented: {item}", rule);
-                        break;
-                  }
+               if (activityConverterSettings.Conditions.Length == 0)
+                  continue;
 
-                  if (filter != null)
-                     result.Add(filter);
-               }
+               result.Add(Convert(activityConverterSettings));
             }
 
-            Log.Information("Converted {count} rules.", result.Count);
+            Log.Information("Converted {converted}/{rules} rules.", result.Count, processTerminateRules.Count);
             return result.ToArray();
          }
          catch (Exception ex)
@@ -60,7 +51,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
             Log.Error(ex, $"Failure to convert exclude rules for ProcessStop.");
          }
 
-         return new EventDataFilter[0];
+         return new ActivityMonitoringRule[0];
       }
    }
 }

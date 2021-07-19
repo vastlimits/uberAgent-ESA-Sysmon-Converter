@@ -12,13 +12,17 @@ namespace vl.Sysmon.Convert.Domain.Helpers
       public string Comment { get; set; }
    }
 
-   public class SysmonCondition
+   public class SysmonCondition : SysmonConditionBase
    {
       public int RuleId { get; set; }
-      public string Condition { get; set; }
-      public string Field { get; set; }
-      public string Value { get; set; }
       public string GroupRelation { get; set; }
       public string OnMatch { get; set; }
+   }
+
+   public class SysmonConditionBase
+   {
+      public string Field { get; set; }
+      public string Value { get; set; }
+      public string Condition { get; set; }
    }
 }

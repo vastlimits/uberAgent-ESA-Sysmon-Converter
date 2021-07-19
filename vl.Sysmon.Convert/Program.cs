@@ -61,8 +61,8 @@ namespace vl.Sysmon.Convert
 
             eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
             activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
-            eventDataFilters.AddRange(ProcessStop.ConvertExcludeRules(configListedRules.ProcessTerminate));
-            eventDataFilters.AddRange(ProcessNetwork.ConvertExcludeRules(configListedRules.NetworkConnect));
+            activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configListedRules.ProcessTerminate));
+            activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configListedRules.NetworkConnect));
          }
 
          return Serialize(_options.OutputFile, eventDataFilters.ToArray());

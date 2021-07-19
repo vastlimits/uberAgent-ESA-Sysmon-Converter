@@ -2,114 +2,62 @@
 using System.Collections.Generic;
 using System.Linq;
 using vl.Core.Domain;
+using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain.Helpers;
+using vl.Sysmon.Convert.Domain.Helpers.Wrappers;
 
 namespace vl.Sysmon.Convert.Domain.Rules
 {
    public class ProcessNetwork : Rule
    {
-      public static EventDataFilter[] ConvertExcludeRules(
+      public static ActivityMonitoringRule[] ConvertRules(
         List<SysmonEventFilteringRuleGroupNetworkConnect> processNetworkRules)
       {
          if (processNetworkRules == null || processNetworkRules.Count == 0)
-            return new EventDataFilter[0];
+            return new ActivityMonitoringRule[0];
 
          try
          {
-            Log.Information("Convert exclude rules for NetworkTargetPerformance & NetworkConnectFailure.");
+            Log.Information("Converting rules for Network..");
 
-            var result = new List<EventDataFilter>();
-            var action = EventDataFilterAction.Deny;
-            var sourcetypes = new List<string>
+            var result = new List<ActivityMonitoringRule>();
+            
+            foreach (var rule in processNetworkRules)
             {
-               MetricNames.ProcessNetworkTargetPerformance,
-               MetricNames.ApplicationNetworkConnectFailure
-            };
+               var onMatch = rule.onmatch.ToLower();
+               if (!onMatch.Equals(Constants.SysmonExcludeOnMatchString) &&
+                   !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
+                  continue;
 
-            var rules = new List<object>();
-            foreach (var rule in processNetworkRules.Where(rule => rule.onmatch.Equals(Constants.SysmonExcludeOnMatchString)))
-            {
-               if (rule.Image != null)
-                  rules.AddRange(rule.Image);
-               
-               if (rule.DestinationHostname != null)
-                  rules.AddRange(rule.DestinationHostname);
-               
-               if (rule.DestinationIp != null)
-                  rules.AddRange(rule.DestinationIp);
-
-               if (rule.DestinationPort != null)
-                  rules.AddRange(rule.DestinationPort);
-            }
-
-            foreach (var item in rules)
-            {
-               var uberAgentMetricField = string.Empty;
-               EventDataFilter filter = null;
-
-               switch (item)
+               var networkConnectRule = new NetworkConnect
                {
-                  case SysmonEventFilteringRuleGroupNetworkConnectImage c:
-                     // We cannot fully convert this rule because we currently do not have the parent path in this metric.
-                     uberAgentMetricField = c.Value.IndexOf('\\') > -1 ? string.Empty : "ProcName";
+                  groupRelation = rule.groupRelation,
+                  onmatch = rule.onmatch
+               };
 
-                     if (string.IsNullOrEmpty(uberAgentMetricField))
-                        continue;
+               if (rule.Image != null)
+                  networkConnectRule.Items.AddRange(rule.Image);
+               if (rule.DestinationHostname != null)
+                  networkConnectRule.Items.AddRange(rule.DestinationHostname);
+               if (rule.DestinationIp != null)
+                  networkConnectRule.Items.AddRange(rule.DestinationIp);
+               if (rule.DestinationPort != null)
+                  networkConnectRule.Items.AddRange(rule.DestinationPort);
 
-                     filter = Convert(new EventFilterConverterSettings
-                     {
-                        Action = action,
-                        Field = uberAgentMetricField,
-                        Condition = c.condition,
-                        Value = c.Value,
-                        Sourcetypes = sourcetypes,
-                        Comment = Constants.ConversionComment
-                     });
-                     break;
-                  case SysmonEventFilteringRuleGroupNetworkConnectDestinationHostname c:
-                     uberAgentMetricField = "NetTargetRemoteName";
-                     filter = Convert(new EventFilterConverterSettings
-                     {
-                        Action = action,
-                        Field = uberAgentMetricField,
-                        Condition = c.condition,
-                        Value = c.Value,
-                        Sourcetypes = sourcetypes,
-                        Comment = Constants.ConversionComment
-                     });
-                     break;
-                  case SysmonEventFilteringRuleGroupNetworkConnectDestinationIp c:
-                     uberAgentMetricField = "NetTargetRemoteAddress";
-                     filter = Convert(new EventFilterConverterSettings
-                     {
-                        Action = action,
-                        Field = uberAgentMetricField,
-                        Condition = c.condition,
-                        Value = c.Value,
-                        Sourcetypes = sourcetypes,
-                        Comment = Constants.ConversionComment
-                     });
-                     break;
-                  case SysmonEventFilteringRuleGroupNetworkConnectDestinationPort c:
-                     uberAgentMetricField = "NetTargetRemotePort";
-                     filter = Convert(new EventFilterConverterSettings
-                     {
-                        Action = action,
-                        Field = uberAgentMetricField,
-                        Condition = c.condition,
-                        Value = c.Value.ToString(),
-                        Sourcetypes = sourcetypes,
-                        Comment = Constants.ConversionComment
-                     });
-                     break;
-                  default:
-                     Log.Warning("ProcessNetwork filter rule not implemented: {item}", item);
-                     break;
-               }
+               var activityConverterSettings = new ActivityMonitoringConverterSettings
+               {
+                  EventType = EventType.NetConnect,
+                  Name = rule.name,
+                  Tag = rule.name,
+                  Conditions = ParseRule(networkConnectRule).ToArray(),
+                  MainGroupRelation = rule.groupRelation
+               };
 
-               if (filter != null)
-                  result.Add(filter);
+               if (activityConverterSettings.Conditions.Length == 0)
+                  continue;
+
+               result.Add(Convert(activityConverterSettings));
             }
 
             Log.Information("Converted {count} rules.", result.Count);
@@ -120,7 +68,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
             Log.Error(ex, $"Failure to convert exclude rules for NetworkTargetPerformance & NetworkConnectFailure.");
          }
 
-         return new EventDataFilter[0];
+         return new ActivityMonitoringRule[0];
       }
    }
 }
