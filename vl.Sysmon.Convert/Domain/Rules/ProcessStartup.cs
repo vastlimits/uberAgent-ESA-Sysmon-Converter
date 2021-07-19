@@ -46,7 +46,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          }
          catch (Exception ex)
          {
-            Log.Error(ex, $"Failure to convert exclude rules for ProcessStartup.");
+            Log.Error(ex, $"Failure to convert rules for ProcessStartup.");
          }
 
          return new ActivityMonitoringRule[0];

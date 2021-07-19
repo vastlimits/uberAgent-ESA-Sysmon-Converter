@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using vl.Core.Domain;
 using vl.Core.Domain.ActivityMonitoring;
-using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain.Helpers;
 using vl.Sysmon.Convert.Domain.Helpers.Wrappers;
 
@@ -65,7 +63,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          }
          catch (Exception ex)
          {
-            Log.Error(ex, $"Failure to convert exclude rules for NetworkTargetPerformance & NetworkConnectFailure.");
+            Log.Error(ex, $"Failure to convert rules for NetworkTargetPerformance & NetworkConnectFailure.");
          }
 
          return new ActivityMonitoringRule[0];

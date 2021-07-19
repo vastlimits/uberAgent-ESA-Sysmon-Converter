@@ -25,11 +25,11 @@ namespace vl.Sysmon.Convert
          var configurations = new List<Domain.Sysmon>();
 
          Parser.Default.ParseArguments<Options>(args)
-               .WithParsed<Options>(o =>
+               .WithParsed(o =>
                {
                   _options = o;
                })
-               .WithNotParsed<Options>(e =>
+               .WithNotParsed(e =>
                {
                   Environment.Exit(-1);
                });

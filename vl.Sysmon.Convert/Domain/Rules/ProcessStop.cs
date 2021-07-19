@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using vl.Core.Domain;
 using vl.Core.Domain.ActivityMonitoring;
-using vl.Core.Domain.EventData;
 using vl.Sysmon.Convert.Domain.Helpers;
 
 namespace vl.Sysmon.Convert.Domain.Rules
@@ -48,7 +46,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          }
          catch (Exception ex)
          {
-            Log.Error(ex, $"Failure to convert exclude rules for ProcessStop.");
+            Log.Error(ex, $"Failure to convert rules for ProcessStop.");
          }
 
          return new ActivityMonitoringRule[0];
