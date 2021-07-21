@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using vl.Core.Domain.ActivityMonitoring;
+using vl.Sysmon.Convert.Domain.Extensions;
 using vl.Sysmon.Convert.Domain.Helpers;
 
 namespace vl.Sysmon.Convert.Domain.Rules
@@ -26,12 +27,17 @@ namespace vl.Sysmon.Convert.Domain.Rules
                    !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
                   continue;
 
+               var imageLoadRule = rule.FillItems();
+
+               if (imageLoadRule.Items.Length == 0)
+                  continue;
+
                var activityConverterSettings = new ActivityMonitoringConverterSettings
                {
                   EventType = new[] { EventType.ImageLoad },
                   Name = rule.name,
                   Tag = rule.name,
-                  Conditions = ParseRule(rule).ToArray(),
+                  Conditions = ParseRule(imageLoadRule).ToArray(),
                   MainGroupRelation = rule.groupRelation
                };
 

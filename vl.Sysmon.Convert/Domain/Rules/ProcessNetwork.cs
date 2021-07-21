@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using vl.Core.Domain.ActivityMonitoring;
+using vl.Sysmon.Convert.Domain.Extensions;
 using vl.Sysmon.Convert.Domain.Helpers;
-using vl.Sysmon.Convert.Domain.Helpers.Wrapper;
 
 namespace vl.Sysmon.Convert.Domain.Rules
 {
@@ -21,35 +21,22 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
             var result = new List<ActivityMonitoringRule>();
             
-            foreach (var rule in processNetworkRules)
+            foreach (var ruleGroup in processNetworkRules)
             {
-               var onMatch = rule.onmatch.ToLower();
+               var onMatch = ruleGroup.onmatch.ToLower();
                if (!onMatch.Equals(Constants.SysmonExcludeOnMatchString) &&
                    !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
                   continue;
 
-               var networkConnectRule = new NetworkConnect
-               {
-                  groupRelation = rule.groupRelation,
-                  onmatch = rule.onmatch
-               };
-
-               if (rule.Image != null)
-                  networkConnectRule.Items.AddRange(rule.Image);
-               if (rule.DestinationHostname != null)
-                  networkConnectRule.Items.AddRange(rule.DestinationHostname);
-               if (rule.DestinationIp != null)
-                  networkConnectRule.Items.AddRange(rule.DestinationIp);
-               if (rule.DestinationPort != null)
-                  networkConnectRule.Items.AddRange(rule.DestinationPort);
+               var networkConnectRuleGroup = ruleGroup.FillItems();
 
                var activityConverterSettings = new ActivityMonitoringConverterSettings
                {
                   EventType = new [] { EventType.NetConnect },
-                  Name = rule.name,
-                  Tag = rule.name,
-                  Conditions = ParseRule(networkConnectRule).ToArray(),
-                  MainGroupRelation = rule.groupRelation
+                  Name = ruleGroup.name,
+                  Tag = ruleGroup.name,
+                  Conditions = ParseRule(networkConnectRuleGroup).ToArray(),
+                  MainGroupRelation = ruleGroup.groupRelation
                };
 
                if (activityConverterSettings.Conditions.Length == 0)
@@ -58,7 +45,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                result.Add(Convert(activityConverterSettings));
             }
 
-            Log.Information("Converted {count} rules.", result.Count);
+            Log.Information("Converted {converted}/{rules} rules.", result.Count, processNetworkRules.Count);
             return result.ToArray();
          }
          catch (Exception ex)

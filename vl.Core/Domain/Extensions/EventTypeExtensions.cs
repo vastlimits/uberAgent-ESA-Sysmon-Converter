@@ -1,7 +1,7 @@
 ﻿using System;
 using vl.Core.Domain.ActivityMonitoring;
 
-namespace vl.Sysmon.Convert.Domain.Extensions
+namespace vl.Core.Domain.Extensions
 {
    public static class EventTypeExtensions
    {
