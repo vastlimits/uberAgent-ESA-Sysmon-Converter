@@ -63,6 +63,8 @@ namespace vl.Sysmon.Convert
             activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
             activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configListedRules.ProcessTerminate));
             activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configListedRules.NetworkConnect));
+            activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
+            activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
          }
 
          return Serialize(_options.OutputFile, eventDataFilters.ToArray());
