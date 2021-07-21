@@ -28,7 +28,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
                var activityConverterSettings = new ActivityMonitoringConverterSettings
                {
-                  EventType = EventType.ProcessStop,
+                  EventType = new []{ EventType.ProcessStop },
                   Name = rule.name,
                   Tag = rule.name,
                   Conditions = ParseRule(rule).ToArray(),

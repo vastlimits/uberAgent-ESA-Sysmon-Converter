@@ -128,7 +128,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          var ruleProperties = rule.GetType().GetProperties();
          var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items") || c.Name.Equals("Image"))?.GetValue(rule, null);
          var onMatchProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("onmatch"))?.GetValue(rule, null)?.ToString();
-         var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null).ToString().ToLower();
+         var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null)?.ToString()?.ToLower();
 
          if (itemsProperty == null)
             return conditions;
@@ -297,6 +297,26 @@ namespace vl.Sysmon.Convert.Domain.Rules
             return new SysmonConditionBase
             {
                Field = "Net.Target.Ip",
+               Condition = itemCondition,
+               Value = itemValue
+            };
+         }
+
+         if (itemName.EndsWith("TargetObject"))
+         {
+            return new SysmonConditionBase
+            {
+               Field = "Reg.Key.Path",
+               Condition = itemCondition,
+               Value = itemValue
+            };
+         }
+
+         if (itemName.EndsWith("ImageLoaded"))
+         {
+            return new SysmonConditionBase
+            {
+               Field = itemValue.IndexOf('\\') > -1 ? "Image.Path" : "Image.Name",
                Condition = itemCondition,
                Value = itemValue
             };

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace vl.Sysmon.Convert.Domain.Helpers.Wrappers
+namespace vl.Sysmon.Convert.Domain.Helpers.Wrapper
 {
    public class NetworkConnect
    {

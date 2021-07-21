@@ -4,7 +4,7 @@ namespace vl.Sysmon.Convert.Domain.Helpers
 {
    public class ActivityMonitoringConverterSettings
    {
-      public EventType EventType { get; set; }
+      public EventType[] EventType { get; set; }
       public string Name { get; set; }
       public string Tag { get; set; }
       public SysmonCondition[] Conditions { get; set; }

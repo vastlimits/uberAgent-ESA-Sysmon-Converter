@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using vl.Core.Domain.ActivityMonitoring;
 using vl.Sysmon.Convert.Domain.Helpers;
-using vl.Sysmon.Convert.Domain.Helpers.Wrappers;
+using vl.Sysmon.Convert.Domain.Helpers.Wrapper;
 
 namespace vl.Sysmon.Convert.Domain.Rules
 {
@@ -45,7 +45,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
                var activityConverterSettings = new ActivityMonitoringConverterSettings
                {
-                  EventType = EventType.NetConnect,
+                  EventType = new [] { EventType.NetConnect },
                   Name = rule.name,
                   Tag = rule.name,
                   Conditions = ParseRule(networkConnectRule).ToArray(),
