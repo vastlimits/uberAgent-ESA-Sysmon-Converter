@@ -67,10 +67,10 @@ namespace vl.Sysmon.Convert
             activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
          }
 
-         return Serialize(_options.OutputFile, eventDataFilters.ToArray());
+         return Serialize(_options.OutputFile, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
       }
 
-      private static bool Serialize(string outputFile, IEnumerable<EventDataFilter> filters)
+      private static bool Serialize(string outputFile, IEnumerable<EventDataFilter> filters, IEnumerable<ActivityMonitoringRule> rules)
       {
          try
          {
@@ -79,8 +79,10 @@ namespace vl.Sysmon.Convert
             using (var fs = new FileStream(outputFile, FileMode.Create))
             {
                EventDataFilterSerializer.Serialize(fs, filters, Constants.ConversionHeaderComment);
-               return true;
+               ActivityMonitoringRuleSerializer.Serialize(fs, rules);
             }
+            
+            return true;
          }
          catch (Exception ex)
          {
