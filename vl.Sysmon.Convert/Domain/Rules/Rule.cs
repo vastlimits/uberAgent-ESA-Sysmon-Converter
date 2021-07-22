@@ -181,11 +181,24 @@ namespace vl.Sysmon.Convert.Domain.Rules
          var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items"))?.GetValue(rule, null);
          var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null).ToString().ToLower();
 
-         if (itemsProperty == null)
-            return conditions;
+         if (itemsProperty == null || itemsProperty is not IList ruleItems || ruleItems.Count == 0)
+         {
+            // Check if we have an imageload rule here
+            ruleItems = new List<object>();
 
-         if (itemsProperty is not IList ruleItems || ruleItems.Count == 0)
-            return conditions;
+            var image = ruleProperties.Any(c => c.Name.EndsWith("Image") || c.Name.EndsWith("ImageLoaded"));
+            if (!image)
+               throw new NotImplementedException(nameof(rule));
+            
+            var imageProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Image"))?.GetValue(rule, null);
+            var imageLoadedProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("ImageLoaded"))?.GetValue(rule, null);
+            
+            if (imageProperty != null)
+               ruleItems.Add(imageProperty);
+
+            if (imageLoadedProperty != null)
+               ruleItems.Add(imageLoadedProperty);
+         }
 
          foreach (var item in ruleItems)
          {
