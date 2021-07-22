@@ -54,25 +54,57 @@ namespace vl.Sysmon.Convert.Domain.Rules
                var lastValueInGroup = i + 1 == value.Count;
                var groupRelation = lastValueInGroup ? string.Empty : $" {item.GroupRelation} ";
                var query = string.Empty;
+               var stringType = "r";
                item.Value = item.Value.Replace("%%", "%");
+
+               if (item.Value.EndsWith(@"\") && !item.Value.EndsWith(@"\\"))
+               {
+                  item.Value = item.Value.Replace(@"\", @"\\");
+                  stringType = string.Empty;
+               }
 
                switch (item.Condition)
                {
                   case "is":
-                     query = $"{item.Field} == r\"{item.Value}\"{groupRelation}";
+                     query = $"{item.Field} == {stringType}\"{item.Value}\"{groupRelation}";
                      break;
                   case "begin with":
-                     query = $"istartswith({item.Field}, r\"{item.Value}\"){groupRelation}";
+                     query = $"istartswith({item.Field}, {stringType}\"{item.Value}\"){groupRelation}";
                      break;
                   case "end with":
-                     query = $"iendswith({item.Field}, r\"{item.Value}\"){groupRelation}";
+                     query = $"iendswith({item.Field}, {stringType}\"{item.Value}\"){groupRelation}";
                      break;
                   case "image":
                   case "contains":
-                     query = $"icontains({item.Field}, r\"{item.Value}\"){groupRelation}";
+                     query = $"icontains({item.Field}, {stringType}\"{item.Value}\"){groupRelation}";
+                     break;
+                  case "contains all":
+                  case "contains any":
+                     // Currently there is no uAQL function for contains 'all' or 'any'.
+                     bool containsAll = item.Condition.EndsWith("all");
+                     var splittedItemCondition = item.Value.Split(';').Select(x => $"{x.Trim()}").ToArray();
+                     var relation = containsAll ? " and " : " or ";
+
+                     foreach (var s in splittedItemCondition)
+                     {
+                        if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
+                        {
+                           query = query + $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\"){relation}";
+                        }
+                        else
+                        {
+                           query = query + $"icontains({item.Field}, {stringType}\"{s}\"){relation}";
+                        }
+                     }
+
+                     query = query.Remove(query.Length - relation.Length, relation.Length);
+
+                     if (!lastValueInGroup)
+                        query += $" {mainGroupRelation} ";
+
                      break;
                   case "is not":
-                     query = $"{item.Field} != r\"{item.Value}\"{groupRelation}";
+                     query = $"{item.Field} != {stringType}\"{item.Value}\"{groupRelation}";
                      break;
                   default:
                      Log.Error("Condition: {condition} is not implemented.", item.Condition);
