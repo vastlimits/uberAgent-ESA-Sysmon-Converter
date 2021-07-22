@@ -60,8 +60,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                if (!onMatch.Equals(Constants.SysmonExcludeOnMatchString) &&
                    !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
                   continue;
-
-
+               
                var activityConverterSettings = new ActivityMonitoringConverterSettings
                {
                   EventType = eventTypes.ToArray(),

@@ -96,7 +96,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
       {
          return new()
          {
-            EventType = settings.EventType,
+            EventTypes = settings.EventType,
             RuleName = settings.Name,
             Tag = settings.Name,
             Query = ConvertQuery(settings.Conditions, settings.MainGroupRelation),
@@ -145,7 +145,11 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
             if (ruleItemName.EndsWith("Rule"))
             {
-               conditions.AddRange(ParseInnerRule(item, ++ruleId, onMatchProperty));
+               var innerRuleResult = ParseInnerRule(item, ++ruleId, onMatchProperty)?.ToArray();
+               if (innerRuleResult == null || innerRuleResult.Length == 0)
+                  continue;
+
+               conditions.AddRange(innerRuleResult);
                continue;
             }
 
@@ -204,7 +208,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          {
             var baseCondition = CreateSysmonBaseCondition(item);
             if (baseCondition == null)
-               continue;
+               return null;
 
             conditions.Add(new SysmonCondition
             {
@@ -335,8 +339,14 @@ namespace vl.Sysmon.Convert.Domain.Rules
             };
          }
 
-         if (itemName.EndsWith("OriginalFileName") || itemName.EndsWith("IntegrityLevel"))
+         if (itemName.EndsWith("EventType"))
             return null;
+
+         if (itemName.EndsWith("OriginalFileName") || itemName.EndsWith("IntegrityLevel"))
+         {
+            Log.Warning("Filter rule currently not supported: {item}", itemName);
+            return null;
+         }
 
          Log.Warning("Filter rule not implemented: {item}", itemName);
          return null;
