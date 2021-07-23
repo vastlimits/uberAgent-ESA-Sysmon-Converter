@@ -56,7 +56,6 @@
 
    public partial class SysmonEventFilteringRuleGroupImageLoad
    {
-      public object[] Items { get; set; }
       public string name { get; set; }
       public string groupRelation { get; set; }
    }
@@ -75,7 +74,6 @@
 
    public partial class SysmonEventFilteringRuleGroupNetworkConnect
    {
-      public object[] Items { get; set; }
       public string name { get; set; }
       public string groupRelation { get; set; }
    }

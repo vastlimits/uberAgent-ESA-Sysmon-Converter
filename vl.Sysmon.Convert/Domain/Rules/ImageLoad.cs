@@ -27,9 +27,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                    !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
                   continue;
 
-               var imageLoadRule = rule.FillItems();
-
-               if (imageLoadRule.Items.Length == 0)
+               if (rule.Items == null || rule.Items.Length == 0)
                   continue;
 
                var activityConverterSettings = new ActivityMonitoringConverterSettings
@@ -37,7 +35,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                   EventType = EventType.ImageLoad,
                   Name = rule.name,
                   Tag = rule.name,
-                  Conditions = ParseRule(imageLoadRule).ToArray(),
+                  Conditions = ParseRule(rule).ToArray(),
                   MainGroupRelation = rule.groupRelation
                };
 

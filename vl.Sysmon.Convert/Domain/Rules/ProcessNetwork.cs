@@ -28,14 +28,12 @@ namespace vl.Sysmon.Convert.Domain.Rules
                    !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
                   continue;
 
-               var networkConnectRuleGroup = ruleGroup.FillItems();
-
                var activityConverterSettings = new ActivityMonitoringConverterSettings
                {
                   EventType = EventType.NetConnect,
                   Name = ruleGroup.name,
                   Tag = ruleGroup.name,
-                  Conditions = ParseRule(networkConnectRuleGroup).ToArray(),
+                  Conditions = ParseRule(ruleGroup).ToArray(),
                   MainGroupRelation = ruleGroup.groupRelation
                };
 
