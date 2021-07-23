@@ -32,7 +32,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
                var activityConverterSettings = new ActivityMonitoringConverterSettings
                {
-                  EventType = new [] { EventType.NetConnect },
+                  EventType = EventType.NetConnect,
                   Name = ruleGroup.name,
                   Tag = ruleGroup.name,
                   Conditions = ParseRule(networkConnectRuleGroup).ToArray(),

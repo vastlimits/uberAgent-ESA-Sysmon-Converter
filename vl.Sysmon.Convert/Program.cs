@@ -58,13 +58,13 @@ namespace vl.Sysmon.Convert
          foreach (var config in configs)
          {
             var configListedRules = config.GetSysmonRulesListed();
-
+            
             eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
-            activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
+            activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate, configListedRules.ConfigGlobalSettings));
             activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configListedRules.ProcessTerminate));
             activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configListedRules.NetworkConnect));
-            activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
-            activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
+            activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent, configListedRules.ConfigGlobalSettings));
+            activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad, configListedRules.ConfigGlobalSettings));
          }
 
          return Serialize(_options.OutputFile, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());

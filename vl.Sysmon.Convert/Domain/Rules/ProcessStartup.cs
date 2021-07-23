@@ -9,7 +9,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
    public class ProcessStartup : Rule
    {
       public static ActivityMonitoringRule[] ConvertRules(
-         List<SysmonEventFilteringRuleGroupProcessCreate> processCreateRules)
+         List<SysmonEventFilteringRuleGroupProcessCreate> processCreateRules, RuleConverterSettings configGlobalSettings)
       {
          if (processCreateRules == null || processCreateRules.Count == 0)
             return new ActivityMonitoringRule[0];
@@ -28,7 +28,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
                var activityConverterSettings = new ActivityMonitoringConverterSettings
                {
-                  EventType = new []{ EventType.ProcessStart },
+                  EventType = EventType.ProcessStart,
                   Name = rule.name,
                   Tag = rule.name,
                   Conditions = ParseRule(rule).ToArray(),

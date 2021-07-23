@@ -10,7 +10,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
    public class ImageLoad : Rule
    {
       public static ActivityMonitoringRule[] ConvertRules(
-         List<SysmonEventFilteringRuleGroupImageLoad> imageLoadRules)
+         List<SysmonEventFilteringRuleGroupImageLoad> imageLoadRules, RuleConverterSettings configGlobalSettings)
       {
          if (imageLoadRules == null || imageLoadRules.Count == 0)
             return new ActivityMonitoringRule[0];
@@ -34,7 +34,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
                var activityConverterSettings = new ActivityMonitoringConverterSettings
                {
-                  EventType = new[] { EventType.ImageLoad },
+                  EventType = EventType.ImageLoad,
                   Name = rule.name,
                   Tag = rule.name,
                   Conditions = ParseRule(imageLoadRule).ToArray(),

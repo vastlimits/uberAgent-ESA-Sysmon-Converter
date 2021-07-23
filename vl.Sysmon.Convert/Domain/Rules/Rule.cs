@@ -128,7 +128,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
       {
          return new()
          {
-            EventTypes = settings.EventType,
+            EventType = settings.EventType,
             RuleName = settings.Name,
             Tag = settings.Name,
             Query = ConvertQuery(settings.Conditions, settings.MainGroupRelation),
@@ -148,6 +148,11 @@ namespace vl.Sysmon.Convert.Domain.Rules
       }
 
       protected static IEnumerable<SysmonCondition> ParseRule(object rule)
+      {
+         return ParseRule(rule, null);
+      }
+
+      protected static IEnumerable<SysmonCondition> ParseRule(object rule, RuleConverterSettings settings)
       {
          var conditions = new List<SysmonCondition>();
          var ruleId = 0;
@@ -177,7 +182,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
             if (ruleItemName.EndsWith("Rule"))
             {
-               var innerRuleResult = ParseInnerRule(item, ++ruleId, onMatchProperty)?.ToArray();
+               var innerRuleResult = ParseInnerRule(item, ++ruleId, onMatchProperty, settings)?.ToArray();
                if (innerRuleResult == null || innerRuleResult.Length == 0)
                   continue;
 
@@ -185,7 +190,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                continue;
             }
 
-            var baseProperties = CreateSysmonBaseCondition(item);
+            var baseProperties = CreateSysmonBaseCondition(item, settings);
             if (baseProperties == null)
                continue;
 
@@ -203,7 +208,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          return conditions;
       }
 
-      private static IEnumerable<SysmonCondition> ParseInnerRule(object rule, int ruleId, string onMatch)
+      private static IEnumerable<SysmonCondition> ParseInnerRule(object rule, int ruleId, string onMatch, RuleConverterSettings settings)
       {
          var conditions = new List<SysmonCondition>();
          
@@ -238,7 +243,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
          foreach (var item in ruleItems)
          {
-            var baseCondition = CreateSysmonBaseCondition(item);
+            var baseCondition = CreateSysmonBaseCondition(item, settings);
             if (baseCondition == null)
                return null;
 
@@ -256,7 +261,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          return conditions;
       }
 
-      private static SysmonConditionBase CreateSysmonBaseCondition(object item)
+      private static SysmonConditionBase CreateSysmonBaseCondition(object item, RuleConverterSettings settings)
       {
          if (item == null)
          {

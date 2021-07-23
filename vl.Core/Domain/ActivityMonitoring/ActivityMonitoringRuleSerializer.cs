@@ -22,16 +22,12 @@ namespace vl.Core.Domain.ActivityMonitoring
          {
             foreach (var rule in rules)
             {
-               foreach (var eventType in rule.EventTypes)
-               {
-                  sw.WriteLine("[ActivityMonitoringRule]");
-                  sw.WriteLine($"RuleName = {rule.RuleName}");
-                  sw.WriteLine($"EventType = {eventType}");
-                  sw.WriteLine($"Tag = {rule.Tag}");
-                  sw.WriteLine($"RiskScore = 100");
-                  sw.WriteLine($"{rule.Query}");
-               }
-
+               sw.WriteLine("[ActivityMonitoringRule]");
+               sw.WriteLine($"RuleName = {rule.RuleName}");
+               sw.WriteLine($"EventType = {rule.EventType}");
+               sw.WriteLine($"Tag = {rule.Tag}");
+               sw.WriteLine($"RiskScore = 100");
+               sw.WriteLine($"{rule.Query}");
                sw.WriteLine(string.Empty);
             }
          }

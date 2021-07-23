@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using vl.Core.Domain.ActivityMonitoring;
 using vl.Sysmon.Convert.Domain.Helpers;
 
 namespace vl.Sysmon.Convert.Domain.Extensions
@@ -38,7 +39,38 @@ namespace vl.Sysmon.Convert.Domain.Extensions
             filteringRuleExtendedGroupRelation?.SetValue(currentRuleValue, rule.groupRelation);
          }
 
+         filteringRulesListed.ConfigGlobalSettings.HashAlgorithms = GetHashAlgorithms(config);
+
          return filteringRulesListed;
+      }
+
+      private static Hashes[] GetHashAlgorithms(Sysmon config)
+      {
+         if (string.IsNullOrEmpty(config.HashAlgorithms))
+            return new Hashes[0];
+
+         var hashesList = new List<Hashes>();
+         var hashes = config.HashAlgorithms.ToLower().Trim().Split(',');
+         foreach (var hash in hashes)
+         {
+            switch (hash)
+            {
+               case "md5":
+                  hashesList.Add(Hashes.MD5);
+                  break;
+               case "sha1":
+                  hashesList.Add(Hashes.SHA1);
+                  break;
+               case "sha256":
+                  hashesList.Add(Hashes.SHA256);
+                  break;
+               case "imphash":
+                  hashesList.Add(Hashes.IMP);
+                  break;
+            }
+         }
+
+         return hashesList.ToArray();
       }
 
       internal static SysmonEventFilteringRuleGroupImageLoad FillItems(this SysmonEventFilteringRuleGroupImageLoad ruleGroup)
