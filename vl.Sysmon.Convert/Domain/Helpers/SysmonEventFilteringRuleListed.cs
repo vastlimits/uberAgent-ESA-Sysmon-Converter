@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using vl.Sysmon.Convert.Domain.Rules;
 
 namespace vl.Sysmon.Convert.Domain.Helpers
 {
    public class SysmonEventFilteringRuleListed
    {
-      public RuleConverterSettings ConfigGlobalSettings { get; set; } = new();
       public List<SysmonEventFilteringRuleGroupDnsQuery> DnsQuery { get; set; } = new();
 
       public List<SysmonEventFilteringRuleGroupWmiEvent> WmiEvent { get; set; } = new();

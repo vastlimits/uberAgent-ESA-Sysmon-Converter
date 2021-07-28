@@ -39,8 +39,6 @@ namespace vl.Sysmon.Convert.Domain.Extensions
             filteringRuleExtendedGroupRelation?.SetValue(currentRuleValue, rule.groupRelation);
          }
 
-         filteringRulesListed.ConfigGlobalSettings.HashAlgorithms = GetHashAlgorithms(config);
-
          return filteringRulesListed;
       }
 

@@ -27,7 +27,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
             };
 
             var excludeList = from ruleGroup in registryEvent
-                      where ruleGroup.onmatch.Equals(Constants.SysmonExcludeOnMatchString)
+                      where ruleGroup.onmatch.Equals(Constants.SysmonExcludeOnMatchString) && ruleGroup.Items != null
                       select ruleGroup.Items.Where(c => c.GetType() ==
                                                         typeof(SysmonEventFilteringRuleGroupRegistryEventEventType))
                                       .ToList()
@@ -60,23 +60,29 @@ namespace vl.Sysmon.Convert.Domain.Rules
                if (!onMatch.Equals(Constants.SysmonExcludeOnMatchString) &&
                    !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
                   continue;
-               
-               var activityConverterSettings = new ActivityMonitoringConverterSettings
+
+               foreach (var eventType in eventTypes)
                {
-                  EventType = eventTypes.ToArray(),
-                  Name = ruleGroup.name,
-                  Tag = ruleGroup.name,
-                  Conditions = ParseRule(ruleGroup).ToArray(),
-                  MainGroupRelation = ruleGroup.groupRelation
-               };
+                  var conditions = ParseRule(ruleGroup).ToArray();
 
-               if (activityConverterSettings.Conditions.Length == 0)
-                  continue;
+                  var activityConverterSettings = new ActivityMonitoringConverterSettings
+                  {
+                     EventType = eventType,
+                     Name = ruleGroup.name,
+                     Tag = ruleGroup.name,
+                     Conditions = conditions,
+                     MainGroupRelation = ruleGroup.groupRelation
+                  };
 
-               result.Add(Convert(activityConverterSettings));
+                  if (activityConverterSettings.Conditions.Length == 0)
+                     continue;
+
+                  result.Add(Convert(activityConverterSettings));
+               }
             }
 
-            Log.Information("Converted {converted}/{rules} rules.", result.Count, registryEvent.Count);
+            var convertedCount = eventTypes.Count > 0 ? result.Count / eventTypes.Count : 0;
+            Log.Information("Converted {converted}/{rules} rules.", convertedCount, registryEvent.Count);
             return result.ToArray();
          }
          catch (Exception ex)
