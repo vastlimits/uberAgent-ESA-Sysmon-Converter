@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using vl.Core.Domain.Extensions;
 
 namespace vl.Core.Domain.ActivityMonitoring
 {
@@ -24,7 +25,7 @@ namespace vl.Core.Domain.ActivityMonitoring
             {
                sw.WriteLine("[ActivityMonitoringRule]");
                sw.WriteLine($"RuleName = {rule.RuleName}");
-               sw.WriteLine($"EventType = {rule.EventType}");
+               sw.WriteLine($"EventType = {rule.EventType.ToActivityMonitoringString()}");
                sw.WriteLine($"Tag = {rule.Tag}");
                sw.WriteLine($"RiskScore = 100");
                sw.WriteLine($"{rule.Query}");
