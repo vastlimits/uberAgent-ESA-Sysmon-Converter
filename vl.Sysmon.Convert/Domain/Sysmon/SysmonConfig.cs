@@ -4,9 +4,6 @@
 //
 namespace vl.Sysmon.Convert.Domain
 {
-
-   // HINWEIS: Für den generierten Code ist möglicherweise mindestens .NET Framework 4.5 oder .NET Core/Standard 2.0 erforderlich.
-   /// <remarks/>
    [System.SerializableAttribute()]
    [System.ComponentModel.DesignerCategoryAttribute("code")]
    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
@@ -3232,6 +3229,8 @@ namespace vl.Sysmon.Convert.Domain
 
       /// <remarks/>
       [System.Xml.Serialization.XmlElementAttribute(
+         "Details", typeof(SysmonEventFilteringRuleGroupRegistryEventRuleDetails))]
+      [System.Xml.Serialization.XmlElementAttribute(
          "Image", typeof(SysmonEventFilteringRuleGroupRegistryEventRuleImage))]
       [System.Xml.Serialization.XmlElementAttribute("TargetObject",
                                                     typeof(SysmonEventFilteringRuleGroupRegistryEventRuleTargetObject))]
@@ -3247,6 +3246,34 @@ namespace vl.Sysmon.Convert.Domain
       {
          get { return this.groupRelationField; }
          set { this.groupRelationField = value; }
+      }
+   }
+
+   /// <remarks/>
+   [System.SerializableAttribute()]
+   [System.ComponentModel.DesignerCategoryAttribute("code")]
+   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+   public partial class SysmonEventFilteringRuleGroupRegistryEventRuleDetails
+   {
+
+      private string conditionField;
+
+      private string valueField;
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlAttributeAttribute()]
+      public string condition
+      {
+         get { return this.conditionField; }
+         set { this.conditionField = value; }
+      }
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlTextAttribute()]
+      public string Value
+      {
+         get { return this.valueField; }
+         set { this.valueField = value; }
       }
    }
 
@@ -3285,19 +3312,11 @@ namespace vl.Sysmon.Convert.Domain
    public partial class SysmonEventFilteringRuleGroupRegistryEventRuleTargetObject
    {
 
-      private string nameField;
-
       private string conditionField;
 
-      private string valueField;
+      private string nameField;
 
-      /// <remarks/>
-      [System.Xml.Serialization.XmlAttributeAttribute()]
-      public string name
-      {
-         get { return this.nameField; }
-         set { this.nameField = value; }
-      }
+      private string valueField;
 
       /// <remarks/>
       [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -3305,6 +3324,14 @@ namespace vl.Sysmon.Convert.Domain
       {
          get { return this.conditionField; }
          set { this.conditionField = value; }
+      }
+
+      /// <remarks/>
+      [System.Xml.Serialization.XmlAttributeAttribute()]
+      public string name
+      {
+         get { return this.nameField; }
+         set { this.nameField = value; }
       }
 
       /// <remarks/>
