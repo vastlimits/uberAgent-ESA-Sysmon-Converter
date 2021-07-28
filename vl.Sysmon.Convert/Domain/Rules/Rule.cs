@@ -16,6 +16,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                                             .WriteTo.Console()
                                             .CreateLogger();
 
+      private static List<string> _notSupportedItemCache = new (); 
 
       private static string ConvertQuery(string field, string condition, string value)
       {
@@ -149,11 +150,6 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
       protected static IEnumerable<SysmonCondition> ParseRule(object rule)
       {
-         return ParseRule(rule, null);
-      }
-
-      protected static IEnumerable<SysmonCondition> ParseRule(object rule, RuleConverterSettings settings)
-      {
          var conditions = new List<SysmonCondition>();
          var ruleId = 0;
          if (rule == null)
@@ -182,7 +178,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
             if (ruleItemName.EndsWith("Rule"))
             {
-               var innerRuleResult = ParseInnerRule(item, ++ruleId, onMatchProperty, settings)?.ToArray();
+               var innerRuleResult = ParseInnerRule(item, ++ruleId, onMatchProperty)?.ToArray();
                if (innerRuleResult == null || innerRuleResult.Length == 0)
                   continue;
 
@@ -190,7 +186,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                continue;
             }
 
-            var baseProperties = CreateSysmonBaseCondition(item, settings);
+            var baseProperties = CreateSysmonBaseCondition(item);
             if (baseProperties == null)
                continue;
 
@@ -208,7 +204,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          return conditions;
       }
 
-      private static IEnumerable<SysmonCondition> ParseInnerRule(object rule, int ruleId, string onMatch, RuleConverterSettings settings)
+      private static IEnumerable<SysmonCondition> ParseInnerRule(object rule, int ruleId, string onMatch)
       {
          var conditions = new List<SysmonCondition>();
          
@@ -243,7 +239,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
 
          foreach (var item in ruleItems)
          {
-            var baseCondition = CreateSysmonBaseCondition(item, settings);
+            var baseCondition = CreateSysmonBaseCondition(item);
             if (baseCondition == null)
                return null;
 
@@ -261,7 +257,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          return conditions;
       }
 
-      private static SysmonConditionBase CreateSysmonBaseCondition(object item, RuleConverterSettings settings)
+      private static SysmonConditionBase CreateSysmonBaseCondition(object item)
       {
          if (item == null)
          {
@@ -283,6 +279,14 @@ namespace vl.Sysmon.Convert.Domain.Rules
          if (string.IsNullOrEmpty(itemValue) || string.IsNullOrEmpty(itemCondition))
             return null;
 
+         // EventType is ignored here because we have already read it before.
+         if (itemName.EndsWith("EventType"))
+            return null;
+
+         var notSupported = CheckNotSupported(itemName);
+         if (notSupported)
+            return null;
+
          if (itemName.EndsWith("ParentImage"))
          {
             return new SysmonConditionBase
@@ -297,6 +301,35 @@ namespace vl.Sysmon.Convert.Domain.Rules
             return new SysmonConditionBase
             {
                Field = itemValue.IndexOf('\\') > -1 ? "Process.Path" : "Process.Name",
+               Condition = itemCondition,
+               Value = itemValue
+            };
+         }
+
+         if (itemName.EndsWith("User"))
+         {
+            return new SysmonConditionBase
+            {
+               Field = "Process.User",
+               Condition = itemCondition,
+               Value = itemValue
+            };
+         }
+
+         if (itemName.EndsWith("ProcessId"))
+         {
+            if (itemName.EndsWith("ParentProcessId"))
+            {
+               return new SysmonConditionBase
+               {
+                  Field = "Parent.Id",
+                  Condition = itemCondition,
+                  Value = itemValue
+               };
+            }
+            return new SysmonConditionBase
+            {
+               Field = "Process.Id",
                Condition = itemCondition,
                Value = itemValue
             };
@@ -360,7 +393,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
          {
             return new SysmonConditionBase
             {
-               Field = "Reg.Key.Path",
+               Field = "Reg.Key.Target",
                Condition = itemCondition,
                Value = itemValue
             };
@@ -376,17 +409,93 @@ namespace vl.Sysmon.Convert.Domain.Rules
             };
          }
 
-         if (itemName.EndsWith("EventType"))
-            return null;
-
-         if (itemName.EndsWith("OriginalFileName") || itemName.EndsWith("IntegrityLevel"))
+         if (itemName.EndsWith("Hashes"))
          {
-            Log.Warning("Filter rule currently not supported: {item}", itemName);
-            return null;
+            if (itemName.EndsWith("ImageLoadHashes"))
+            {
+               return new SysmonConditionBase
+               {
+                  Field = "Image.Hashes",
+                  Condition = itemCondition,
+                  Value = itemValue
+               };
+            }
+
+            return new SysmonConditionBase
+            {
+               Field = "Process.Hashes",
+               Condition = itemCondition,
+               Value = itemValue
+            };
          }
 
+         if (itemName.EndsWith("TerminalSessionId"))
+         {
+            return new SysmonConditionBase
+            {
+               Field = "Process.SessionId",
+               Condition = itemCondition,
+               Value = itemValue
+            };
+         }
+
+         if (itemName.EndsWith("Protocol"))
+         {
+            return new SysmonConditionBase
+            {
+               Field = "Net.Target.Protocol",
+               Condition = itemCondition,
+               Value = itemValue
+            };
+         }
+
+         if (itemName.EndsWith("Signed"))
+         {
+            return new SysmonConditionBase
+            {
+               Field = "Image.IsSigned",
+               Condition = itemCondition,
+               Value = itemValue
+            };
+         }
+
+         if (itemName.EndsWith("Signature"))
+         {
+            return new SysmonConditionBase
+            {
+               Field = "Image.Signature",
+               Condition = itemCondition,
+               Value = itemValue
+            };
+         }
+
+         if (itemName.EndsWith("SignatureStatus"))
+         {
+            return new SysmonConditionBase
+            {
+               Field = "Image.SignatureStatus",
+               Condition = itemCondition,
+               Value = itemValue
+            };
+         }
+         
          Log.Warning("Filter rule not implemented: {item}", itemName);
          return null;
+      }
+
+      private static bool CheckNotSupported(string itemName)
+      {
+         if (_notSupportedItemCache.Contains(itemName))
+            return true;
+
+         if (itemName.EndsWith("OriginalFileName") || itemName.EndsWith("IntegrityLevel") || itemName.EndsWith("CurrentDirectory") || itemName.EndsWith("UtcTime") || itemName.EndsWith("Guid") || itemName.EndsWith("LogonId") || itemName.Contains("NetworkConnect") || itemName.EndsWith("Details"))
+         {
+            Log.Warning("Filter rule currently not supported: {item}", itemName);
+            _notSupportedItemCache.Add(itemName);
+            return true;
+         }
+
+         return false;
       }
    }
 }
