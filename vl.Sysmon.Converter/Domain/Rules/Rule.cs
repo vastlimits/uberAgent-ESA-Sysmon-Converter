@@ -282,11 +282,7 @@ namespace vl.Sysmon.Converter.Domain.Rules
          // EventType is ignored here because we have already read it before.
          if (itemName.EndsWith("EventType"))
             return null;
-
-         var notSupported = CheckNotSupported(itemName);
-         if (notSupported)
-            return null;
-
+         
          if (itemName.EndsWith("ParentImage"))
          {
             return new SysmonConditionBase
@@ -478,7 +474,11 @@ namespace vl.Sysmon.Converter.Domain.Rules
                Value = itemValue
             };
          }
-         
+
+         var notSupported = CheckNotSupported(itemName);
+         if (notSupported)
+            return null;
+
          Log.Warning("Filter rule not implemented: {item}", itemName);
          return null;
       }
