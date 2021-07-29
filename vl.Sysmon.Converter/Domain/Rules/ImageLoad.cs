@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using vl.Core.Domain.ActivityMonitoring;
-using vl.Sysmon.Convert.Domain.Extensions;
-using vl.Sysmon.Convert.Domain.Helpers;
+using vl.Sysmon.Converter.Domain.Helpers;
 
-namespace vl.Sysmon.Convert.Domain.Rules
+namespace vl.Sysmon.Converter.Domain.Rules
 {
    public class ImageLoad : Rule
    {
       public static ActivityMonitoringRule[] ConvertRules(
-         List<SysmonEventFilteringRuleGroupImageLoad> imageLoadRules, RuleConverterSettings configGlobalSettings)
+         List<SysmonEventFilteringRuleGroupImageLoad> imageLoadRules)
       {
          if (imageLoadRules == null || imageLoadRules.Count == 0)
             return new ActivityMonitoringRule[0];

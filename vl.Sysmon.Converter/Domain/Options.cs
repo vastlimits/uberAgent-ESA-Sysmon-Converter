@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CommandLine;
 
-namespace vl.Sysmon.Convert.Domain
+namespace vl.Sysmon.Converter.Domain
 {
    public class Options
    {

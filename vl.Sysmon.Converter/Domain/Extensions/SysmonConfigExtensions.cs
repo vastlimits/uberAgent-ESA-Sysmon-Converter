@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using vl.Core.Domain.ActivityMonitoring;
-using vl.Sysmon.Convert.Domain.Helpers;
 
-namespace vl.Sysmon.Convert.Domain.Extensions
+namespace vl.Sysmon.Converter.Domain.Extensions
 {
    internal static class SysmonConfigExtensions
    {

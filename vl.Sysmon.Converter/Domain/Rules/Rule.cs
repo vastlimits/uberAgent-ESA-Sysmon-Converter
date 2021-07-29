@@ -6,9 +6,9 @@ using System.Text;
 using Serilog;
 using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
-using vl.Sysmon.Convert.Domain.Helpers;
+using vl.Sysmon.Converter.Domain.Helpers;
 
-namespace vl.Sysmon.Convert.Domain.Rules
+namespace vl.Sysmon.Converter.Domain.Rules
 {
    public class Rule
    {
@@ -16,7 +16,7 @@ namespace vl.Sysmon.Convert.Domain.Rules
                                             .WriteTo.Console()
                                             .CreateLogger();
 
-      private static List<string> _notSupportedItemCache = new (); 
+      private static readonly List<string> _notSupportedItemCache = new (); 
 
       private static string ConvertQuery(string field, string condition, string value)
       {

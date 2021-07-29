@@ -1,6 +1,6 @@
 ﻿using vl.Core.Domain.ActivityMonitoring;
 
-namespace vl.Sysmon.Convert.Domain.Helpers
+namespace vl.Sysmon.Converter.Domain.Helpers
 {
    public class ActivityMonitoringConverterSettings
    {

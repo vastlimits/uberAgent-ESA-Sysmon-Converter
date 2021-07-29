@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vl.Core", "vl.Core\vl.Core.csproj", "{448569A3-A181-430A-A249-90A5EB53D912}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vl.Sysmon.Convert", "vl.Sysmon.Convert\vl.Sysmon.Convert.csproj", "{E543B7C0-9AEF-4F0A-A928-6F298CD6496C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vl.Sysmon.Converter", "vl.Sysmon.Converter\vl.Sysmon.Converter.csproj", "{E543B7C0-9AEF-4F0A-A928-6F298CD6496C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-﻿namespace vl.Sysmon.Convert.Domain
+﻿namespace vl.Sysmon.Converter.Domain
 {
    public partial class SysmonEventFilteringRuleGroupDnsQuery
    {

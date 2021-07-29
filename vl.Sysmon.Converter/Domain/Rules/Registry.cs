@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using vl.Core.Domain.ActivityMonitoring;
-using vl.Sysmon.Convert.Domain.Helpers;
+using vl.Sysmon.Converter.Domain.Helpers;
 
-namespace vl.Sysmon.Convert.Domain.Rules
+namespace vl.Sysmon.Converter.Domain.Rules
 {
    public class Registry : Rule
    {

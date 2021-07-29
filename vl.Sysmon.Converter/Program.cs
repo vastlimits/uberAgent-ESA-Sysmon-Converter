@@ -1,15 +1,15 @@
-﻿using Serilog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using CommandLine;
+using Serilog;
 using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
-using vl.Sysmon.Convert.Domain;
-using vl.Sysmon.Convert.Domain.Extensions;
-using vl.Sysmon.Convert.Domain.Rules;
+using vl.Sysmon.Converter.Domain;
+using vl.Sysmon.Converter.Domain.Extensions;
+using vl.Sysmon.Converter.Domain.Rules;
 
-namespace vl.Sysmon.Convert
+namespace vl.Sysmon.Converter
 {
    class Program
    {
@@ -60,11 +60,11 @@ namespace vl.Sysmon.Convert
             var configListedRules = config.GetSysmonRulesListed();
             
             eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
-            activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate, configListedRules.ConfigGlobalSettings));
+            activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
             activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configListedRules.ProcessTerminate));
             activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configListedRules.NetworkConnect));
-            activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent, configListedRules.ConfigGlobalSettings));
-            activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad, configListedRules.ConfigGlobalSettings));
+            activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
+            activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
          }
 
          return Serialize(_options.OutputFile, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using vl.Core.Domain.EventData;
 
-namespace vl.Sysmon.Convert.Domain.Helpers
+namespace vl.Sysmon.Converter.Domain.Helpers
 {
    public class EventFilterConverterSettings
    {
