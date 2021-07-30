@@ -18,17 +18,18 @@ The uberAgent-ESA-Sysmon-Converter is written in .NET 5 and therefore platform i
 To convert all rules from one or more files, use the following command:
 
 ```cmd
-vl.Sysmon.Converter --input filePath1 filePath2 --output outputPath 
+vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder
 ```
 or a shorter notation
 ```cmd
-vl.Sysmon.Converter -i filePath1 -o outputPath 
+vl.Sysmon.Converter -i filePath1 -o outputFolder
 ```
 To convert one or more specific Sysmon rules:
 
 ```cmd
-vl.Sysmon.Converter --input filePath1 filePath2 --output outputPath --rule 1 2 12
+vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12
 ```
+
 
 ## Limitations
 Currently, not all rules can be converted from Sysmon to uberAgent.

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using CommandLine;
 using Serilog;
+using Serilog.Core;
 using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Converter.Domain;
 using vl.Sysmon.Converter.Domain.Extensions;
 using vl.Sysmon.Converter.Domain.Rules;
+using Constants = vl.Sysmon.Converter.Domain.Constants;
 
 namespace vl.Sysmon.Converter
 {
@@ -33,6 +35,20 @@ namespace vl.Sysmon.Converter
                {
                   Environment.Exit(-1);
                });
+
+         try
+         {
+            if (!Directory.Exists(_options.OutputFolder))
+            {
+               Log.Information("Folder does not exist, create folder: {folder}", _options.OutputFolder);
+               Directory.CreateDirectory(_options.OutputFolder);
+            }
+         }
+         catch (Exception e)
+         {
+            Log.Error("Failed to create Folder: {innerException}", e.InnerException);
+         }
+         
 
          foreach (var file in _options.InputFiles)
          {
@@ -67,7 +83,7 @@ namespace vl.Sysmon.Converter
             activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
          }
 
-         return Serialize(_options.OutputFile, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
+         return Serialize(_options.OutputFolder, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
       }
 
       private static bool Serialize(string outputFile, IEnumerable<EventDataFilter> filters, IEnumerable<ActivityMonitoringRule> rules)
@@ -76,12 +92,18 @@ namespace vl.Sysmon.Converter
          {
             Log.Information("Serialize rules to {file}", outputFile);
 
-            using (var fs = new FileStream(outputFile, FileMode.Create))
+            var eventDataPath = Path.Combine(outputFile, Constants.EventDataFilterOutputFileName);
+            var activityPath = Path.Combine(outputFile, Constants.ActivityMonitoringOutputFileName);
+
+            using (var fs = new FileStream(eventDataPath, FileMode.Create))
             {
-               EventDataFilterSerializer.Serialize(fs, filters, Constants.ConversionHeaderComment);
+               EventDataFilterSerializer.Serialize(fs, filters);
+            }
+            using (var fs = new FileStream(activityPath, FileMode.Create))
+            {
                ActivityMonitoringRuleSerializer.Serialize(fs, rules);
             }
-            
+
             return true;
          }
          catch (Exception ex)

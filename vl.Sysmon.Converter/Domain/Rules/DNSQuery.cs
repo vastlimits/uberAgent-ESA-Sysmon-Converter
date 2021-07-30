@@ -42,7 +42,7 @@ namespace vl.Sysmon.Converter.Domain.Rules
                         filter = Convert(new EventFilterConverterSettings
                         {
                            Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
-                           Sourcetypes = sourcetypes, Comment = Constants.ConversionComment
+                           Sourcetypes = sourcetypes
                         });
                         break;
 
