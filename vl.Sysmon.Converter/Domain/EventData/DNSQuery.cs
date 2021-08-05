@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using vl.Core.Domain;
 using vl.Core.Domain.EventData;
-using vl.Sysmon.Converter.Domain.Helpers;
+using vl.Sysmon.Converter.Domain.Activity;
 
-namespace vl.Sysmon.Converter.Domain.Rules
+namespace vl.Sysmon.Converter.Domain.EventData
 {
-   public class DNSQuery : Rule
+   public class DNSQuery : ConvertEntity
    {
       public static EventDataFilter[] ConvertExcludeRules(List<SysmonEventFilteringRuleGroupDnsQuery> dnsRules)
       {
@@ -39,7 +39,7 @@ namespace vl.Sysmon.Converter.Domain.Rules
                      case SysmonEventFilteringRuleGroupDnsQueryQueryName c:
                         uberAgentMetricField = "DnsRequest";
 
-                        filter = Convert(new EventFilterConverterSettings
+                        filter = Convert(new SysmonEventDataFilter
                         {
                            Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
                            Sourcetypes = sourcetypes

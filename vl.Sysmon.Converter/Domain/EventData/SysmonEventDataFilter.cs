@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using vl.Core.Domain.EventData;
 
-namespace vl.Sysmon.Converter.Domain.Helpers
+namespace vl.Sysmon.Converter.Domain.EventData
 {
-   public class EventFilterConverterSettings
+   public class SysmonEventDataFilter
    {
       public EventDataFilterAction Action { get; set; }
       public List<string> Sourcetypes { get; set; } = new();

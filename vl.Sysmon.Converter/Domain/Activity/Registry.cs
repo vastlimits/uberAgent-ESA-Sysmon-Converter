@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using vl.Core.Domain.Activity;
 using vl.Core.Domain.ActivityMonitoring;
-using vl.Sysmon.Converter.Domain.Helpers;
 
-namespace vl.Sysmon.Converter.Domain.Rules
+namespace vl.Sysmon.Converter.Domain.Activity
 {
-   public class Registry : Rule
+   public class Registry : ConvertEntity
    {
 
       public static ActivityMonitoringRule[] ConvertRules(
@@ -65,7 +65,7 @@ namespace vl.Sysmon.Converter.Domain.Rules
                {
                   var conditions = ParseRule(ruleGroup).ToArray();
 
-                  var activityConverterSettings = new ActivityMonitoringConverterSettings
+                  var activityConverterSettings = new SysmonActivityMonitoringRule
                   {
                      EventType = eventType,
                      Name = ruleGroup.name,

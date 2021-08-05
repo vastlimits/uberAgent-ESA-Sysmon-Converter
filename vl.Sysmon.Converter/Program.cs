@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using CommandLine;
 using Serilog;
-using Serilog.Core;
+using vl.Core.Domain.Activity;
 using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Converter.Domain;
+using vl.Sysmon.Converter.Domain.Activity;
+using vl.Sysmon.Converter.Domain.EventData;
 using vl.Sysmon.Converter.Domain.Extensions;
-using vl.Sysmon.Converter.Domain.Rules;
 using Constants = vl.Sysmon.Converter.Domain.Constants;
 
 namespace vl.Sysmon.Converter
@@ -22,7 +23,7 @@ namespace vl.Sysmon.Converter
 
       private static void Main(string[] args)
       {
-         Log.Information("vl.Sysmon.Convert starting..");
+         Log.Information("Sysmon Converter starting..");
          
          var configurations = new List<Domain.Sysmon>();
 
@@ -38,15 +39,15 @@ namespace vl.Sysmon.Converter
 
          try
          {
-            if (!Directory.Exists(_options.OutputFolder))
+            if (!Directory.Exists(_options.OutputDirectory))
             {
-               Log.Information("Folder does not exist, create folder: {folder}", _options.OutputFolder);
-               Directory.CreateDirectory(_options.OutputFolder);
+               Log.Information("Directory does not exist, create directory: {directory}", _options.OutputDirectory);
+               Directory.CreateDirectory(_options.OutputDirectory);
             }
          }
          catch (Exception e)
          {
-            Log.Error("Failed to create Folder: {innerException}", e.InnerException);
+            Log.Error("Failed to create directory: {innerException}", e.InnerException);
          }
          
 
@@ -83,7 +84,7 @@ namespace vl.Sysmon.Converter
             activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
          }
 
-         return Serialize(_options.OutputFolder, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
+         return Serialize(_options.OutputDirectory, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
       }
 
       private static bool Serialize(string outputFile, IEnumerable<EventDataFilter> filters, IEnumerable<ActivityMonitoringRule> rules)

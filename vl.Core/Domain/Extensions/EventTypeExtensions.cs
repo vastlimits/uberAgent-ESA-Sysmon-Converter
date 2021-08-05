@@ -1,5 +1,5 @@
 ﻿using System;
-using vl.Core.Domain.ActivityMonitoring;
+using vl.Core.Domain.Activity;
 
 namespace vl.Core.Domain.Extensions
 {
@@ -33,6 +33,7 @@ namespace vl.Core.Domain.Extensions
             EventType.RegKeyReplace => "Reg.Key.Replace",
             EventType.RegAny => "Reg.Any",
             EventType.DnsQuery => "DNS.Event",
+            EventType.ProcessCreateRemoteThread => "Process.CreateRemoteThread",
             _ => throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null)
          };
       }

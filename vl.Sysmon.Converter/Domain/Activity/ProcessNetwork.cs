@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using vl.Core.Domain.Activity;
 using vl.Core.Domain.ActivityMonitoring;
-using vl.Sysmon.Converter.Domain.Helpers;
 
-namespace vl.Sysmon.Converter.Domain.Rules
+namespace vl.Sysmon.Converter.Domain.Activity
 {
-   public class ProcessNetwork : Rule
+   public class ProcessNetwork : ConvertEntity
    {
       public static ActivityMonitoringRule[] ConvertRules(
         List<SysmonEventFilteringRuleGroupNetworkConnect> processNetworkRules)
@@ -27,7 +27,7 @@ namespace vl.Sysmon.Converter.Domain.Rules
                    !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
                   continue;
 
-               var activityConverterSettings = new ActivityMonitoringConverterSettings
+               var activityConverterSettings = new SysmonActivityMonitoringRule
                {
                   EventType = EventType.NetConnect,
                   Name = ruleGroup.name,

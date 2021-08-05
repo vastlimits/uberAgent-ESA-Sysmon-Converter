@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Serilog;
+using vl.Core.Domain.Activity;
 using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
-using vl.Sysmon.Converter.Domain.Helpers;
+using vl.Sysmon.Converter.Domain.Activity;
+using vl.Sysmon.Converter.Domain.EventData;
 
-namespace vl.Sysmon.Converter.Domain.Rules
+namespace vl.Sysmon.Converter.Domain
 {
-   public class Rule
+   public class ConvertEntity
    {
       protected static readonly ILogger Log = new LoggerConfiguration()
                                             .WriteTo.Console()
@@ -125,26 +127,26 @@ namespace vl.Sysmon.Converter.Domain.Rules
          return queryBuilder.ToString();
       }
 
-      protected static ActivityMonitoringRule Convert(ActivityMonitoringConverterSettings settings)
+      protected static ActivityMonitoringRule Convert(SysmonActivityMonitoringRule monitoringRule)
       {
          return new()
          {
-            EventType = settings.EventType,
-            RuleName = settings.Name,
-            Tag = settings.Name,
-            Query = ConvertQuery(settings.Conditions, settings.MainGroupRelation),
+            EventType = monitoringRule.EventType,
+            Name = monitoringRule.Name,
+            Tag = monitoringRule.Name,
+            Query = ConvertQuery(monitoringRule.Conditions, monitoringRule.MainGroupRelation),
          };
       }
 
-      protected static EventDataFilter Convert(EventFilterConverterSettings settings)
+      protected static EventDataFilter Convert(SysmonEventDataFilter filter)
       {
          return new()
          {
-            Action = settings.Action,
+            Action = filter.Action,
             Fields = new List<string>(),
-            Sourcetypes = settings.Sourcetypes,
-            Query = ConvertQuery(settings.Field, settings.Condition, settings.Value),
-            Comment = settings.Comment
+            Sourcetypes = filter.Sourcetypes,
+            Query = ConvertQuery(filter.Field, filter.Condition, filter.Value),
+            Comment = filter.Comment
          };
       }
 

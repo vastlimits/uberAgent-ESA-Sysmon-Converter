@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using vl.Core.Domain.Extensions;
 
-namespace vl.Core.Domain.ActivityMonitoring
+namespace vl.Core.Domain.Activity
 {
    public static class ActivityMonitoringRuleSerializer
    {
@@ -24,7 +24,7 @@ namespace vl.Core.Domain.ActivityMonitoring
             foreach (var rule in rules)
             {
                sw.WriteLine("[ActivityMonitoringRule]");
-               sw.WriteLine($"RuleName = {rule.RuleName}");
+               sw.WriteLine($"RuleName = {rule.Name}");
                sw.WriteLine($"EventType = {rule.EventType.ToActivityMonitoringString()}");
                sw.WriteLine($"Tag = {rule.Tag}");
                sw.WriteLine($"RiskScore = 100");
