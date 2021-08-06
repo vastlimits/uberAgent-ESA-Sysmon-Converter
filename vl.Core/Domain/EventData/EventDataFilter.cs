@@ -6,8 +6,8 @@ namespace vl.Core.Domain.EventData
     {
         public string Comment { get; set; }
         public EventDataFilterAction Action { get; set; } = EventDataFilterAction.Allow;
-        public List<string> Sourcetypes { get; set; } = new List<string>();
-        public List<string> Fields { get; set; } = new List<string>();
+        public List<string> Sourcetypes { get; set; } = new();
+        public List<string> Fields { get; set; } = new();
         public string Query { get; set; }
     }
 }

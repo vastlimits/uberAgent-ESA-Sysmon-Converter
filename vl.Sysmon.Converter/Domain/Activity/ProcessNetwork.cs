@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using vl.Core.Domain.Activity;
-using vl.Core.Domain.ActivityMonitoring;
 
 namespace vl.Sysmon.Converter.Domain.Activity
 {

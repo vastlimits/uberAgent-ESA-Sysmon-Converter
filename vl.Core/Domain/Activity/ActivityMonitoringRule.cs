@@ -1,6 +1,4 @@
-﻿using vl.Core.Domain.ActivityMonitoring;
-
-namespace vl.Core.Domain.Activity
+﻿namespace vl.Core.Domain.Activity
 {
    public class ActivityMonitoringRule
    {

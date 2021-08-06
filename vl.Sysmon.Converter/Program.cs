@@ -4,7 +4,6 @@ using System.IO;
 using CommandLine;
 using Serilog;
 using vl.Core.Domain.Activity;
-using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Converter.Domain;
 using vl.Sysmon.Converter.Domain.Activity;

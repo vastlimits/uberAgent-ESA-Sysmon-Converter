@@ -1,4 +1,4 @@
-﻿namespace vl.Core.Domain.ActivityMonitoring
+﻿namespace vl.Core.Domain.Activity
 {
    public enum Hashes
    {

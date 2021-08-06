@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using vl.Core.Domain.ActivityMonitoring;
+using vl.Core.Domain.Activity;
 
 namespace vl.Sysmon.Converter.Domain.Extensions
 {

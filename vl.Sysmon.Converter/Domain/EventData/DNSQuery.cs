@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using vl.Core.Domain;
 using vl.Core.Domain.EventData;
-using vl.Sysmon.Converter.Domain.Activity;
 
 namespace vl.Sysmon.Converter.Domain.EventData
 {
