@@ -498,10 +498,44 @@ namespace vl.Sysmon.Converter.Domain
          if (NotSupportedItemCache.Contains(itemName))
             return true;
 
-         if (itemName.EndsWith("OriginalFileName") || itemName.EndsWith("IntegrityLevel") || itemName.EndsWith("CurrentDirectory") || itemName.EndsWith("UtcTime") || itemName.EndsWith("Guid") || itemName.EndsWith("LogonId") || itemName.Contains("NetworkConnect") || itemName.EndsWith("Details"))
+         NotSupportedItemCache.Add(itemName);
+
+         if (itemName.EndsWith("OriginalFileName"))
          {
-            Log.Warning("Filter rule currently not supported: {item}", itemName);
-            NotSupportedItemCache.Add(itemName);
+            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support reading the original name from the PE header.");
+            return true;
+         }
+
+         if (itemName.EndsWith("IntegrityLevel"))
+         {
+            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support reading the integrity level.");
+            return true;
+         }
+
+         if (itemName.EndsWith("CurrentDirectory"))
+         {
+            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support reading the integrity level.");
+            return true;
+         }
+         if (itemName.EndsWith("UtcTime"))
+         {
+            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not export utctime.");
+            return true;
+         }
+         if (itemName.EndsWith("Guid"))
+         {
+            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not export any Guid.");
+            return true;
+         }
+         if (itemName.EndsWith("LogonId"))
+         {
+            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support reading the logonId.");
+            return true;
+         }
+
+         if (itemName.EndsWith("Details"))
+         {
+            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support written registry data.");
             return true;
          }
 

@@ -8,5 +8,7 @@
       public const string SysmonExcludeOnMatchString = "exclude";
       public const string SysmonIncludeOnMatchString = "include";
       public const string SysmonOrGroupRelationString = "or";
+
+      public const string RuleNotSupportedTemplate = "Rule currently not supported: {item} - Reason: {reason}";
    }
 }
