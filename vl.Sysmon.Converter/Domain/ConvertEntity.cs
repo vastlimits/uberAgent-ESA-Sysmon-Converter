@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using Serilog;
 using vl.Core.Domain.Activity;
-using vl.Core.Domain.ActivityMonitoring;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Converter.Domain.Activity;
 using vl.Sysmon.Converter.Domain.EventData;
@@ -18,7 +17,7 @@ namespace vl.Sysmon.Converter.Domain
                                             .WriteTo.Console()
                                             .CreateLogger();
 
-      private static readonly List<string> _notSupportedItemCache = new (); 
+      private static readonly List<string> NotSupportedItemCache = new (); 
 
       private static string ConvertQuery(string field, string condition, string value)
       {
@@ -38,7 +37,7 @@ namespace vl.Sysmon.Converter.Domain
          if (conditions == null || conditions.Count == 0)
             return string.Empty;
 
-         var queryBuilder = new StringBuilder("Query = ");
+         var queryBuilder = new StringBuilder();
          var exclude = conditions[0].OnMatch.Equals(Constants.SysmonExcludeOnMatchString);
          
          if (exclude)
@@ -117,7 +116,7 @@ namespace vl.Sysmon.Converter.Domain
                if (string.IsNullOrEmpty(query))
                   continue;
 
-               queryBuilder.Append(i == 0 ? $"({query}" : lastValueInGroup && !lastGroup ? $"{query}) {mainGroupRelation} " : lastValueInGroup && lastGroup ? $"{query})" : $"{query}");
+               queryBuilder.Append(i == 0 && !lastValueInGroup ? $"({query}" : lastValueInGroup && !lastGroup ? $"{query}) {mainGroupRelation} " : lastValueInGroup && lastGroup ? $"{query})" : $"{query}");
             }
          }
 
@@ -487,13 +486,13 @@ namespace vl.Sysmon.Converter.Domain
 
       private static bool CheckNotSupported(string itemName)
       {
-         if (_notSupportedItemCache.Contains(itemName))
+         if (NotSupportedItemCache.Contains(itemName))
             return true;
 
          if (itemName.EndsWith("OriginalFileName") || itemName.EndsWith("IntegrityLevel") || itemName.EndsWith("CurrentDirectory") || itemName.EndsWith("UtcTime") || itemName.EndsWith("Guid") || itemName.EndsWith("LogonId") || itemName.Contains("NetworkConnect") || itemName.EndsWith("Details"))
          {
             Log.Warning("Filter rule currently not supported: {item}", itemName);
-            _notSupportedItemCache.Add(itemName);
+            NotSupportedItemCache.Add(itemName);
             return true;
          }
 
