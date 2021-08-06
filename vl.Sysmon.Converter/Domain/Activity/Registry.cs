@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using vl.Core.Domain.Activity;
-using vl.Core.Domain.ActivityMonitoring;
+using vl.Core.Domain.Extensions;
 
 namespace vl.Sysmon.Converter.Domain.Activity
 {
@@ -64,6 +64,21 @@ namespace vl.Sysmon.Converter.Domain.Activity
                foreach (var eventType in eventTypes)
                {
                   var conditions = ParseRule(ruleGroup).ToArray();
+                  var hive = Hive.All;
+
+                  var canSpecifyHive =
+                     conditions.All(c => c.Condition.Equals("is") || c.Condition.Equals("begin with"));
+                  if (canSpecifyHive)
+                  {
+                     var hives = conditions.Where(c => c.Condition.Equals("is") || c.Condition.Equals("begin with"))
+                                           .Select(c => c.Value.Split(@"\").FirstOrDefault()?.ToLower())
+                                           .Distinct()
+                                           .Where(c => !string.IsNullOrEmpty(c))
+                                           .ToArray();
+
+                     if (hives.Length == 1)
+                        hive = hives.First().FromString();
+                  }
 
                   var activityConverterSettings = new SysmonActivityMonitoringRule
                   {
@@ -71,7 +86,8 @@ namespace vl.Sysmon.Converter.Domain.Activity
                      Name = ruleGroup.name,
                      Tag = ruleGroup.name,
                      Conditions = conditions,
-                     MainGroupRelation = ruleGroup.groupRelation
+                     MainGroupRelation = ruleGroup.groupRelation,
+                     Hive = hive
                   };
 
                   if (activityConverterSettings.Conditions.Length == 0)

@@ -24,11 +24,22 @@ namespace vl.Core.Domain.Activity
             foreach (var rule in rules)
             {
                sw.WriteLine("[ActivityMonitoringRule]");
+
+               if (string.IsNullOrEmpty(rule.Name))
+                  rule.Name = "A Sysmon converted rule";
+
+               if (string.IsNullOrEmpty(rule.Tag))
+                  rule.Tag= "A-Sysmon-converted-rule";
+
                sw.WriteLine($"RuleName = {rule.Name}");
                sw.WriteLine($"EventType = {rule.EventType.ToActivityMonitoringString()}");
                sw.WriteLine($"Tag = {rule.Tag}");
                sw.WriteLine($"RiskScore = 100");
-               sw.WriteLine($"{rule.Query}");
+               sw.WriteLine($"Query = {rule.Query}");
+
+               if (rule.Hive != Hive.Unknown)
+                  sw.WriteLine($"Hive = {rule.Hive.ToActivityMonitoringHive()}");
+
                sw.WriteLine(string.Empty);
             }
          }
