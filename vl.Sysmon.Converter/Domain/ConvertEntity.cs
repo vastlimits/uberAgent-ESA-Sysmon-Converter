@@ -134,6 +134,7 @@ namespace vl.Sysmon.Converter.Domain
             Name = monitoringRule.Name,
             Tag = monitoringRule.Name,
             Query = ConvertQuery(monitoringRule.Conditions, monitoringRule.MainGroupRelation),
+            Hive = monitoringRule.Hive
          };
       }
 
@@ -286,6 +287,10 @@ namespace vl.Sysmon.Converter.Domain
          
          if (itemName.EndsWith("ParentImage"))
          {
+            var quotes = itemValue.Count(c => c == '"');
+            if (quotes >= 2 || !itemValue.TrimEnd().EndsWith('"'))
+               itemValue = itemValue.Trim().Replace("\"", "\\\"");
+
             return new SysmonConditionBase
             {
                Field = itemValue.IndexOf('\\') > -1 ? "Parent.Path" : "Parent.Name",
@@ -295,6 +300,10 @@ namespace vl.Sysmon.Converter.Domain
          }
          if (itemName.EndsWith("Image"))
          {
+            var quotes = itemValue.Count(c => c == '"');
+            if (quotes >= 2 || !itemValue.TrimEnd().EndsWith('"'))
+               itemValue = itemValue.Trim().Replace("\"", "\\\"");
+
             return new SysmonConditionBase
             {
                Field = itemValue.IndexOf('\\') > -1 ? "Process.Path" : "Process.Name",
