@@ -10,7 +10,7 @@ namespace vl.Core.Domain.Extensions
          return hive switch
          {
             Hive.All => "*",
-            Hive.Unknown => "*",
+            Hive.Unknown => throw new ArgumentException("Hive can't be unknown."),
             Hive.HKLM => "HKLM",
             Hive.HKU => "HKU",
             _ => throw new ArgumentOutOfRangeException(nameof(hive), hive, null)
