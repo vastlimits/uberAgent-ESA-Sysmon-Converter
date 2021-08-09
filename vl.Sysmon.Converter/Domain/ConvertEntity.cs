@@ -514,7 +514,7 @@ namespace vl.Sysmon.Converter.Domain
 
          if (itemName.EndsWith("CurrentDirectory"))
          {
-            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support reading the integrity level.");
+            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support reading the current directory (working directory).");
             return true;
          }
          if (itemName.EndsWith("UtcTime"))

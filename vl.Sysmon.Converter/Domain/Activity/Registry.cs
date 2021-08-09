@@ -103,7 +103,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
          }
          catch (Exception ex)
          {
-            Log.Error(ex, $"Failure to convert rules for ProcessStartup.");
+            Log.Error(ex, $"Failure to convert rules for Registry.");
          }
 
          return new ActivityMonitoringRule[0];
