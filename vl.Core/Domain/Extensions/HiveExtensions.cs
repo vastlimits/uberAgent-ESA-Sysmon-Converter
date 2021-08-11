@@ -5,7 +5,7 @@ namespace vl.Core.Domain.Extensions
 {
    public static class HiveExtensions
    {
-      public static string ToActivityMonitoringHive(this Hive hive)
+      public static string ToActivityRegistryHive(this Hive hive)
       {
          return hive switch
          {

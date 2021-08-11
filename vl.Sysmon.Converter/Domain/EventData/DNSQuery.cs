@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using vl.Core.Domain.EventData;
 
 namespace vl.Sysmon.Converter.Domain.EventData
 {
    public class DNSQuery : ConvertEntity
    {
-      public static EventDataFilter[] ConvertExcludeRules(List<SysmonEventFilteringRuleGroupDnsQuery> dnsRules)
+      public static IEnumerable<EventDataFilter> ConvertExcludeRules(List<SysmonEventFilteringRuleGroupDnsQuery> dnsRules)
       {
          if (dnsRules == null || dnsRules.Count == 0)
-            return new EventDataFilter[0];
+            return Enumerable.Empty<EventDataFilter>();
 
          try
          {
@@ -35,7 +36,7 @@ namespace vl.Sysmon.Converter.Domain.EventData
                         // We cannot convert this rule because we are not able to access the full image path in this sourcetype.
                         break;
                      case SysmonEventFilteringRuleGroupDnsQueryQueryName c:
-                        uberAgentMetricField = "DnsRequest";
+                        uberAgentMetricField = MetricFields.DnsRequest;
 
                         filter = Convert(new SysmonEventDataFilter
                         {
@@ -65,7 +66,7 @@ namespace vl.Sysmon.Converter.Domain.EventData
             Log.Error(ex, $"Failure to convert exclude rules for DNS.");
          }
 
-         return null;
+         return Enumerable.Empty<EventDataFilter>(); ;
       }
    }
 }

@@ -7,12 +7,12 @@ namespace vl.Sysmon.Converter.Domain.Activity
 {
    public class ProcessStartup : ConvertEntity
    {
-      public static ActivityMonitoringRule[] ConvertRules(
+      public static IEnumerable<ActivityMonitoringRule> ConvertRules(
          List<SysmonEventFilteringRuleGroupProcessCreate> processCreateRules)
       {
          if (processCreateRules == null || processCreateRules.Count == 0)
-            return new ActivityMonitoringRule[0];
-         
+            return Enumerable.Empty<ActivityMonitoringRule>();
+
          try
          {
             Log.Information("Converting rules for ProcessStartup..");
@@ -48,7 +48,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for ProcessStartup.");
          }
 
-         return new ActivityMonitoringRule[0];
+         return Enumerable.Empty<ActivityMonitoringRule>();
       }
    }
 }

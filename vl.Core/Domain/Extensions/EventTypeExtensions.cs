@@ -5,7 +5,7 @@ namespace vl.Core.Domain.Extensions
 {
    public static class EventTypeExtensions
    {
-      public static string ToActivityMonitoringString(this EventType eventType)
+      public static string ToActivityEventName(this EventType eventType)
       {
          return eventType switch
          {

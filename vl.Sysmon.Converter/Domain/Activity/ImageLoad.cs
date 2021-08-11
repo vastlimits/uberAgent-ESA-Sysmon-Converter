@@ -7,11 +7,11 @@ namespace vl.Sysmon.Converter.Domain.Activity
 {
    public class ImageLoad : ConvertEntity
    {
-      public static ActivityMonitoringRule[] ConvertRules(
+      public static IEnumerable<ActivityMonitoringRule> ConvertRules(
          List<SysmonEventFilteringRuleGroupImageLoad> imageLoadRules)
       {
          if (imageLoadRules == null || imageLoadRules.Count == 0)
-            return new ActivityMonitoringRule[0];
+            return Enumerable.Empty<ActivityMonitoringRule>();
 
          try
          {
@@ -51,7 +51,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for ImageLoad.");
          }
 
-         return new ActivityMonitoringRule[0];
+         return Enumerable.Empty<ActivityMonitoringRule>();
       }
    }
 }

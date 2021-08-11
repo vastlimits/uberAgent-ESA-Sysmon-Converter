@@ -9,12 +9,12 @@ namespace vl.Core.Domain.Activity
    {
       /*
          [ActivityMonitoringRule]
-         RuleName = Detect Backslashy
+         RuleName = Detect Backslash
          EventType = Process.Start
          Tag = Test1
          RiskScore = 100
          Query = icontains(Process.Path, r"C:\Users\") or icontains(Process.Path, r"\AppData\Local\Microsoft\OneDrive") or icontains(Process.Path, r"\FileCoAuth.exe")
-       */
+      */
 
       public static void Serialize(Stream stream, IEnumerable<ActivityMonitoringRule> rules)
       {
@@ -29,16 +29,16 @@ namespace vl.Core.Domain.Activity
                   rule.Name = "A Sysmon converted rule";
 
                if (string.IsNullOrEmpty(rule.Tag))
-                  rule.Tag= "A-Sysmon-converted-rule";
+                  rule.Tag = "a-Sysmon-converted-rule";
 
                sw.WriteLine($"RuleName = {rule.Name}");
-               sw.WriteLine($"EventType = {rule.EventType.ToActivityMonitoringString()}");
+               sw.WriteLine($"EventType = {rule.EventType.ToActivityEventName()}");
                sw.WriteLine($"Tag = {rule.Tag}");
                sw.WriteLine($"RiskScore = 100");
                sw.WriteLine($"Query = {rule.Query}");
 
                if (rule.Hive != Hive.Unknown)
-                  sw.WriteLine($"Hive = {rule.Hive.ToActivityMonitoringHive()}");
+                  sw.WriteLine($"Hive = {rule.Hive.ToActivityRegistryHive()}");
 
                sw.WriteLine(string.Empty);
             }

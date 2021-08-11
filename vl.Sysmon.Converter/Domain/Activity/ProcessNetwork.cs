@@ -7,11 +7,11 @@ namespace vl.Sysmon.Converter.Domain.Activity
 {
    public class ProcessNetwork : ConvertEntity
    {
-      public static ActivityMonitoringRule[] ConvertRules(
+      public static IEnumerable<ActivityMonitoringRule> ConvertRules(
         List<SysmonEventFilteringRuleGroupNetworkConnect> processNetworkRules)
       {
          if (processNetworkRules == null || processNetworkRules.Count == 0)
-            return new ActivityMonitoringRule[0];
+            return Enumerable.Empty<ActivityMonitoringRule>();
 
          try
          {
@@ -49,7 +49,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for NetworkTargetPerformance & NetworkConnectFailure.");
          }
 
-         return new ActivityMonitoringRule[0];
+         return Enumerable.Empty<ActivityMonitoringRule>();
       }
    }
 }

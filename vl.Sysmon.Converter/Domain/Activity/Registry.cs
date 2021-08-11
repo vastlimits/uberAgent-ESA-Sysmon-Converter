@@ -9,11 +9,11 @@ namespace vl.Sysmon.Converter.Domain.Activity
    public class Registry : ConvertEntity
    {
 
-      public static ActivityMonitoringRule[] ConvertRules(
+      public static IEnumerable<ActivityMonitoringRule> ConvertRules(
          List<SysmonEventFilteringRuleGroupRegistryEvent> registryEvent)
       {
          if (registryEvent == null || registryEvent.Count == 0)
-            return new ActivityMonitoringRule[0];
+            return Enumerable.Empty<ActivityMonitoringRule>();
 
          try
          {
@@ -106,7 +106,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for Registry.");
          }
 
-         return new ActivityMonitoringRule[0];
+         return Enumerable.Empty<ActivityMonitoringRule>();
       }
 
    }

@@ -7,11 +7,11 @@ namespace vl.Sysmon.Converter.Domain.Activity
 {
    public class ProcessStop : ConvertEntity
    {
-      public static ActivityMonitoringRule[] ConvertRules(
+      public static IEnumerable<ActivityMonitoringRule> ConvertRules(
          List<SysmonEventFilteringRuleGroupProcessTerminate> processTerminateRules)
       {
          if (processTerminateRules == null || processTerminateRules.Count == 0)
-            return new ActivityMonitoringRule[0];
+            return Enumerable.Empty<ActivityMonitoringRule>();
 
          try
          {
@@ -48,7 +48,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for ProcessStop.");
          }
 
-         return new ActivityMonitoringRule[0];
+         return Enumerable.Empty<ActivityMonitoringRule>();
       }
    }
 }
