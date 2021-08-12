@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Serilog;
 using vl.Core.Domain.Activity;
+using vl.Core.Domain.Attributes;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Converter.Domain.Activity;
 using vl.Sysmon.Converter.Domain.EventData;
@@ -259,6 +261,25 @@ namespace vl.Sysmon.Converter.Domain
          return conditions;
       }
 
+      [TransformFieldPath("ParentImage", "Parent.Name", "Parent.Path", TransformMethod.RemoveTrailingBackslashes)]
+      [TransformFieldPath("Image", "Process.Name", "Process.Path", TransformMethod.RemoveTrailingBackslashes)]
+      [TransformField("User", "Process.User")]
+      [TransformField("ParentProcessId", "Parent.Id")]
+      [TransformField("ProcessId", "Process.Id")]
+      [TransformField("ParentCommandLine", "Parent.CommandLine", TransformMethod.RemoveTrailingBackslashes)]
+      [TransformField("CommandLine", "Process.CommandLine", TransformMethod.RemoveTrailingBackslashes)]
+      [TransformField("DestinationPort", "Net.Target.Port")]
+      [TransformField("DestinationHostname", "Net.Target.Name")]
+      [TransformField("DestinationIp", "Net.Target.Ip")]
+      [TransformField("TargetObject", "Reg.Key.Target")]
+      [TransformFieldPath("ImageLoaded", "Image.Name", "Image.Path", TransformMethod.RemoveTrailingBackslashes)]
+      [TransformField("ImageLoadHashes", "Image.Hashes")]
+      [TransformField("Hashes", "Process.Hashes")]
+      [TransformField("TerminalSessionId", "Process.SessionId")]
+      [TransformField("Protocol", "Net.Target.Protocol")]
+      [TransformField("Signed", "Image.IsSigned")]
+      [TransformField("Signature", "Image.Signature")]
+      [TransformField("SignatureStatus", "Image.SignatureStatus")]
       private static SysmonConditionBase CreateSysmonBaseCondition(object item)
       {
          if (item == null)
@@ -266,7 +287,7 @@ namespace vl.Sysmon.Converter.Domain
             Log.Error("Item can't be null!");
             throw new ArgumentNullException(nameof(item));
          }
-
+         
          var itemName = item.ToString();
          if (string.IsNullOrEmpty(itemName))
          {
@@ -284,205 +305,23 @@ namespace vl.Sysmon.Converter.Domain
          // EventType is ignored here because we have already read it before.
          if (itemName.EndsWith("EventType"))
             return null;
-         
-         if (itemName.EndsWith("ParentImage"))
-         {
-            var quotes = itemValue.Count(c => c == '"');
-            if (quotes >= 2 || !itemValue.TrimEnd().EndsWith('"'))
-               itemValue = itemValue.Trim().Replace("\"", "\\\"");
 
-            return new SysmonConditionBase
-            {
-               Field = itemValue.IndexOf('\\') > -1 ? "Parent.Path" : "Parent.Name",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-         if (itemName.EndsWith("Image"))
-         {
-            var quotes = itemValue.Count(c => c == '"');
-            if (quotes >= 2 || !itemValue.TrimEnd().EndsWith('"'))
-               itemValue = itemValue.Trim().Replace("\"", "\\\"");
 
-            return new SysmonConditionBase
-            {
-               Field = itemValue.IndexOf('\\') > -1 ? "Process.Path" : "Process.Name",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
+         Func<object, SysmonConditionBase> methodAction = CreateSysmonBaseCondition;
+         var methodInfo = methodAction.Method;
 
-         if (itemName.EndsWith("User"))
+         var attributes = methodInfo.GetCustomAttributes(typeof(TransformFieldBaseAttribute));
+         foreach (var attribute in (IEnumerable<TransformFieldBaseAttribute>)attributes)
          {
-            return new SysmonConditionBase
-            {
-               Field = "Process.User",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("ProcessId"))
-         {
-            if (itemName.EndsWith("ParentProcessId"))
+            if (itemName.EndsWith(attribute.SourceField))
             {
                return new SysmonConditionBase
                {
-                  Field = "Parent.Id",
+                  Field = attribute.GetTargetField(itemValue),
                   Condition = itemCondition,
-                  Value = itemValue
+                  Value = attribute.TransformValue(itemValue)
                };
             }
-            return new SysmonConditionBase
-            {
-               Field = "Process.Id",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("CommandLine"))
-         {
-            var quotes = itemValue.Count(c => c == '"');
-            if (quotes > 2 || !itemValue.TrimEnd().EndsWith('"'))
-               itemValue = itemValue.Trim().Replace("\"", "\\\"");
-
-            if (itemName.EndsWith("ParentCommandLine"))
-            {
-               return new SysmonConditionBase
-               {
-                  Field = "Parent.CommandLine",
-                  Condition = itemCondition,
-                  Value = itemValue
-               };
-            }
-            
-            return new SysmonConditionBase
-            {
-               Field = "Process.CommandLine",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("DestinationPort"))
-         {
-            return new SysmonConditionBase
-            {
-               Field = "Net.Target.Port",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("DestinationHostname"))
-         {
-            return new SysmonConditionBase
-            {
-               Field = "Net.Target.Name",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("DestinationIp"))
-         {
-            return new SysmonConditionBase
-            {
-               Field = "Net.Target.Ip",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("TargetObject"))
-         {
-            return new SysmonConditionBase
-            {
-               Field = "Reg.Key.Target",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("ImageLoaded"))
-         {
-            return new SysmonConditionBase
-            {
-               Field = itemValue.IndexOf('\\') > -1 ? "Image.Path" : "Image.Name",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("Hashes"))
-         {
-            if (itemName.EndsWith("ImageLoadHashes"))
-            {
-               return new SysmonConditionBase
-               {
-                  Field = "Image.Hashes",
-                  Condition = itemCondition,
-                  Value = itemValue
-               };
-            }
-
-            return new SysmonConditionBase
-            {
-               Field = "Process.Hashes",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("TerminalSessionId"))
-         {
-            return new SysmonConditionBase
-            {
-               Field = "Process.SessionId",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("Protocol"))
-         {
-            return new SysmonConditionBase
-            {
-               Field = "Net.Target.Protocol",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("Signed"))
-         {
-            return new SysmonConditionBase
-            {
-               Field = "Image.IsSigned",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("Signature"))
-         {
-            return new SysmonConditionBase
-            {
-               Field = "Image.Signature",
-               Condition = itemCondition,
-               Value = itemValue
-            };
-         }
-
-         if (itemName.EndsWith("SignatureStatus"))
-         {
-            return new SysmonConditionBase
-            {
-               Field = "Image.SignatureStatus",
-               Condition = itemCondition,
-               Value = itemValue
-            };
          }
 
          var notSupported = CheckNotSupported(itemName);
