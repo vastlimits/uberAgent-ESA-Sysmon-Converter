@@ -280,6 +280,13 @@ namespace vl.Sysmon.Converter.Domain
       [TransformField("Signed", "Image.IsSigned")]
       [TransformField("Signature", "Image.Signature")]
       [TransformField("SignatureStatus", "Image.SignatureStatus")]
+      [FieldNotSupported("OriginalFileName", "uberAgent currently does not support reading the original name from the PE header.")]
+      [FieldNotSupported("IntegrityLevel", "uberAgent currently does not support reading the integrity level.")]
+      [FieldNotSupported("CurrentDirectory", "uberAgent currently does not support reading the current directory (working directory).")]
+      [FieldNotSupported("UtcTime", "uberAgent currently does not export utctime.")]
+      [FieldNotSupported("Guid", "uberAgent currently does not export any Guid.")]
+      [FieldNotSupported("LogonId", "uberAgent currently does not support reading the logonId.")]
+      [FieldNotSupported("Details", "uberAgent currently does not support written registry data.")]
       private static SysmonConditionBase CreateSysmonBaseCondition(object item)
       {
          if (item == null)
@@ -306,10 +313,25 @@ namespace vl.Sysmon.Converter.Domain
          if (itemName.EndsWith("EventType"))
             return null;
 
-
          Func<object, SysmonConditionBase> methodAction = CreateSysmonBaseCondition;
          var methodInfo = methodAction.Method;
 
+         // Check not supported fields first
+         var notSupportedAttributes = methodInfo.GetCustomAttributes(typeof(FieldNotSupportedAttribute));
+         foreach (var attribute in (IEnumerable<FieldNotSupportedAttribute>)notSupportedAttributes)
+         {
+            if (NotSupportedItemCache.Contains(itemName))
+               return null;
+
+            if (itemName.EndsWith(attribute.SourceField))
+            {
+               Log.Warning(Constants.RuleNotSupportedTemplate, attribute.SourceField, attribute.Reason);
+               NotSupportedItemCache.Add(itemName);
+               return null;
+            }
+         }
+
+         // Creating our SysmonCondition
          var attributes = methodInfo.GetCustomAttributes(typeof(TransformFieldBaseAttribute));
          foreach (var attribute in (IEnumerable<TransformFieldBaseAttribute>)attributes)
          {
@@ -324,61 +346,8 @@ namespace vl.Sysmon.Converter.Domain
             }
          }
 
-         var notSupported = CheckNotSupported(itemName);
-         if (notSupported)
-            return null;
-
          Log.Warning("Filter rule not implemented: {item}", itemName);
          return null;
-      }
-
-      private static bool CheckNotSupported(string itemName)
-      {
-         if (NotSupportedItemCache.Contains(itemName))
-            return true;
-
-         NotSupportedItemCache.Add(itemName);
-
-         if (itemName.EndsWith("OriginalFileName"))
-         {
-            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support reading the original name from the PE header.");
-            return true;
-         }
-
-         if (itemName.EndsWith("IntegrityLevel"))
-         {
-            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support reading the integrity level.");
-            return true;
-         }
-
-         if (itemName.EndsWith("CurrentDirectory"))
-         {
-            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support reading the current directory (working directory).");
-            return true;
-         }
-         if (itemName.EndsWith("UtcTime"))
-         {
-            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not export utctime.");
-            return true;
-         }
-         if (itemName.EndsWith("Guid"))
-         {
-            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not export any Guid.");
-            return true;
-         }
-         if (itemName.EndsWith("LogonId"))
-         {
-            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support reading the logonId.");
-            return true;
-         }
-
-         if (itemName.EndsWith("Details"))
-         {
-            Log.Warning(Constants.RuleNotSupportedTemplate, itemName, "uberAgent currently does not support written registry data.");
-            return true;
-         }
-
-         return false;
       }
    }
 }
