@@ -81,6 +81,7 @@ namespace vl.Sysmon.Converter
             activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configListedRules.NetworkConnect));
             activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
             activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
+            activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configListedRules.CreateRemoteThread));
          }
 
          return Serialize(_options.OutputDirectory, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
