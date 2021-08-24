@@ -37,7 +37,6 @@ The following rule IDs are currently not supported:
 
 - 2: FileCreateTime
 - 6: DriverLoad
-- 8: CreateRemoteThread
 - 9: RawAccessRead
 - 10: ProcessAccess
 - 11: FileCreate
