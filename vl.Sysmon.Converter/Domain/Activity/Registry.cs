@@ -13,7 +13,11 @@ namespace vl.Sysmon.Converter.Domain.Activity
          List<SysmonEventFilteringRuleGroupRegistryEvent> registryEvent)
       {
          if (registryEvent == null || registryEvent.Count == 0)
-            return Enumerable.Empty<ActivityMonitoringRule>();
+            return NothingToConvert("Registry");
+
+         registryEvent = registryEvent.Where(c => c.Items is { Length: > 0 }).ToList();
+         if (registryEvent.Count == 0)
+            return NothingToConvert("Registry");
 
          try
          {
@@ -106,7 +110,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for Registry.");
          }
 
-         return Enumerable.Empty<ActivityMonitoringRule>();
+         return NothingToConvert("Registry");
       }
 
    }

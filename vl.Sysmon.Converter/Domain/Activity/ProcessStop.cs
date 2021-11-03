@@ -11,7 +11,11 @@ namespace vl.Sysmon.Converter.Domain.Activity
          List<SysmonEventFilteringRuleGroupProcessTerminate> processTerminateRules)
       {
          if (processTerminateRules == null || processTerminateRules.Count == 0)
-            return Enumerable.Empty<ActivityMonitoringRule>();
+            return NothingToConvert("ProcessStop");
+
+         processTerminateRules = processTerminateRules.Where(c => c.Image is { Length: > 0 } || c.ProcessGuid is { Length: > 0 } || c.ProcessId is { Length: > 0 } || c.UtcTime is { Length: > 0 }).ToList();
+         if (processTerminateRules.Count == 0)
+            return NothingToConvert("ProcessStop");
 
          try
          {
@@ -48,7 +52,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for ProcessStop.");
          }
 
-         return Enumerable.Empty<ActivityMonitoringRule>();
+         return NothingToConvert("ProcessStop");
       }
    }
 }

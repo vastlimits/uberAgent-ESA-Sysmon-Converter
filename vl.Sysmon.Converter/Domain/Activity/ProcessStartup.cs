@@ -11,7 +11,11 @@ namespace vl.Sysmon.Converter.Domain.Activity
          List<SysmonEventFilteringRuleGroupProcessCreate> processCreateRules)
       {
          if (processCreateRules == null || processCreateRules.Count == 0)
-            return Enumerable.Empty<ActivityMonitoringRule>();
+            return NothingToConvert("ProcessStartup");
+
+         processCreateRules = processCreateRules.Where(c => c.Items is { Length: > 0 }).ToList();
+         if (processCreateRules.Count == 0)
+            return NothingToConvert("ProcessStartup");
 
          try
          {
@@ -48,7 +52,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for ProcessStartup.");
          }
 
-         return Enumerable.Empty<ActivityMonitoringRule>();
+         return NothingToConvert("ProcessStartup");
       }
    }
 }

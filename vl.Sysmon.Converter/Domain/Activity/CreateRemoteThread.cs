@@ -11,7 +11,11 @@ namespace vl.Sysmon.Converter.Domain.Activity
          List<SysmonEventFilteringRuleGroupCreateRemoteThread> remoteThreadRules)
       {
          if (remoteThreadRules == null || remoteThreadRules.Count == 0)
-            return Enumerable.Empty<ActivityMonitoringRule>();
+            return NothingToConvert("CreateRemoteThread");
+
+         remoteThreadRules = remoteThreadRules.Where(c => c.Items is { Length: > 0 }).ToList();
+         if (remoteThreadRules.Count == 0)
+            return NothingToConvert("CreateRemoteThread");
 
          try
          {
@@ -51,7 +55,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for CreateRemoteThread.");
          }
 
-         return Enumerable.Empty<ActivityMonitoringRule>();
+         return NothingToConvert("CreateRemoteThread");
       }
    }
 }

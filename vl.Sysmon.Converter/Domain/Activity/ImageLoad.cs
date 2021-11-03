@@ -11,7 +11,11 @@ namespace vl.Sysmon.Converter.Domain.Activity
          List<SysmonEventFilteringRuleGroupImageLoad> imageLoadRules)
       {
          if (imageLoadRules == null || imageLoadRules.Count == 0)
-            return Enumerable.Empty<ActivityMonitoringRule>();
+            return NothingToConvert("ImageLoad");
+
+         imageLoadRules = imageLoadRules.Where(c => c.Items is { Length: > 0 }).ToList();
+         if (imageLoadRules.Count == 0)
+            return NothingToConvert("ImageLoad");
 
          try
          {
@@ -51,7 +55,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for ImageLoad.");
          }
 
-         return Enumerable.Empty<ActivityMonitoringRule>();
+         return NothingToConvert("ImageLoad");
       }
    }
 }
