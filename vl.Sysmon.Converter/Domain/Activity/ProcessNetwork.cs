@@ -11,11 +11,15 @@ namespace vl.Sysmon.Converter.Domain.Activity
         List<SysmonEventFilteringRuleGroupNetworkConnect> processNetworkRules)
       {
          if (processNetworkRules == null || processNetworkRules.Count == 0)
-            return Enumerable.Empty<ActivityMonitoringRule>();
+            return NothingToConvert("ProcessNetwork");
+
+         processNetworkRules = processNetworkRules.Where(c => c.Items is { Length: > 0 }).ToList();
+         if (processNetworkRules.Count == 0)
+            return NothingToConvert("ProcessNetwork");
 
          try
          {
-            Log.Information("Converting rules for Network..");
+            Log.Information("Converting rules for ProcessNetwork..");
 
             var result = new List<ActivityMonitoringRule>();
             
@@ -49,7 +53,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
             Log.Error(ex, $"Failure to convert rules for NetworkTargetPerformance & NetworkConnectFailure.");
          }
 
-         return Enumerable.Empty<ActivityMonitoringRule>();
+         return NothingToConvert("ProcessNetwork");
       }
    }
 }

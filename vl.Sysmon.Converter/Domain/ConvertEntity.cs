@@ -353,5 +353,11 @@ namespace vl.Sysmon.Converter.Domain
          Log.Warning("Filter rule not implemented: {item}", itemName);
          return null;
       }
+
+      protected static ActivityMonitoringRule[] NothingToConvert(string activity)
+      {
+         Log.Information("Nothing to convert for activity: {0}", activity);
+         return Array.Empty<ActivityMonitoringRule>();
+      }
    }
 }
