@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CommandLine;
+using vl.Core.Domain.Activity;
 
 namespace vl.Sysmon.Converter.Domain
 {
@@ -12,6 +13,6 @@ namespace vl.Sysmon.Converter.Domain
       public string OutputDirectory { get; set; }
 
       [Option('r', "rule", Required = false, HelpText = "Specify the Sysmon rule IDs to be converted. If not set, all possible rules will be converted. E.g: -r 1 2")]
-      public IEnumerable<int> RulesToConvert { get; set; }
+      public IEnumerable<SysmonEventId> RulesToConvert { get; set; }
    }
 }
