@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CommandLine;
 using Serilog;
 using vl.Core.Domain.Activity;
@@ -24,7 +25,7 @@ namespace vl.Sysmon.Converter
       {
          Log.Information("Sysmon Converter starting..");
          
-         var configurations = new List<Domain.Sysmon>();
+         var configurations = new List<NamedConfig>();
 
          Parser.Default.ParseArguments<Options>(args)
                .WithParsed(o =>
@@ -56,7 +57,11 @@ namespace vl.Sysmon.Converter
             if (config == null)
                Environment.Exit(-1);
 
-            configurations.Add(config);
+            configurations.Add(new NamedConfig
+            {
+               Name = Path.GetFileNameWithoutExtension(file),
+               Config = config
+            });
          }
          
          var result = ConvertConfiguration(configurations);
@@ -66,24 +71,78 @@ namespace vl.Sysmon.Converter
          Log.Information("Done.");
       }
 
-      private static bool ConvertConfiguration(IEnumerable<Domain.Sysmon> configs)
+      private static bool ConvertConfiguration(IEnumerable<NamedConfig> configurations)
       {
          var eventDataFilters = new List<EventDataFilter>();
          var activityMonitoringRules = new List<ActivityMonitoringRule>();
 
-         foreach (var config in configs)
+         foreach (var namedConfig in configurations)
          {
-            var configListedRules = config.GetSysmonRulesListed();
-            
-            eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
-            activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
-            activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configListedRules.ProcessTerminate));
-            activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configListedRules.NetworkConnect));
-            activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
-            activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
-            activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configListedRules.CreateRemoteThread));
-         }
+            Console.WriteLine();
+            Log.Information("---- Converting file: {0} ----", namedConfig.Name);
+            var configListedRules = namedConfig.Config.GetSysmonRulesListed();
 
+            if (!_options.RulesToConvert.Any())
+            {
+               eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
+               activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
+               activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configListedRules.ProcessTerminate));
+               activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configListedRules.NetworkConnect));
+               activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
+               activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
+               activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configListedRules.CreateRemoteThread));
+            }
+            else
+            {
+               foreach (var ruleId in _options.RulesToConvert)
+               {
+                  switch (ruleId)
+                  {
+                     case SysmonEventId.ProcessCreate:
+                        activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
+                        break;
+                     case SysmonEventId.NetworkConnect:
+                        activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configListedRules.NetworkConnect));
+                        break;
+                     case SysmonEventId.ProcessTerminate:
+                        activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configListedRules.ProcessTerminate));
+                        break;
+                     case SysmonEventId.ImageLoad:
+                        activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
+                        break;
+                     case SysmonEventId.CreateRemoteThread:
+                        activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configListedRules.CreateRemoteThread));
+                        break;
+                     case SysmonEventId.RegistryEvent:
+                        activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
+                        break;
+                     case SysmonEventId.DNSQuery:
+                        eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
+                        break;
+                     case SysmonEventId.FileCreateStreamHash:
+                        break;
+                     case SysmonEventId.FileCreateTime:
+                     case SysmonEventId.RawAccessRead:
+                     case SysmonEventId.ProcessAccess:
+                     case SysmonEventId.FileCreate:
+                     case SysmonEventId.PipeEvent:
+                     case SysmonEventId.WmiEvent:
+                     case SysmonEventId.DriverLoad:
+                     case SysmonEventId.FileDelete:
+                     case SysmonEventId.ClipboardChange:
+                     case SysmonEventId.ProcessTampering:
+                     case SysmonEventId.FileDeleteDetected:
+                     default:
+                        Log.Warning("Rule: {0} is currently not supported!", ruleId);
+                        break;
+                  }
+               }
+            }
+
+            Log.Information("---- Finished converting file: {0} ----", namedConfig.Name);
+         }
+         
+         Console.WriteLine();
          return Serialize(_options.OutputDirectory, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
       }
 
