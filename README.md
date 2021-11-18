@@ -132,7 +132,6 @@ The following rule IDs are currently not supported:
 - 20: WMI consumer
 - 21: WMI consumer filter
 - 23: FileDelete
-- 25: ProcessTampering
 - 26: FileDeleteDetected
 
 The following Sysmon rule queries are currently not supported:
