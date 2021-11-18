@@ -145,6 +145,23 @@ The following Sysmon rule queries are currently not supported:
 - Details (Registry)
 - Network source details
 
+In addition, the individual names from the rule groups are not transferred.
+So that the converter should give the rules specific names, a name can be defined for the group in the `<RuleGroup>` tag.
+
+Which then looks like this:
+
+     <RuleGroup name="ExampleRule" groupRelation="or">
+
+```  
+[ActivityMonitoringRule]
+RuleName = ExampleRule
+EventType = Process.Start
+Tag = examplerule
+RiskScore = 100
+Query = true
+```  
+
+
 ## License
 MIT License
 
