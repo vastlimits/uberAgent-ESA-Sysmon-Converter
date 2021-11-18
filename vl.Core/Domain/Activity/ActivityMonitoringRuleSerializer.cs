@@ -36,7 +36,7 @@ namespace vl.Core.Domain.Activity
 
                sw.WriteLine($"RuleName = {rule.Name}");
                sw.WriteLine($"EventType = {rule.EventType.ToActivityEventName()}");
-               sw.WriteLine($"Tag = {rule.Tag}");
+               sw.WriteLine($"Tag = {rule.Tag.ToLower()}");
                sw.WriteLine($"RiskScore = {options.RiskScore}");
                sw.WriteLine($"Query = {rule.Query}");
 
