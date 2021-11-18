@@ -90,4 +90,10 @@ namespace vl.Sysmon.Converter.Domain
       public string name { get; set; }
       public string groupRelation { get; set; }
    }
+
+   public partial class SysmonEventFilteringRuleGroupProcessTampering
+   {
+      public string name { get; set; }
+      public string groupRelation { get; set; }
+   }
 }

@@ -91,6 +91,7 @@ namespace vl.Sysmon.Converter
                activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
                activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
                activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configListedRules.CreateRemoteThread));
+               activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configListedRules.ProcessTampering));
             }
             else
             {
@@ -98,6 +99,9 @@ namespace vl.Sysmon.Converter
                {
                   switch (ruleId)
                   {
+                     case SysmonEventId.DNSQuery:
+                        eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
+                        break;
                      case SysmonEventId.ProcessCreate:
                         activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
                         break;
@@ -116,11 +120,10 @@ namespace vl.Sysmon.Converter
                      case SysmonEventId.RegistryEvent:
                         activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
                         break;
-                     case SysmonEventId.DNSQuery:
-                        eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
+                     case SysmonEventId.ProcessTampering:
+                        activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configListedRules.ProcessTampering));
                         break;
                      case SysmonEventId.FileCreateStreamHash:
-                        break;
                      case SysmonEventId.FileCreateTime:
                      case SysmonEventId.RawAccessRead:
                      case SysmonEventId.ProcessAccess:
@@ -130,7 +133,6 @@ namespace vl.Sysmon.Converter
                      case SysmonEventId.DriverLoad:
                      case SysmonEventId.FileDelete:
                      case SysmonEventId.ClipboardChange:
-                     case SysmonEventId.ProcessTampering:
                      case SysmonEventId.FileDeleteDetected:
                      default:
                         Log.Warning("Rule: {0} is currently not supported!", ruleId);
