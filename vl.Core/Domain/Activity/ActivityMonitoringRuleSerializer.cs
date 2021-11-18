@@ -5,8 +5,11 @@ using vl.Core.Domain.Extensions;
 
 namespace vl.Core.Domain.Activity
 {
+
    public static class ActivityMonitoringRuleSerializer
    {
+      private static readonly Dictionary<EventType, int> EventCounter = new ();
+
       /*
          [ActivityMonitoringRule]
          RuleName = Detect Backslash
@@ -16,25 +19,25 @@ namespace vl.Core.Domain.Activity
          Query = icontains(Process.Path, r"C:\Users\") or icontains(Process.Path, r"\AppData\Local\Microsoft\OneDrive") or icontains(Process.Path, r"\FileCoAuth.exe")
       */
 
-      public static void Serialize(Stream stream, IEnumerable<ActivityMonitoringRule> rules)
+      public static void Serialize(ActivitySerializeOptions options)
       {
          var sb = new StringBuilder();
          using (var sw = new StringWriter(sb))
          {
-            foreach (var rule in rules)
+            foreach (var rule in options.Rules)
             {
                sw.WriteLine("[ActivityMonitoringRule]");
 
                if (string.IsNullOrEmpty(rule.Name))
-                  rule.Name = "A Sysmon converted rule";
+                  rule.Name = $"{rule.EventType} converted rule";
 
                if (string.IsNullOrEmpty(rule.Tag))
-                  rule.Tag = "a-Sysmon-converted-rule";
+                  rule.Tag = $"{rule.EventType}-{GetEventCounter(rule.EventType)}-converted-rule";
 
                sw.WriteLine($"RuleName = {rule.Name}");
                sw.WriteLine($"EventType = {rule.EventType.ToActivityEventName()}");
-               sw.WriteLine($"Tag = {rule.Tag}");
-               sw.WriteLine($"RiskScore = 100");
+               sw.WriteLine($"Tag = {rule.Tag.ToLower()}");
+               sw.WriteLine($"RiskScore = {options.RiskScore}");
                sw.WriteLine($"Query = {rule.Query}");
 
                if (rule.Hive != Hive.Unknown)
@@ -46,7 +49,16 @@ namespace vl.Core.Domain.Activity
 
          var contents = sb.ToString();
          var contentsUtf8 = Encoding.UTF8.GetBytes(contents);
-         stream.Write(contentsUtf8);
+         options.Stream.Write(contentsUtf8);
+      }
+
+      private static int GetEventCounter(EventType ruleEventType)
+      {
+         if (EventCounter.ContainsKey(ruleEventType))
+            return ++EventCounter[ruleEventType];
+
+         EventCounter.Add(ruleEventType, 1);
+         return 1;
       }
    }
 }
