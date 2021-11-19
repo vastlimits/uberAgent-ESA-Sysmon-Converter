@@ -91,6 +91,7 @@ namespace vl.Sysmon.Converter
                activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
                activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
                activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configListedRules.CreateRemoteThread));
+               activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configListedRules.ProcessTampering));
             }
             else
             {
@@ -98,6 +99,9 @@ namespace vl.Sysmon.Converter
                {
                   switch (ruleId)
                   {
+                     case SysmonEventId.DNSQuery:
+                        eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
+                        break;
                      case SysmonEventId.ProcessCreate:
                         activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
                         break;
@@ -116,11 +120,10 @@ namespace vl.Sysmon.Converter
                      case SysmonEventId.RegistryEvent:
                         activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
                         break;
-                     case SysmonEventId.DNSQuery:
-                        eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
+                     case SysmonEventId.ProcessTampering:
+                        activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configListedRules.ProcessTampering));
                         break;
                      case SysmonEventId.FileCreateStreamHash:
-                        break;
                      case SysmonEventId.FileCreateTime:
                      case SysmonEventId.RawAccessRead:
                      case SysmonEventId.ProcessAccess:
@@ -130,7 +133,6 @@ namespace vl.Sysmon.Converter
                      case SysmonEventId.DriverLoad:
                      case SysmonEventId.FileDelete:
                      case SysmonEventId.ClipboardChange:
-                     case SysmonEventId.ProcessTampering:
                      case SysmonEventId.FileDeleteDetected:
                      default:
                         Log.Warning("Rule: {0} is currently not supported!", ruleId);
@@ -143,32 +145,52 @@ namespace vl.Sysmon.Converter
          }
          
          Console.WriteLine();
-         return Serialize(_options.OutputDirectory, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
+
+         return Serialize(_options, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
       }
 
-      private static bool Serialize(string outputFile, IEnumerable<EventDataFilter> filters, IEnumerable<ActivityMonitoringRule> rules)
+      private static bool Serialize(Options options, EventDataFilter[] filters, ActivityMonitoringRule[] rules)
       {
          try
          {
-            Log.Information("Serialize rules to {file}", outputFile);
-
-            var eventDataPath = Path.Combine(outputFile, Constants.EventDataFilterOutputFileName);
-            var activityPath = Path.Combine(outputFile, Constants.ActivityMonitoringOutputFileName);
-
-            using (var fs = new FileStream(eventDataPath, FileMode.Create))
+            if (filters.Length == 0 && rules.Length == 0)
             {
-               EventDataFilterSerializer.Serialize(fs, filters);
+               Log.Information("Nothing to convert.");
+               return true;
             }
+
+            Log.Information("Serialize rules to {directory}", options.OutputDirectory);
+
+            var eventDataPath = Path.Combine(options.OutputDirectory, Constants.EventDataFilterOutputFileName);
+            var activityPath = Path.Combine(options.OutputDirectory, Constants.ActivityMonitoringOutputFileName);
+
+            if (filters.Length > 0)
+            {
+               using (var fs = new FileStream(eventDataPath, FileMode.Create))
+               {
+                  EventDataFilterSerializer.Serialize(fs, filters);
+               }
+            }
+
+            if (rules.Length == 0) 
+               return true;
+
             using (var fs = new FileStream(activityPath, FileMode.Create))
             {
-               ActivityMonitoringRuleSerializer.Serialize(fs, rules);
+               ActivityMonitoringRuleSerializer.Serialize(
+                  new ActivitySerializeOptions
+                  {
+                     RiskScore = options.RiskScore,
+                     Rules = rules,
+                     Stream = fs
+                  });
             }
 
             return true;
          }
          catch (Exception ex)
          {
-            Log.Error(ex, $"Failure to serialize rules to {outputFile}.");
+            Log.Error(ex, $"Failure to serialize rules to {options.OutputDirectory}.");
          }
 
          return false;

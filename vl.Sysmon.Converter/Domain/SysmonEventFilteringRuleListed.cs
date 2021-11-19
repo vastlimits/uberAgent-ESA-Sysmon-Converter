@@ -33,5 +33,6 @@ namespace vl.Sysmon.Converter.Domain
       public List<SysmonEventFilteringRuleGroupFileCreateTime> FileCreateTime { get; set; } = new();
 
       public List<SysmonEventFilteringRuleGroupProcessCreate> ProcessCreate { get; set; } = new();
+      public List<SysmonEventFilteringRuleGroupProcessTampering> ProcessTampering { get; set; } = new();
    }
 }

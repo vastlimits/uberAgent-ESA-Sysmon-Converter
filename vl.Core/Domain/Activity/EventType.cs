@@ -27,5 +27,6 @@
       RegAny,
       DnsQuery,
       ProcessCreateRemoteThread,
+      ProcessTamperingEvent,
    }
 }
