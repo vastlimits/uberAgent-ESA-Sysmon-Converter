@@ -13,7 +13,7 @@
 
 
 ## Platforms
-The uberAgent-ESA-Sysmon-Converter is written in .NET 5 and therefore platform independent. 
+The uberAgent-ESA-Sysmon-Converter is developed in .NET 5 and, therefore, platform-independent.
 
 ## Getting Started
 ### Download
@@ -25,7 +25,7 @@ The uberAgent-ESA-Sysmon-Converter is written in .NET 5 and therefore platform i
 Further information at [Syntax](#syntax)
 
 ### After converting
-After the converter has run successfully, 2 files are created in the output directory, depending on the rules.
+After the converter has run successfully, two files are created in the output directory, depending on the rules.
 
  1. `uberAgent-eventdata-filter-converted.conf`
  2. `uberAgent-ESA-am-converted.conf`
@@ -33,7 +33,7 @@ After the converter has run successfully, 2 files are created in the output dire
 `uberAgent-eventdata-filter-converted.conf` contains excluded DNS queries. 
 All other rules are converted to `uberAgent-ESA-am-converted.conf` 
 
-For more information about the setup for uberAgent, see the documentation for [Event Data Filtering](https://uberagent.com/docs/uberagent/latest/uxm-features-configuration/event-data-filtering/) and for [Activity Monitoring Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/activity-monitoring-engine/).
+For more information about the setup of uberAgent, see the documentation about [Event Data Filtering](https://uberagent.com/docs/uberagent/latest/uxm-features-configuration/event-data-filtering/) and [Activity Monitoring Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/activity-monitoring-engine/).
 
 
 ## Syntax
@@ -103,9 +103,9 @@ An **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](
 	</EventFiltering>
 </Sysmon>
 ```
-After executing the following statement 
+After executing the following command 
 --- `vl.Sysmon.Converter -i C:\tmp\example.xml -o C:\tmp\exampleOutput\`
-we should find **uberAgent-ESA-am-converted.conf** in our output directory with the following content: 
+you should see **uberAgent-ESA-am-converted.conf** in your output directory having the following content: 
 ```  
 [ActivityMonitoringRule]
 RuleName = A Sysmon converted rule
@@ -145,7 +145,7 @@ The following Sysmon rule queries are currently not supported:
 - Details (Registry)
 - Network source details
 
-In addition, the individual names from the rule groups are not transferred.
+In addition, the individual names of rule groups are not transferred.
 So that the converter should give the rules specific names, a name can be defined for the group in the `<RuleGroup>` tag.
 
 Which then looks like this:
