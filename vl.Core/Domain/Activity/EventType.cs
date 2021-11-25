@@ -1,0 +1,32 @@
+﻿namespace vl.Core.Domain.Activity
+{
+   public enum EventType
+   {
+      Unknown,
+      ProcessStart,
+      ProcessStop,
+      ImageLoad, 
+      NetConnect,
+      NetReceive,
+      NetReconnect,
+      NetRetransmit,
+      NetSend,
+      RegKeyCreate,
+      RegValueWrite,
+      RegDelete,
+      RegKeyDelete,
+      RegValueDelete,
+      RegKeySecurityChange,
+      RegKeyRename,
+      RegKeySetInformation,
+      RegKeyLoad,
+      RegKeyUnload,
+      RegKeyRestore,
+      RegKeySave,
+      RegKeyReplace,
+      RegAny,
+      DnsQuery,
+      ProcessCreateRemoteThread,
+      ProcessTamperingEvent,
+   }
+}

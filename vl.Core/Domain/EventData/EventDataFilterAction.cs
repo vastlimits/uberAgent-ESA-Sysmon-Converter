@@ -1,4 +1,4 @@
-﻿namespace vl.Core.Domain
+﻿namespace vl.Core.Domain.EventData
 {
     public enum EventDataFilterAction
     {

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Xml.Serialization;
 
-namespace vl.Sysmon.Convert.Domain
+namespace vl.Sysmon.Converter.Domain
 {
     public static class SysmonConfigParser
     {

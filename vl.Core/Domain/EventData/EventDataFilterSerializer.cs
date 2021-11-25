@@ -2,17 +2,15 @@
 using System.IO;
 using System.Text;
 
-namespace vl.Core.Domain
+namespace vl.Core.Domain.EventData
 {
     public static class EventDataFilterSerializer
     {
-        public static void Serialize(Stream stream, IEnumerable<EventDataFilter> filters, string headerComment)
+        public static void Serialize(Stream stream, IEnumerable<EventDataFilter> filters)
         {
             var sb = new StringBuilder();
             using (var sw = new StringWriter(sb))
             {
-                sw.WriteLine(headerComment);
-
                 foreach (var filter in filters)
                 {
                     sw.WriteLine("[EventDataFilter]");
