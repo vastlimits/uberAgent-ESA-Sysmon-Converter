@@ -360,3 +360,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+vl.Sysmon.Converter/windows-64
+vl.Sysmon.Converter/win-x86
+win-x86
