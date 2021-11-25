@@ -18,7 +18,7 @@ The uberAgent-ESA-Sysmon-Converter is developed in .NET 5 and, therefore, platfo
 ## Getting Started
 ### Download
 
- 1. The latest binary archive can be found [here](https://www.example.com).
+ 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.0).
  2. After unpacking, the converter can be controlled via the command line.
 
 ### Converting
@@ -39,22 +39,27 @@ For more information about the setup of uberAgent, see the documentation about [
 ## Syntax
 
 To convert all rules from one or more files, use the following command:
-
 ```cmd
 vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder
 ```
-or a shorter notation
-```cmd
-vl.Sysmon.Converter -i filePath1 -o outputFolder
-```
-To convert one or more specific Sysmon rules:
 
+To convert one or more specific Sysmon rules:
 ```cmd
 vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12
 ```
 
+The RiskScore is set to 50 by default, but you can specify it:
+```cmd
+vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12 -score 75
+```
+
+Or a shorter notation
+```cmd
+vl.Sysmon.Converter -i filePath1 -o outputFolder -r 1 2 12 -s 75
+```
+
 ## Example
-An **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](https://github.com/SwiftOnSecurity/sysmon-config):
+A **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](https://github.com/SwiftOnSecurity/sysmon-config):
 ```  
 <Sysmon schemaversion="4.50">
 	<EventFiltering>
@@ -103,7 +108,7 @@ An **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](
 	</EventFiltering>
 </Sysmon>
 ```
-After executing the following command 
+After executing the command
 --- `vl.Sysmon.Converter -i C:\tmp\example.xml -o C:\tmp\exampleOutput\`
 you should see **uberAgent-ESA-am-converted.conf** in your output directory having the following content: 
 ```  
@@ -163,7 +168,7 @@ Query = true
 
 
 ## License
-MIT License
+Apache License 2.0
 
 ## Third Party
 This project uses the following third-party libraries:
