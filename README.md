@@ -13,12 +13,12 @@
 
 
 ## Platforms
-The uberAgent-ESA-Sysmon-Converter is developed in .NET 5 and, therefore, platform-independent.
+The uberAgent-ESA-Sysmon-Converter is developed in .NET 6 and, therefore, platform-independent.
 
 ## Getting Started
 ### Download
 
- 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.0).
+ 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.0.1).
  2. After unpacking, the converter can be controlled via the command line.
 
 ### Converting
