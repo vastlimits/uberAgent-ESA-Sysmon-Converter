@@ -39,6 +39,7 @@ namespace vl.Core.Domain.Attributes
          };
       }
 
+      public abstract TransformDataType GetDataType();
       public abstract string GetTargetField(string value);
    }
 }
