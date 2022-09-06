@@ -58,29 +58,25 @@ namespace vl.Sysmon.Converter.Domain
                var lastValueInGroup = i + 1 == value.Count;
                var groupRelation = lastValueInGroup ? string.Empty : $" {item.GroupRelation} ";
                var query = string.Empty;
-               var stringType = "r";
-               item.Value = item.Value.Replace("%%", "%");
+               item.Value = item.Value.Replace("%%", "%").Replace("\\", "\\\\").Replace("\"", "\\\"");
 
                if (item.Value.EndsWith(@"\") && !item.Value.EndsWith(@"\\"))
-               {
                   item.Value = item.Value.Replace(@"\", @"\\");
-                  stringType = string.Empty;
-               }
 
                switch (item.Condition)
                {
                   case "is":
-                     query = $"{item.Field} == {stringType}\"{item.Value}\"{groupRelation}";
+                     query = $"{item.Field} == {item.GetValueFormated()}{groupRelation}";
                      break;
                   case "begin with":
-                     query = $"istartswith({item.Field}, {stringType}\"{item.Value}\"){groupRelation}";
+                     query = $"istartswith({item.Field}, {item.GetValueFormated()}){groupRelation}";
                      break;
                   case "end with":
-                     query = $"iendswith({item.Field}, {stringType}\"{item.Value}\"){groupRelation}";
+                     query = $"iendswith({item.Field}, {item.GetValueFormated()}){groupRelation}";
                      break;
                   case "image":
                   case "contains":
-                     query = $"icontains({item.Field}, {stringType}\"{item.Value}\"){groupRelation}";
+                     query = $"icontains({item.Field}, {item.GetValueFormated()}){groupRelation}";
                      break;
                   case "contains all":
                   case "contains any":
@@ -97,7 +93,7 @@ namespace vl.Sysmon.Converter.Domain
                         }
                         else
                         {
-                           query = query + $"icontains({item.Field}, {stringType}\"{s}\"){relation}";
+                           query = query + $"icontains({item.Field}, \"{s}\"){relation}";
                         }
                      }
 
@@ -108,7 +104,7 @@ namespace vl.Sysmon.Converter.Domain
 
                      break;
                   case "is not":
-                     query = $"{item.Field} != {stringType}\"{item.Value}\"{groupRelation}";
+                     query = $"{item.Field} != {item.GetValueFormated()}{groupRelation}";
                      break;
                   default:
                      Log.Error("Condition: {condition} is not implemented.", item.Condition);
