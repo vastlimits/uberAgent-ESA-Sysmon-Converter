@@ -58,7 +58,7 @@ namespace vl.Sysmon.Converter.Domain
                var lastValueInGroup = i + 1 == value.Count;
                var groupRelation = lastValueInGroup ? string.Empty : $" {item.GroupRelation} ";
                var query = string.Empty;
-               item.Value = item.Value.Replace("%%", "%").Replace("\\", "\\\\").Replace("\"", "\\\"");
+               item.Value = item.Value.Replace("%%", "%");
 
                if (item.Value.EndsWith(@"\") && !item.Value.EndsWith(@"\\"))
                   item.Value = item.Value.Replace(@"\", @"\\");
