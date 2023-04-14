@@ -2,6 +2,10 @@
 {
    public class TransformFieldPathAttribute : TransformFieldBaseAttribute
    {
+      public string TargetField { get; }
+      public string TargetFieldPath { get; }
+
+
       public TransformFieldPathAttribute(string sourceField, string targetField, string targetFieldPath) :
          base(sourceField)
       {
@@ -16,10 +20,10 @@
          TargetFieldPath = targetFieldPath;
       }
 
-      public string TargetField { get; }
-
-      public string TargetFieldPath { get; }
-
+      public override TransformDataType GetDataType()
+      {
+         return TransformDataType.String;
+      }
 
       public override string GetTargetField(string value)
       {

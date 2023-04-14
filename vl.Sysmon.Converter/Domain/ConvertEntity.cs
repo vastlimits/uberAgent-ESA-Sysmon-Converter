@@ -58,29 +58,25 @@ namespace vl.Sysmon.Converter.Domain
                var lastValueInGroup = i + 1 == value.Count;
                var groupRelation = lastValueInGroup ? string.Empty : $" {item.GroupRelation} ";
                var query = string.Empty;
-               var stringType = "r";
                item.Value = item.Value.Replace("%%", "%");
 
                if (item.Value.EndsWith(@"\") && !item.Value.EndsWith(@"\\"))
-               {
                   item.Value = item.Value.Replace(@"\", @"\\");
-                  stringType = string.Empty;
-               }
 
                switch (item.Condition)
                {
                   case "is":
-                     query = $"{item.Field} == {stringType}\"{item.Value}\"{groupRelation}";
+                     query = $"{item.Field} == {item.GetValueFormated()}{groupRelation}";
                      break;
                   case "begin with":
-                     query = $"istartswith({item.Field}, {stringType}\"{item.Value}\"){groupRelation}";
+                     query = $"istartswith({item.Field}, {item.GetValueFormated()}){groupRelation}";
                      break;
                   case "end with":
-                     query = $"iendswith({item.Field}, {stringType}\"{item.Value}\"){groupRelation}";
+                     query = $"iendswith({item.Field}, {item.GetValueFormated()}){groupRelation}";
                      break;
                   case "image":
                   case "contains":
-                     query = $"icontains({item.Field}, {stringType}\"{item.Value}\"){groupRelation}";
+                     query = $"icontains({item.Field}, {item.GetValueFormated()}){groupRelation}";
                      break;
                   case "contains all":
                   case "contains any":
@@ -97,7 +93,7 @@ namespace vl.Sysmon.Converter.Domain
                         }
                         else
                         {
-                           query = query + $"icontains({item.Field}, {stringType}\"{s}\"){relation}";
+                           query = query + $"icontains({item.Field}, \"{s}\"){relation}";
                         }
                      }
 
@@ -108,7 +104,7 @@ namespace vl.Sysmon.Converter.Domain
 
                      break;
                   case "is not":
-                     query = $"{item.Field} != {stringType}\"{item.Value}\"{groupRelation}";
+                     query = $"{item.Field} != {item.GetValueFormated()}{groupRelation}";
                      break;
                   default:
                      Log.Error("Condition: {condition} is not implemented.", item.Condition);
@@ -199,6 +195,7 @@ namespace vl.Sysmon.Converter.Domain
                GroupRelation = groupRelationProperty,
                Field = baseProperties.Field,
                Value = baseProperties.Value,
+               DataType = baseProperties.DataType,
                Condition = baseProperties.Condition,
                OnMatch = onMatchProperty,
                RuleId = 0
@@ -264,23 +261,23 @@ namespace vl.Sysmon.Converter.Domain
       [TransformFieldPath("ParentImage", "Parent.Name", "Parent.Path", TransformMethod.RemoveTrailingBackslashes)]
       [TransformFieldPath("Image", "Process.Name", "Process.Path", TransformMethod.RemoveTrailingBackslashes)]
       [TransformField("User", "Process.User")]
-      [TransformField("ParentProcessId", "Parent.Id")]
-      [TransformField("ProcessId", "Process.Id")]
+      [TransformField("ParentProcessId", "Parent.Id", TransformDataType.Int)]
+      [TransformField("ProcessId", "Process.Id", TransformDataType.Int)]
       [TransformField("ParentCommandLine", "Parent.CommandLine", TransformMethod.RemoveTrailingBackslashes)]
       [TransformField("CommandLine", "Process.CommandLine", TransformMethod.RemoveTrailingBackslashes)]
-      [TransformField("DestinationPort", "Net.Target.Port")]
+      [TransformField("DestinationPort", "Net.Target.Port", TransformDataType.Int)]
       [TransformField("DestinationHostname", "Net.Target.Name")]
       [TransformField("DestinationIp", "Net.Target.Ip")]
       [TransformField("TargetObject", "Reg.Key.Target")]
       [TransformFieldPath("ImageLoaded", "Image.Name", "Image.Path", TransformMethod.RemoveTrailingBackslashes)]
       [TransformField("ImageLoadHashes", "Image.Hashes")]
       [TransformField("Hashes", "Process.Hashes")]
-      [TransformField("TerminalSessionId", "Process.SessionId")]
+      [TransformField("TerminalSessionId", "Process.SessionId", TransformDataType.Int)]
       [TransformField("Protocol", "Net.Target.Protocol")]
       [TransformField("Signed", "Image.IsSigned")]
       [TransformField("Signature", "Image.Signature")]
       [TransformField("SignatureStatus", "Image.SignatureStatus")]
-      [TransformField("NewThreadId", "Thread.Id")]
+      [TransformField("NewThreadId", "Thread.Id", TransformDataType.Int)]
       [TransformField("StartAddress", "Thread.StartAddress")]
       [TransformField("StartModule", "Thread.StartModule")]
       [TransformField("StartFunction", "Thread.StartFunction")]
@@ -345,7 +342,8 @@ namespace vl.Sysmon.Converter.Domain
                {
                   Field = attribute.GetTargetField(itemValue),
                   Condition = itemCondition,
-                  Value = attribute.TransformValue(itemValue)
+                  Value = attribute.TransformValue(itemValue),
+                  DataType = attribute.GetDataType()
                };
             }
          }
