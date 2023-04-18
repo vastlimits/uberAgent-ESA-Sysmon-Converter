@@ -24,7 +24,9 @@ namespace vl.Core.Domain.Attributes
       public static string TransformTrailingBackslashes(string itemValue)
       {
          var quotes = itemValue.Count(c => c == '"');
-         if (quotes >= 2 || !itemValue.TrimEnd().EndsWith('"'))
+
+         itemValue = itemValue.Replace(@"\", @"\\");
+         if (quotes >= 2)
             itemValue = itemValue.Trim().Replace("\"", "\\\"");
 
          return itemValue;
@@ -39,6 +41,7 @@ namespace vl.Core.Domain.Attributes
          };
       }
 
+      public abstract TransformDataType GetDataType();
       public abstract string GetTargetField(string value);
    }
 }
