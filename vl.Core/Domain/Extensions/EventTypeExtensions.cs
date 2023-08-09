@@ -35,6 +35,7 @@ namespace vl.Core.Domain.Extensions
             EventType.DnsQuery => "DNS.Event",
             EventType.ProcessCreateRemoteThread => "Process.CreateRemoteThread",
             EventType.ProcessTamperingEvent => "Process.TamperingEvent",
+            EventType.DriverLoad => "Driver.Load",
             _ => throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null)
          };
       }

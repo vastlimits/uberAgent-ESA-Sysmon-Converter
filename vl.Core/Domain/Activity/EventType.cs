@@ -28,5 +28,6 @@
       DnsQuery,
       ProcessCreateRemoteThread,
       ProcessTamperingEvent,
+      DriverLoad
    }
 }
