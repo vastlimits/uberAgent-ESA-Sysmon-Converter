@@ -92,6 +92,7 @@ namespace vl.Sysmon.Converter
                activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
                activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configListedRules.CreateRemoteThread));
                activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configListedRules.ProcessTampering));
+               activityMonitoringRules.AddRange(DriverLoad.ConvertRules(configListedRules.DriverLoad));
             }
             else
             {
@@ -123,6 +124,9 @@ namespace vl.Sysmon.Converter
                      case SysmonEventId.ProcessTampering:
                         activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configListedRules.ProcessTampering));
                         break;
+                     case SysmonEventId.DriverLoad:
+                        activityMonitoringRules.AddRange(DriverLoad.ConvertRules(configListedRules.DriverLoad));
+                        break;
                      case SysmonEventId.FileCreateStreamHash:
                      case SysmonEventId.FileCreateTime:
                      case SysmonEventId.RawAccessRead:
@@ -130,7 +134,6 @@ namespace vl.Sysmon.Converter
                      case SysmonEventId.FileCreate:
                      case SysmonEventId.PipeEvent:
                      case SysmonEventId.WmiEvent:
-                     case SysmonEventId.DriverLoad:
                      case SysmonEventId.FileDelete:
                      case SysmonEventId.ClipboardChange:
                      case SysmonEventId.FileDeleteDetected:

@@ -159,7 +159,7 @@ namespace vl.Sysmon.Converter.Domain
          }
 
          var ruleProperties = rule.GetType().GetProperties();
-         var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items") || c.Name.Equals("Image"))?.GetValue(rule, null);
+         var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items") || c.Name.Equals("Image") || c.Name.Equals("Rule"))?.GetValue(rule, null);
          var onMatchProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("onmatch"))?.GetValue(rule, null)?.ToString();
          var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null)?.ToString()?.ToLower();
 
@@ -224,18 +224,26 @@ namespace vl.Sysmon.Converter.Domain
             // Check if we have an imageload rule here
             ruleItems = new List<object>();
 
-            var image = ruleProperties.Any(c => c.Name.EndsWith("Image") || c.Name.EndsWith("ImageLoaded"));
+            var image = ruleProperties.Any(c => c.Name.EndsWith("Image") || c.Name.EndsWith("ImageLoaded") || c.Name.EndsWith("Signature") || c.Name.EndsWith("SignatureStatus"));
             if (!image)
                throw new NotImplementedException(nameof(rule));
             
             var imageProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Image"))?.GetValue(rule, null);
             var imageLoadedProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("ImageLoaded"))?.GetValue(rule, null);
-            
+            var signatureProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Signature"))?.GetValue(rule, null);
+            var signatureStatusProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("SignatureStatus"))?.GetValue(rule, null);
+
             if (imageProperty != null)
                ruleItems.Add(imageProperty);
 
             if (imageLoadedProperty != null)
                ruleItems.Add(imageLoadedProperty);
+
+            if (signatureProperty != null)
+               ruleItems.Add(signatureProperty);
+
+            if (signatureStatusProperty != null)
+               ruleItems.Add(signatureStatusProperty);
          }
 
          foreach (var item in ruleItems)
