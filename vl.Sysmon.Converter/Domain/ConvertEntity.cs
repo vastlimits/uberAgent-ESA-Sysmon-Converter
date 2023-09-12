@@ -106,8 +106,11 @@ namespace vl.Sysmon.Converter.Domain
                   case "is not":
                      query = $"{item.Field} != {item.GetValueFormated()}{groupRelation}";
                      break;
+                  case "not end with":
+                     query = $"iendswith({item.Field}, {item.GetValueFormated()}) == false{groupRelation}";
+                     break;
                   case "excludes":
-                     query = $"icontains({item.Field}, {item.GetValueFormated()}){groupRelation} == false";
+                     query = $"icontains({item.Field}, {item.GetValueFormated()}) == false{groupRelation}";
                      break;
                   case "excludes any":
                   case "excludes all":
