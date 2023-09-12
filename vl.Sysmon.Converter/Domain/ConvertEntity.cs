@@ -317,6 +317,9 @@ namespace vl.Sysmon.Converter.Domain
       [TransformField("StartAddress", "Thread.StartAddress")]
       [TransformField("StartModule", "Thread.StartModule")]
       [TransformField("StartFunction", "Thread.StartFunction")]
+      [TransformFieldPath("TargetFilename", "File.Name", "File.Path", TransformMethod.RemoveTrailingBackslashes)]
+      [TransformFieldPath("PipeName", "File.Name", "File.Path", TransformMethod.RemoveTrailingBackslashes)]
+      [TransformField("IsExecutable", "File.HasExecPermissions")]
       [FieldNotSupported("OriginalFileName", "uberAgent currently does not support reading the original name from the PE header.")]
       [FieldNotSupported("IntegrityLevel", "uberAgent currently does not support reading the integrity level.")]
       [FieldNotSupported("CurrentDirectory", "uberAgent currently does not support reading the current directory (working directory).")]
@@ -324,6 +327,8 @@ namespace vl.Sysmon.Converter.Domain
       [FieldNotSupported("Guid", "uberAgent currently does not export any Guid.")]
       [FieldNotSupported("LogonId", "uberAgent currently does not support reading the logonId.")]
       [FieldNotSupported("Details", "uberAgent currently does not support written registry data.")]
+      [FieldNotSupported("Contents", "uberAgent currently does not support Contents field.")]
+      [FieldNotSupported("Archived", "uberAgent currently does not support Archived field.")]
       private static SysmonConditionBase CreateSysmonBaseCondition(object item)
       {
          if (item == null)
