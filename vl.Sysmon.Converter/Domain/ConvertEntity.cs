@@ -106,6 +106,34 @@ namespace vl.Sysmon.Converter.Domain
                   case "is not":
                      query = $"{item.Field} != {item.GetValueFormated()}{groupRelation}";
                      break;
+                  case "excludes":
+                     query = $"icontains({item.Field}, {item.GetValueFormated()}){groupRelation} == false";
+                     break;
+                  case "excludes any":
+                  case "excludes all":
+                     // Currently there is no uAQL function for contains 'all' or 'any'.
+                     bool excludesAll = item.Condition.EndsWith("all");
+                     splittedItemCondition = item.Value.Split(';').Select(x => $"{x.Trim()}").ToArray();
+                     relation = excludesAll ? " and " : " or ";
+
+                     foreach (var s in splittedItemCondition)
+                     {
+                        if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
+                        {
+                           query = query + $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\") == false{relation}";
+                        }
+                        else
+                        {
+                           query = query + $"icontains({item.Field}, \"{s}\") == false{relation}";
+                        }
+                     }
+
+                     query = query.Remove(query.Length - relation.Length, relation.Length);
+
+                     if (!lastValueInGroup)
+                        query += $" {mainGroupRelation} ";
+
+                     break;
                   default:
                      Log.Error("Condition: {condition} is not implemented.", item.Condition);
                      throw new NotImplementedException();
