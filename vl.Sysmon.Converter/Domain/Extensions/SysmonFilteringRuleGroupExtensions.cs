@@ -96,4 +96,10 @@ namespace vl.Sysmon.Converter.Domain
       public string name { get; set; }
       public string groupRelation { get; set; }
    }
+
+   public partial class SysmonEventFilteringRuleGroupFileDelete
+   {
+      public string name { get; set; }
+      public string groupRelation { get; set; }
+   }
 }

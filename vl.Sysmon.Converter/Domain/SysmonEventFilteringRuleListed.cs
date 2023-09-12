@@ -15,6 +15,7 @@ namespace vl.Sysmon.Converter.Domain
       public List<SysmonEventFilteringRuleGroupRegistryEvent> RegistryEvent { get; set; } = new();
 
       public List<SysmonEventFilteringRuleGroupFileCreate> FileCreate { get; set; } = new();
+      public List<SysmonEventFilteringRuleGroupFileDelete> FileDelete { get; set; } = new();
 
       public List<SysmonEventFilteringRuleGroupProcessAccess> ProcessAccess { get; set; } = new();
 
