@@ -28,6 +28,16 @@
       DnsQuery,
       ProcessCreateRemoteThread,
       ProcessTamperingEvent,
-      DriverLoad
+      DriverLoad,
+      FileChangeCreationTime,
+      FileRawAccessRead,
+      FileCreate,
+      FileCreateStream,
+      FilePipeCreate,
+      FilePipeConnected,
+      FileDelete,
+      FileRename,
+      FileWrite,
+      FileRead,
    }
 }

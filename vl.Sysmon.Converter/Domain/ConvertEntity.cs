@@ -106,6 +106,37 @@ namespace vl.Sysmon.Converter.Domain
                   case "is not":
                      query = $"{item.Field} != {item.GetValueFormated()}{groupRelation}";
                      break;
+                  case "not end with":
+                     query = $"iendswith({item.Field}, {item.GetValueFormated()}) == false{groupRelation}";
+                     break;
+                  case "excludes":
+                     query = $"icontains({item.Field}, {item.GetValueFormated()}) == false{groupRelation}";
+                     break;
+                  case "excludes any":
+                  case "excludes all":
+                     // Currently there is no uAQL function for contains 'all' or 'any'.
+                     bool excludesAll = item.Condition.EndsWith("all");
+                     splittedItemCondition = item.Value.Split(';').Select(x => $"{x.Trim()}").ToArray();
+                     relation = excludesAll ? " and " : " or ";
+
+                     foreach (var s in splittedItemCondition)
+                     {
+                        if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
+                        {
+                           query = query + $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\") == false{relation}";
+                        }
+                        else
+                        {
+                           query = query + $"icontains({item.Field}, \"{s}\") == false{relation}";
+                        }
+                     }
+
+                     query = query.Remove(query.Length - relation.Length, relation.Length);
+
+                     if (!lastValueInGroup)
+                        query += $" {mainGroupRelation} ";
+
+                     break;
                   default:
                      Log.Error("Condition: {condition} is not implemented.", item.Condition);
                      throw new NotImplementedException();
@@ -219,12 +250,12 @@ namespace vl.Sysmon.Converter.Domain
          var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items"))?.GetValue(rule, null);
          var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null).ToString().ToLower();
 
-         if (itemsProperty == null || itemsProperty is not IList ruleItems || ruleItems.Count == 0)
+         if (itemsProperty is not IList ruleItems || ruleItems.Count == 0)
          {
             // Check if we have an imageload rule here
             ruleItems = new List<object>();
 
-            var image = ruleProperties.Any(c => c.Name.EndsWith("Image") || c.Name.EndsWith("ImageLoaded") || c.Name.EndsWith("Signature") || c.Name.EndsWith("SignatureStatus"));
+            var image = ruleProperties.Any(c => c.Name.EndsWith("Image") || c.Name.EndsWith("ImageLoaded") || c.Name.EndsWith("Signature") || c.Name.EndsWith("SignatureStatus") || c.Name.EndsWith("TargetFilename"));
             if (!image)
                throw new NotImplementedException(nameof(rule));
             
@@ -289,6 +320,9 @@ namespace vl.Sysmon.Converter.Domain
       [TransformField("StartAddress", "Thread.StartAddress")]
       [TransformField("StartModule", "Thread.StartModule")]
       [TransformField("StartFunction", "Thread.StartFunction")]
+      [TransformFieldPath("TargetFilename", "File.Name", "File.Path", TransformMethod.RemoveTrailingBackslashes)]
+      [TransformFieldPath("PipeName", "File.Name", "File.Path", TransformMethod.RemoveTrailingBackslashes)]
+      [TransformField("IsExecutable", "File.HasExecPermissions")]
       [FieldNotSupported("OriginalFileName", "uberAgent currently does not support reading the original name from the PE header.")]
       [FieldNotSupported("IntegrityLevel", "uberAgent currently does not support reading the integrity level.")]
       [FieldNotSupported("CurrentDirectory", "uberAgent currently does not support reading the current directory (working directory).")]
@@ -296,6 +330,8 @@ namespace vl.Sysmon.Converter.Domain
       [FieldNotSupported("Guid", "uberAgent currently does not export any Guid.")]
       [FieldNotSupported("LogonId", "uberAgent currently does not support reading the logonId.")]
       [FieldNotSupported("Details", "uberAgent currently does not support written registry data.")]
+      [FieldNotSupported("Contents", "uberAgent currently does not support Contents field.")]
+      [FieldNotSupported("Archived", "uberAgent currently does not support Archived field.")]
       private static SysmonConditionBase CreateSysmonBaseCondition(object item)
       {
          if (item == null)

@@ -19,7 +19,7 @@ namespace vl.Sysmon.Converter.Domain
       public string groupRelation { get; set; }
    }
 
-   public partial class SysmonEventFilteringFileCreateStreamHash
+   public partial class SysmonEventFilteringRuleGroupFileCreateStreamHash
    {
       public string name { get; set; }
       public string groupRelation { get; set; }
@@ -92,6 +92,12 @@ namespace vl.Sysmon.Converter.Domain
    }
 
    public partial class SysmonEventFilteringRuleGroupProcessTampering
+   {
+      public string name { get; set; }
+      public string groupRelation { get; set; }
+   }
+
+   public partial class SysmonEventFilteringRuleGroupFileDelete
    {
       public string name { get; set; }
       public string groupRelation { get; set; }

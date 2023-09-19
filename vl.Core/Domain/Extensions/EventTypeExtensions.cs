@@ -36,6 +36,16 @@ namespace vl.Core.Domain.Extensions
             EventType.ProcessCreateRemoteThread => "Process.CreateRemoteThread",
             EventType.ProcessTamperingEvent => "Process.TamperingEvent",
             EventType.DriverLoad => "Driver.Load",
+            EventType.FileChangeCreationTime => "File.ChangeCreationTime",
+            EventType.FileCreate => "File.Create",
+            EventType.FileCreateStream => "File.CreateStream",
+            EventType.FileDelete => "File.Delete",
+            EventType.FilePipeCreate => "File.PipeCreate",
+            EventType.FilePipeConnected => "File.PipeConnected",
+            EventType.FileRawAccessRead => "File.RawAccessRead",
+            EventType.FileRename => "File.Rename",
+            EventType.FileWrite => "File.Write",
+            EventType.FileRead => "File.Read",
             _ => throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null)
          };
       }

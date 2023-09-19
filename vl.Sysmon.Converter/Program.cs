@@ -93,6 +93,12 @@ namespace vl.Sysmon.Converter
                activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configListedRules.CreateRemoteThread));
                activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configListedRules.ProcessTampering));
                activityMonitoringRules.AddRange(DriverLoad.ConvertRules(configListedRules.DriverLoad));
+               activityMonitoringRules.AddRange(FileCreate.ConvertRules(configListedRules.FileCreate));
+               activityMonitoringRules.AddRange(FileCreateTime.ConvertRules(configListedRules.FileCreateTime));
+               activityMonitoringRules.AddRange(FileCreateStreamHash.ConvertRules(configListedRules.FileCreateStreamHash));
+               activityMonitoringRules.AddRange(FileDelete.ConvertRules(configListedRules.FileDelete));
+               activityMonitoringRules.AddRange(FilePipeEvent.ConvertRules(configListedRules.PipeEvent));
+
             }
             else
             {
