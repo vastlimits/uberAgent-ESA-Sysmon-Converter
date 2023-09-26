@@ -125,19 +125,10 @@ Query = not ((Process.CommandLine == r"C:\Windows\System32\RuntimeBroker.exe -Em
 Currently, not all rules can be converted from Sysmon to uberAgent.
 The following rule IDs are currently not supported:
 
-- 2: FileCreateTime
-- 6: DriverLoad
-- 9: RawAccessRead
 - 10: ProcessAccess
-- 11: FileCreate
-- 15: FileCreateStreamHash
-- 17: NamedPipeCreated
-- 18: NamedPipeConnected
 - 19: WMI filter
 - 20: WMI consumer
 - 21: WMI consumer filter
-- 23: FileDelete
-- 26: FileDeleteDetected
 
 The following Sysmon rule queries are currently not supported:
 
