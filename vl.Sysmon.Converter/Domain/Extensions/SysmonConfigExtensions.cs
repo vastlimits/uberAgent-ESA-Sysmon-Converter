@@ -10,7 +10,9 @@ namespace vl.Sysmon.Converter.Domain.Extensions
       {
          var filteringRulesListed = new SysmonEventFilteringRuleListed();
          var filteringRulesListedProperties = filteringRulesListed.GetType().GetProperties();
-         var filteringRuleGroups = config.EventFiltering.Items.OfType<SysmonEventFilteringRuleGroup>();
+         var filteringRuleGroups = config?.EventFiltering?.Items?.OfType<SysmonEventFilteringRuleGroup>();
+         if (filteringRuleGroups == null)
+            return null;
 
          var properties = typeof(SysmonEventFilteringRuleGroup).GetProperties();
 
