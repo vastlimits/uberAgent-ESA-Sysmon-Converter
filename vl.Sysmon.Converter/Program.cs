@@ -78,9 +78,13 @@ namespace vl.Sysmon.Converter
 
          foreach (var namedConfig in configurations)
          {
-            Console.WriteLine();
             Log.Information("---- Converting file: {0} ----", namedConfig.Name);
             var configListedRules = namedConfig.Config.GetSysmonRulesListed();
+            if (configListedRules == null)
+            {
+               Log.Error("Could not find any rule groups <RuleGroup> in {0}, skip.", namedConfig.Name);
+               continue;
+            }
 
             if (!_options.RulesToConvert.Any())
             {
