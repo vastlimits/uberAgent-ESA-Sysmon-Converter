@@ -78,6 +78,7 @@ namespace vl.Sysmon.Converter
 
          foreach (var namedConfig in configurations)
          {
+            Console.WriteLine();
             Log.Information("---- Converting file: {0} ----", namedConfig.Name);
             var configListedRules = namedConfig.Config.GetSysmonRulesListed();
             if (configListedRules == null)
