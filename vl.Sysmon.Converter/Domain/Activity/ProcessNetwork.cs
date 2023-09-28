@@ -32,6 +32,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
 
                var activityConverterSettings = new SysmonActivityMonitoringRule
                {
+                  Id = Guid.NewGuid(),
                   EventType = EventType.NetConnect,
                   Name = ruleGroup.name,
                   Tag = ruleGroup.name,

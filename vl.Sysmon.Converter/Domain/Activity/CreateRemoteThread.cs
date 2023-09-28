@@ -34,6 +34,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
 
                var activityConverterSettings = new SysmonActivityMonitoringRule
                {
+                  Id = Guid.NewGuid(),
                   EventType = EventType.ProcessCreateRemoteThread,
                   Name = rule.name,
                   Tag = rule.name,
