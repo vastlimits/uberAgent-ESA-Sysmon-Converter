@@ -34,6 +34,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
 
                var activityConverterSettings = new SysmonActivityMonitoringRule
                {
+                  Id = Guid.NewGuid(),
                   EventType = EventType.FilePipeConnected,
                   Name = ruleGroup.name,
                   Tag = ruleGroup.name,

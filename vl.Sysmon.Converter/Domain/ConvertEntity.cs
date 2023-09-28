@@ -159,6 +159,7 @@ namespace vl.Sysmon.Converter.Domain
       {
          return new()
          {
+            Id = monitoringRule.Id,
             EventType = monitoringRule.EventType,
             Name = monitoringRule.Name,
             Tag = monitoringRule.Name,
