@@ -89,21 +89,20 @@ namespace vl.Sysmon.Converter
 
             if (!_options.RulesToConvert.Any())
             {
-               eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
-               activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
-               activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configListedRules.ProcessTerminate));
-               activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configListedRules.NetworkConnect));
-               activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
-               activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
-               activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configListedRules.CreateRemoteThread));
-               activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configListedRules.ProcessTampering));
-               activityMonitoringRules.AddRange(DriverLoad.ConvertRules(configListedRules.DriverLoad));
-               activityMonitoringRules.AddRange(FileCreate.ConvertRules(configListedRules.FileCreate));
-               activityMonitoringRules.AddRange(FileCreateTime.ConvertRules(configListedRules.FileCreateTime));
-               activityMonitoringRules.AddRange(FileCreateStreamHash.ConvertRules(configListedRules.FileCreateStreamHash));
-               activityMonitoringRules.AddRange(FileDelete.ConvertRules(configListedRules.FileDelete));
-               activityMonitoringRules.AddRange(FilePipeEvent.ConvertRules(configListedRules.PipeEvent));
-
+               eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
+               activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configGroupedListedRules.ProcessCreate));
+               activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configGroupedListedRules.ProcessTerminate));
+               activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configGroupedListedRules.NetworkConnect));
+               activityMonitoringRules.AddRange(Registry.ConvertRules(configGroupedListedRules.RegistryEvent));
+               activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configGroupedListedRules.ImageLoad));
+               activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configGroupedListedRules.CreateRemoteThread));
+               activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configGroupedListedRules.ProcessTampering));
+               activityMonitoringRules.AddRange(DriverLoad.ConvertRules(configGroupedListedRules.DriverLoad));
+               activityMonitoringRules.AddRange(FileCreate.ConvertRules(configGroupedListedRules.FileCreate));
+               activityMonitoringRules.AddRange(FileCreateTime.ConvertRules(configGroupedListedRules.FileCreateTime));
+               activityMonitoringRules.AddRange(FileCreateStreamHash.ConvertRules(configGroupedListedRules.FileCreateStreamHash));
+               activityMonitoringRules.AddRange(FileDelete.ConvertRules(configGroupedListedRules.FileDelete));
+               activityMonitoringRules.AddRange(FilePipeEvent.ConvertRules(configGroupedListedRules.PipeEvent));
             }
             else
             {
@@ -112,42 +111,54 @@ namespace vl.Sysmon.Converter
                   switch (ruleId)
                   {
                      case SysmonEventId.DNSQuery:
-                        eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configListedRules.DnsQuery));
+                        eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
                         break;
                      case SysmonEventId.ProcessCreate:
-                        activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configListedRules.ProcessCreate));
+                        activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configGroupedListedRules.ProcessCreate));
                         break;
                      case SysmonEventId.NetworkConnect:
-                        activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configListedRules.NetworkConnect));
+                        activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configGroupedListedRules.NetworkConnect));
                         break;
                      case SysmonEventId.ProcessTerminate:
-                        activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configListedRules.ProcessTerminate));
+                        activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configGroupedListedRules.ProcessTerminate));
                         break;
                      case SysmonEventId.ImageLoad:
-                        activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configListedRules.ImageLoad));
+                        activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configGroupedListedRules.ImageLoad));
                         break;
                      case SysmonEventId.CreateRemoteThread:
-                        activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configListedRules.CreateRemoteThread));
+                        activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configGroupedListedRules.CreateRemoteThread));
                         break;
                      case SysmonEventId.RegistryEvent:
-                        activityMonitoringRules.AddRange(Registry.ConvertRules(configListedRules.RegistryEvent));
+                        activityMonitoringRules.AddRange(Registry.ConvertRules(configGroupedListedRules.RegistryEvent));
                         break;
                      case SysmonEventId.ProcessTampering:
-                        activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configListedRules.ProcessTampering));
+                        activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configGroupedListedRules.ProcessTampering));
                         break;
                      case SysmonEventId.DriverLoad:
-                        activityMonitoringRules.AddRange(DriverLoad.ConvertRules(configListedRules.DriverLoad));
+                        activityMonitoringRules.AddRange(DriverLoad.ConvertRules(configGroupedListedRules.DriverLoad));
                         break;
                      case SysmonEventId.FileCreateStreamHash:
+                        activityMonitoringRules.AddRange(FileCreateStreamHash.ConvertRules(configGroupedListedRules.FileCreateStreamHash));
+                        break;
                      case SysmonEventId.FileCreateTime:
+                        activityMonitoringRules.AddRange(FileCreateTime.ConvertRules(configGroupedListedRules.FileCreateTime));
+                        break;
                      case SysmonEventId.RawAccessRead:
-                     case SysmonEventId.ProcessAccess:
+                        //TODO Missing
+                        break;
                      case SysmonEventId.FileCreate:
+                        activityMonitoringRules.AddRange(FileCreate.ConvertRules(configGroupedListedRules.FileCreate));
+                        break;
                      case SysmonEventId.PipeEvent:
-                     case SysmonEventId.WmiEvent:
+                        activityMonitoringRules.AddRange(FilePipeEvent.ConvertRules(configGroupedListedRules.PipeEvent));
+                        break;
                      case SysmonEventId.FileDelete:
-                     case SysmonEventId.ClipboardChange:
                      case SysmonEventId.FileDeleteDetected:
+                        activityMonitoringRules.AddRange(FileDelete.ConvertRules(configGroupedListedRules.FileDelete));
+                        break;
+                     case SysmonEventId.ClipboardChange:
+                     case SysmonEventId.WmiEvent:
+                     case SysmonEventId.ProcessAccess:
                      default:
                         Log.Warning("Rule: {0} is currently not supported!", ruleId);
                         break;
