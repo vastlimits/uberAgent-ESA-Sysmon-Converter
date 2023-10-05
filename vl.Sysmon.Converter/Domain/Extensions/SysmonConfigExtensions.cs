@@ -9,8 +9,7 @@ namespace vl.Sysmon.Converter.Domain.Extensions
    {
       internal static SysmonEventFilteringRuleListed GetSysmonRules(this Sysmon config, SysmonEventFilteringRuleListed groups)
       {
-         var filteringRulesListed = new SysmonEventFilteringRuleListed();
-         var filteringRulesListedProperties = filteringRulesListed.GetType().GetProperties();
+         var filteringRulesListedProperties = groups.GetType().GetProperties();
 
          var sysmonEventFilteringProperties = typeof(SysmonEventFiltering).GetProperties().Where(c => c.Name != "Items").ToArray();
          var eventsWithoutGroup = sysmonEventFilteringProperties.ToDictionary(prop => prop.Name,
@@ -18,24 +17,27 @@ namespace vl.Sysmon.Converter.Domain.Extensions
 
          foreach (var rule in eventsWithoutGroup)
          {
-            var filteringRulesListedProperty = filteringRulesListedProperties.FirstOrDefault(c => c.Name.Equals(rule.Key))?.GetValue(filteringRulesListed, null);
+            var filteringRulesListedProperty = filteringRulesListedProperties.FirstOrDefault(c => c.Name.Equals(rule.Key))?.GetValue(groups, null);
 
             foreach (var ruleObject in ((Array)rule.Value))
             {
                var targetTypeName = $"vl.Sysmon.Converter.Domain.SysmonEventFilteringRuleGroup{rule.Key}";
                var targetType = Type.GetType(targetTypeName);
-               var castMethod = ruleObject.GetType().GetMethod("op_Implicit", new[] { ruleObject.GetType() });
+               var castMethod = targetType?.GetMethod("op_Implicit", new[] { ruleObject.GetType() });
 
                if (targetType == null || castMethod == null)
                   continue;
 
-               var convertedObject = castMethod.Invoke(null, new[] { ruleObject });
+               var convertedObject = castMethod?.Invoke(null, new[] { ruleObject });
+               if (convertedObject == null)
+                  continue;
+
                filteringRulesListedProperty?.GetType().GetMethod("Add")?.Invoke(filteringRulesListedProperty, new[] { convertedObject });
             }
          }
 
 
-         return null;
+         return groups;
       }
 
       internal static SysmonEventFilteringRuleListed GetSysmonRulesFromGroupListed(this Sysmon config)

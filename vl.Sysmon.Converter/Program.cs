@@ -80,8 +80,10 @@ namespace vl.Sysmon.Converter
          {
             Console.WriteLine();
             Log.Information("---- Converting file: {0} ----", namedConfig.Name);
-            var configListedRules = namedConfig.Config.GetSysmonRulesListed();
-            if (configListedRules == null)
+            var configGroupedListedRules = namedConfig.Config.GetSysmonRulesFromGroupListed();
+            configGroupedListedRules = namedConfig.Config.GetSysmonRules(configGroupedListedRules);
+
+            if (configGroupedListedRules == null)
             {
                Log.Error("Could not find any rule groups <RuleGroup> in {0}, skip.", namedConfig.Name);
                continue;
