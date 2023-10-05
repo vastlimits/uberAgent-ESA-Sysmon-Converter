@@ -13,7 +13,7 @@ public class DriverLoad : ConvertEntity
       if (driverLoadRulesGroup == null || driverLoadRulesGroup.Count == 0)
          return NothingToConvert("DriverLoad");
 
-      driverLoadRulesGroup = driverLoadRulesGroup.Where(c => c.Rule is { Length: > 0 }).ToList();
+      driverLoadRulesGroup = driverLoadRulesGroup.Where(c => c.Items is { Length: > 0 }).ToList();
       if (driverLoadRulesGroup.Count == 0)
          return NothingToConvert("DriverLoad");
 
@@ -29,7 +29,7 @@ public class DriverLoad : ConvertEntity
                 !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
                continue;
 
-            if (ruleGroup.Rule == null || ruleGroup.Rule.Length == 0)
+            if (ruleGroup.Items == null || ruleGroup.Items.Length == 0)
                continue;
 
             var activityConverterSettings = new SysmonActivityMonitoringRule
