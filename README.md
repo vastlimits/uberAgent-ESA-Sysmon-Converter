@@ -130,7 +130,7 @@ The following rule IDs are currently not supported:
 - 19: WMI filter
 - 20: WMI consumer
 - 21: WMI consumer filter
-
+- 24: ClipboardChange
 
 The following Sysmon rule queries are currently not supported:
 
