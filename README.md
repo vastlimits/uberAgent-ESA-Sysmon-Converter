@@ -123,7 +123,6 @@ Query = not ((Process.CommandLine == r"C:\Windows\System32\RuntimeBroker.exe -Em
 
 ## Limitations
 Currently, not all rules can be converted from Sysmon to uberAgent.
-Also, currently no rules are converted that are not in a rule group, i.e. start with a <RuleGroup> tag.
 The following rule IDs are currently not supported:
 
 - 10: ProcessAccess
