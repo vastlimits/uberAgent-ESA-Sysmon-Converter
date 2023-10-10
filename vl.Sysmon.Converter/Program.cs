@@ -105,6 +105,7 @@ namespace vl.Sysmon.Converter
                activityMonitoringRules.AddRange(FileCreateStreamHash.ConvertRules(configGroupedListedRules.FileCreateStreamHash));
                activityMonitoringRules.AddRange(FileDelete.ConvertRules(configGroupedListedRules.FileDelete));
                activityMonitoringRules.AddRange(FilePipeEvent.ConvertRules(configGroupedListedRules.PipeEvent));
+               activityMonitoringRules.AddRange(FileRawAccessRead.ConvertRules(configGroupedListedRules.RawAccessRead));
             }
             else
             {
@@ -146,7 +147,7 @@ namespace vl.Sysmon.Converter
                         activityMonitoringRules.AddRange(FileCreateTime.ConvertRules(configGroupedListedRules.FileCreateTime));
                         break;
                      case SysmonEventId.RawAccessRead:
-                        //TODO Missing
+                        activityMonitoringRules.AddRange(FileRawAccessRead.ConvertRules(configGroupedListedRules.RawAccessRead));
                         break;
                      case SysmonEventId.FileCreate:
                         activityMonitoringRules.AddRange(FileCreate.ConvertRules(configGroupedListedRules.FileCreate));
