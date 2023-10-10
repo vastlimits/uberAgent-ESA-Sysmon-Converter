@@ -34,6 +34,7 @@ public class DriverLoad : ConvertEntity
 
             var activityConverterSettings = new SysmonActivityMonitoringRule
             {
+               Id = Guid.NewGuid(),
                EventType = EventType.DriverLoad,
                Name = ruleGroup.name,
                Tag = ruleGroup.name,

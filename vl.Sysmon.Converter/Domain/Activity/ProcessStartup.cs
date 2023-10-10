@@ -31,6 +31,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
 
                var activityConverterSettings = new SysmonActivityMonitoringRule
                {
+                  Id = Guid.NewGuid(),
                   EventType = EventType.ProcessStart,
                   Name = rule.name,
                   Tag = rule.name,
