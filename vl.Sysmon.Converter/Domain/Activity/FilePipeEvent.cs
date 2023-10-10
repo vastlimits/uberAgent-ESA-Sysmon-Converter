@@ -52,6 +52,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
                   converted,
                   new ActivityMonitoringRule()
                   {
+                     Id = converted.Id,
                      EventType = EventType.FilePipeCreate,
                      Name = converted.Name,
                      Hive = converted.Hive,
