@@ -13,7 +13,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
          if (processTerminateRules == null || processTerminateRules.Count == 0)
             return NothingToConvert("ProcessStop");
 
-         processTerminateRules = processTerminateRules.Where(c => c.Image is { Length: > 0 } || c.ProcessGuid is { Length: > 0 } || c.ProcessId is { Length: > 0 } || c.UtcTime is { Length: > 0 }).ToList();
+         processTerminateRules = processTerminateRules.Where(c => c.Items is { Length: > 0 }).ToList();
          if (processTerminateRules.Count == 0)
             return NothingToConvert("ProcessStop");
 
@@ -27,6 +27,9 @@ namespace vl.Sysmon.Converter.Domain.Activity
                var onMatch = rule.onmatch.ToLower();
                if (!onMatch.Equals(Constants.SysmonExcludeOnMatchString) &&
                    !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
+                  continue;
+
+               if (rule.Items == null || rule.Items.Length == 0)
                   continue;
 
                var activityConverterSettings = new SysmonActivityMonitoringRule

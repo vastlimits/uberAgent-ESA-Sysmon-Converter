@@ -5,21 +5,21 @@ using vl.Core.Domain.Activity;
 
 namespace vl.Sysmon.Converter.Domain.Activity
 {
-   public class FilePipeEvent : ConvertEntity
+   public class FileRawAccessRead : ConvertEntity
    {
       public static IEnumerable<ActivityMonitoringRule> ConvertRules(
-         List<SysmonEventFilteringRuleGroupPipeEvent> fileCreateRulesGroup)
+         List<SysmonEventFilteringRuleGroupRawAccessRead> fileCreateRulesGroup)
       {
          if (fileCreateRulesGroup == null || fileCreateRulesGroup.Count == 0)
-            return NothingToConvert("FilePipeEvent");
+            return NothingToConvert("FileRawAccessRead");
 
          fileCreateRulesGroup = fileCreateRulesGroup.Where(c => c.Items is { Length: > 0 }).ToList();
          if (fileCreateRulesGroup.Count == 0)
-            return NothingToConvert("FilePipeEvent");
+            return NothingToConvert("FileRawAccessRead");
 
          try
          {
-            Log.Information("Converting rules for FilePipeEvent..");
+            Log.Information("Converting rules for FileRawAccessRead..");
             var result = new List<ActivityMonitoringRule>();
 
             foreach (var ruleGroup in fileCreateRulesGroup)
@@ -35,7 +35,7 @@ namespace vl.Sysmon.Converter.Domain.Activity
                var activityConverterSettings = new SysmonActivityMonitoringRule
                {
                   Id = Guid.NewGuid(),
-                  EventType = EventType.FilePipeConnected,
+                  EventType = EventType.FileRawAccessRead,
                   Name = ruleGroup.name,
                   Tag = ruleGroup.name,
                   Conditions = ParseRule(ruleGroup).ToArray(),
@@ -45,32 +45,18 @@ namespace vl.Sysmon.Converter.Domain.Activity
                if (activityConverterSettings.Conditions.Length == 0)
                   continue;
 
-               var converted = Convert(activityConverterSettings);
-
-               result.AddRange(new []
-               {
-                  converted,
-                  new ActivityMonitoringRule()
-                  {
-                     Id = converted.Id,
-                     EventType = EventType.FilePipeCreate,
-                     Name = converted.Name,
-                     Hive = converted.Hive,
-                     Query = converted.Query,
-                     Tag = converted.Tag,
-                  }
-               });
+               result.Add(Convert(activityConverterSettings));
             }
 
-            Log.Information("Converted {converted}/{rules} rules.", result.Count / 2, fileCreateRulesGroup.Count);
+            Log.Information("Converted {converted}/{rules} rules.", result.Count, fileCreateRulesGroup.Count);
             return result.ToArray();
          }
          catch (Exception ex)
          {
-            Log.Error(ex, $"Failure to convert rules for FileCreateStreamHash.");
+            Log.Error(ex, $"Failure to convert rules for FileRawAccessRead.");
          }
 
-         return NothingToConvert("FileCreateStreamHash");
+         return NothingToConvert("FileRawAccessRead");
       }
    }
 }
