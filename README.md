@@ -50,7 +50,7 @@ vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2
 
 The RiskScore is set to 50 by default, but you can specify it:
 ```cmd
-vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12 -score 75
+vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12 --score 75
 ```
 
 Or a shorter notation
