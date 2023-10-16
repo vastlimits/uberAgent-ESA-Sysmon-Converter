@@ -352,7 +352,7 @@ namespace vl.Sysmon.Converter.Domain
          var itemValue = itemProperties.FirstOrDefault(c => c.Name.Equals("Value"))?.GetValue(item, null)?.ToString();
          var itemCondition = itemProperties.FirstOrDefault(c => c.Name.Equals("condition"))?.GetValue(item, null)?.ToString();
 
-         if (string.IsNullOrEmpty(itemValue) || string.IsNullOrEmpty(itemCondition))
+         if (string.IsNullOrEmpty(itemValue))
             return null;
 
          // EventType is ignored here because we have already read it before.
@@ -386,7 +386,7 @@ namespace vl.Sysmon.Converter.Domain
                return new SysmonConditionBase
                {
                   Field = attribute.GetTargetField(itemValue),
-                  Condition = itemCondition,
+                  Condition = itemCondition ?? "is",
                   Value = attribute.TransformValue(itemValue),
                   DataType = attribute.GetDataType()
                };
