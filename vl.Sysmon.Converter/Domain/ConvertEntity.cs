@@ -145,7 +145,26 @@ namespace vl.Sysmon.Converter.Domain
                if (string.IsNullOrEmpty(query))
                   continue;
 
-               queryBuilder.Append(i == 0 && !lastValueInGroup ? $"({query}" : lastValueInGroup && !lastGroup ? $"{query}) {mainGroupRelation} " : lastValueInGroup && lastGroup ? $"{query})" : $"{query}");
+                  if (d == 0 && i == 0 && !lastValueInGroupFields)
+                  {
+                     queryBuilder.Append($"({query}");
+                  }
+                  else if (lastValueInGroupFields && !lastGroup)
+                  {
+                     queryBuilder.Append($"{query}) or ");
+                  }
+                  else if (lastValueInGroupFields && lastGroup && lastValueInGroup && d > 0)
+                  {
+                     queryBuilder.Append($"{query})");
+                  }
+                  else
+                  {
+                     queryBuilder.Append($"{query}");
+                  }
+               }
+
+               if (!lastValueInGroupFields)
+                  queryBuilder.Append($" {mainGroupRelation} ");
             }
          }
 
