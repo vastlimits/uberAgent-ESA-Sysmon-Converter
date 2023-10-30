@@ -39,14 +39,21 @@ namespace vl.Sysmon.Converter.Domain
          var exclude = conditions[0].OnMatch.Equals(Constants.SysmonExcludeOnMatchString);
          
          if (exclude)
-            queryBuilder.Append("not (");
+            queryBuilder.Append("not ");
 
          var conditionsGrouped = conditions.GroupBy(c => c.RuleId).ToDictionary(c => c.Key, c=> c.ToList());
 
          for (var groupIndex = 0; groupIndex < conditionsGrouped.Count; groupIndex++)
          {
             var (_, sysmonConditions) = conditionsGrouped.ElementAt(groupIndex);
-            var lastGroup = groupIndex + 1 == conditionsGrouped.Count;
+            var innerRuleRelation = string.Empty;
+
+            // new start of rule converting
+            if (groupIndex == 0)
+               queryBuilder.Append("((");
+            else
+            // inner rule converting
+               queryBuilder.Append($") {mainGroupRelation} (");
 
             var sysmonConditionsGroupedByField = sysmonConditions.GroupBy(c => c.Field).ToArray();
 
@@ -62,6 +69,7 @@ namespace vl.Sysmon.Converter.Domain
                   var groupRelation = lastValueInGroup ? string.Empty : " or ";
                   var query = string.Empty;
                   item.Value = item.Value.Replace("%%", "%");
+                  innerRuleRelation = item.GroupRelation;
 
                   if (item.Value.EndsWith(@"\") && !item.Value.EndsWith(@"\\"))
                      item.Value = item.Value.Replace(@"\", @"\\");
@@ -92,11 +100,11 @@ namespace vl.Sysmon.Converter.Domain
                         {
                            if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
                            {
-                              query = query + $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\"){relation}";
+                              query += $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\"){relation}";
                            }
                            else
                            {
-                              query = query + $"icontains({item.Field}, \"{s}\"){relation}";
+                              query += $"icontains({item.Field}, \"{s}\"){relation}";
                            }
                         }
 
@@ -126,11 +134,11 @@ namespace vl.Sysmon.Converter.Domain
                         {
                            if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
                            {
-                              query = query + $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\") == false{relation}";
+                              query += $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\") == false{relation}";
                            }
                            else
                            {
-                              query = query + $"icontains({item.Field}, \"{s}\") == false{relation}";
+                              query += $"icontains({item.Field}, \"{s}\") == false{relation}";
                            }
                         }
 
@@ -147,32 +155,23 @@ namespace vl.Sysmon.Converter.Domain
 
                   if (string.IsNullOrEmpty(query))
                      continue;
-
-                  if (d == 0 && i == 0 && !lastValueInGroupFields)
-                  {
-                     queryBuilder.Append($"({query}");
-                  }
-                  else if (lastValueInGroupFields && !lastGroup)
-                  {
-                     queryBuilder.Append($"{query}) or ");
-                  }
-                  else if (lastValueInGroupFields && lastGroup && lastValueInGroup && d > 0)
-                  {
-                     queryBuilder.Append($"{query})");
-                  }
-                  else
-                  {
-                     queryBuilder.Append($"{query}");
-                  }
+                  
+                  queryBuilder.Append($"{query}");
                }
 
                if (!lastValueInGroupFields)
-                  queryBuilder.Append($" {mainGroupRelation} ");
+               {
+                  if (groupIndex == 0)
+                     queryBuilder.Append($" {mainGroupRelation} ");
+                  else
+                     queryBuilder.Append($" {innerRuleRelation} ");
+               }
+
             }
          }
 
-         if (exclude)
-            queryBuilder.Append(")");
+         // close rule
+         queryBuilder.Append("))");
 
          return queryBuilder.ToString();
       }
@@ -267,31 +266,19 @@ namespace vl.Sysmon.Converter.Domain
          var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items"))?.GetValue(rule, null);
          var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null).ToString().ToLower();
 
-         if (itemsProperty is not IList ruleItems || ruleItems.Count == 0)
+         if (itemsProperty is not IList<object> ruleItems || ruleItems.Count == 0)
          {
             // Check if we have an imageload rule here
             ruleItems = new List<object>();
 
-            var image = ruleProperties.Any(c => c.Name.EndsWith("Image") || c.Name.EndsWith("ImageLoaded") || c.Name.EndsWith("Signature") || c.Name.EndsWith("SignatureStatus") || c.Name.EndsWith("TargetFilename"));
-            if (!image)
+            var hasItems = ruleProperties.Any(c => c.Name.EndsWith("Items"));
+            if (!hasItems)
                throw new NotImplementedException(nameof(rule));
-            
-            var imageProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Image"))?.GetValue(rule, null);
-            var imageLoadedProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("ImageLoaded"))?.GetValue(rule, null);
-            var signatureProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Signature"))?.GetValue(rule, null);
-            var signatureStatusProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("SignatureStatus"))?.GetValue(rule, null);
 
-            if (imageProperty != null)
-               ruleItems.Add(imageProperty);
-
-            if (imageLoadedProperty != null)
-               ruleItems.Add(imageLoadedProperty);
-
-            if (signatureProperty != null)
-               ruleItems.Add(signatureProperty);
-
-            if (signatureStatusProperty != null)
-               ruleItems.Add(signatureStatusProperty);
+            foreach (var item in ruleItems)
+            {
+               ruleItems.Add(item);
+            }
          }
 
          foreach (var item in ruleItems)
