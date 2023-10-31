@@ -5,7 +5,7 @@ using vl.Core.Domain.Activity;
 
 namespace vl.Sysmon.Converter.Domain.Activity
 {
-   public class ProcessStartup : ConvertEntity
+   public class ProcessStartup 
    {
       public static IEnumerable<ActivityMonitoringRule> ConvertRules(
          List<SysmonEventFilteringRuleGroupProcessCreate> processCreateRules)

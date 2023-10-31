@@ -8,9 +8,6 @@ namespace vl.Sysmon.Converter.Domain.Activity
 {
    public class SysmonActivityMonitoringRule : ActivityMonitoringRule
    {
-      public SysmonCondition[] Conditions { get; set; }
-      public string MainGroupRelation { get; set; }
-
       public static ActivityMonitoringRule Create<T>(List<T> sysmonGroupActivities, string eventName, EventType eventType) where T : ISysmonEventFilteringRuleGroup
       {
          if (sysmonGroupActivities == null || sysmonGroupActivities.Count == 0)
