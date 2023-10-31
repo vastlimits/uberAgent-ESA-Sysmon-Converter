@@ -10,7 +10,7 @@ namespace vl.Core.Domain.Extensions
          return eventType switch
          {
             EventType.Unknown => string.Empty,
-            EventType.ProcessStart => "Process.Start",
+            EventType.ProcessCreate => "Process.Start",
             EventType.ProcessStop => "Process.Stop",
             EventType.ImageLoad => "Image.Load",
             EventType.NetConnect => "Net.Connect",

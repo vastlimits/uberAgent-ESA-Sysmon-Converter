@@ -3,7 +3,7 @@
    public enum EventType
    {
       Unknown,
-      ProcessStart,
+      ProcessCreate,
       ProcessStop,
       ImageLoad, 
       NetConnect,
