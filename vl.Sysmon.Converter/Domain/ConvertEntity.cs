@@ -201,7 +201,7 @@ namespace vl.Sysmon.Converter.Domain
          }
 
          var ruleProperties = rule.GetType().GetProperties();
-         var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items") || c.Name.Equals("Image") || c.Name.Equals("Rule"))?.GetValue(rule, null);
+         var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items"))?.GetValue(rule, null);
          var onMatchProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("onmatch"))?.GetValue(rule, null)?.ToString();
          var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null)?.ToString()?.ToLower();
 
@@ -295,6 +295,7 @@ namespace vl.Sysmon.Converter.Domain
                Value = baseCondition.Value,
                Condition = baseCondition.Condition,
                OnMatch = onMatch,
+               DataType = baseCondition.DataType,
             });
          }
 
