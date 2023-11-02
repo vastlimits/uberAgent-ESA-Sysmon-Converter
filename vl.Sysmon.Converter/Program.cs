@@ -89,9 +89,12 @@ namespace vl.Sysmon.Converter
                continue;
             }
 
+            activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.NetworkConnect, "NetworkConnect", EventType.NetConnect));
+            activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessCreate, "ProcessCreate", EventType.ProcessCreate));
+
             if (!_options.RulesToConvert.Any())
             {
-               eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
+               /*eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
                activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configGroupedListedRules.ProcessCreate));
                activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configGroupedListedRules.ProcessTerminate));
                activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configGroupedListedRules.NetworkConnect));
@@ -105,11 +108,11 @@ namespace vl.Sysmon.Converter
                activityMonitoringRules.AddRange(FileCreateStreamHash.ConvertRules(configGroupedListedRules.FileCreateStreamHash));
                activityMonitoringRules.AddRange(FileDelete.ConvertRules(configGroupedListedRules.FileDelete));
                activityMonitoringRules.AddRange(FilePipeEvent.ConvertRules(configGroupedListedRules.PipeEvent));
-               activityMonitoringRules.AddRange(FileRawAccessRead.ConvertRules(configGroupedListedRules.RawAccessRead));
+               activityMonitoringRules.AddRange(FileRawAccessRead.ConvertRules(configGroupedListedRules.RawAccessRead));*/
             }
             else
             {
-               foreach (var ruleId in _options.RulesToConvert)
+              /* foreach (var ruleId in _options.RulesToConvert)
                {
                   switch (ruleId)
                   {
@@ -166,7 +169,7 @@ namespace vl.Sysmon.Converter
                         Log.Warning("Rule: {0} is currently not supported!", ruleId);
                         break;
                   }
-               }
+               }*/
             }
 
             Log.Information("---- Finished converting file: {0} ----", namedConfig.Name);
