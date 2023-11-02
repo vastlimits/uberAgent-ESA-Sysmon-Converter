@@ -89,30 +89,31 @@ namespace vl.Sysmon.Converter
                continue;
             }
 
-            activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.NetworkConnect, "NetworkConnect", EventType.NetConnect));
-            activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessCreate, "ProcessCreate", EventType.ProcessCreate));
+            
 
             if (!_options.RulesToConvert.Any())
             {
-               /*eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
-               activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configGroupedListedRules.ProcessCreate));
-               activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configGroupedListedRules.ProcessTerminate));
-               activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configGroupedListedRules.NetworkConnect));
-               activityMonitoringRules.AddRange(Registry.ConvertRules(configGroupedListedRules.RegistryEvent));
-               activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configGroupedListedRules.ImageLoad));
-               activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configGroupedListedRules.CreateRemoteThread));
-               activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configGroupedListedRules.ProcessTampering));
-               activityMonitoringRules.AddRange(DriverLoad.ConvertRules(configGroupedListedRules.DriverLoad));
-               activityMonitoringRules.AddRange(FileCreate.ConvertRules(configGroupedListedRules.FileCreate));
-               activityMonitoringRules.AddRange(FileCreateTime.ConvertRules(configGroupedListedRules.FileCreateTime));
-               activityMonitoringRules.AddRange(FileCreateStreamHash.ConvertRules(configGroupedListedRules.FileCreateStreamHash));
-               activityMonitoringRules.AddRange(FileDelete.ConvertRules(configGroupedListedRules.FileDelete));
-               activityMonitoringRules.AddRange(FilePipeEvent.ConvertRules(configGroupedListedRules.PipeEvent));
-               activityMonitoringRules.AddRange(FileRawAccessRead.ConvertRules(configGroupedListedRules.RawAccessRead));*/
+               eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessCreate, "ProcessCreate", EventType.ProcessCreate));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessTerminate, "ProcessTerminate", EventType.ProcessTerminate));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.NetworkConnect, "NetworkConnect", EventType.NetConnect));
+               //TODO: Restore Registry handling
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", EventType.RegAny));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ImageLoad, "ImageLoad", EventType.ImageLoad));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.CreateRemoteThread, "CreateRemoteThread", EventType.CreateRemoteThread));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessTampering, "ProcessTampering", EventType.ProcessTampering));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.DriverLoad, "DriverLoad", EventType.DriverLoad));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileCreate, "FileCreate", EventType.FileCreate));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileCreateTime, "FileCreateTime", EventType.FileCreateTime));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileCreateStreamHash, "FileCreateStreamHash", EventType.FileCreateStreamHash));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileDelete, "FileDelete", EventType.FileDelete));
+               //TODO: Correct Pipe event handling
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.PipeEvent, "PipeEvent", EventType.FilePipeConnected));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RawAccessRead, "RawAccessRead", EventType.RawAccessRead));
             }
             else
             {
-              /* foreach (var ruleId in _options.RulesToConvert)
+               foreach (var ruleId in _options.RulesToConvert)
                {
                   switch (ruleId)
                   {
@@ -120,47 +121,47 @@ namespace vl.Sysmon.Converter
                         eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
                         break;
                      case SysmonEventId.ProcessCreate:
-                        activityMonitoringRules.AddRange(ProcessStartup.ConvertRules(configGroupedListedRules.ProcessCreate));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessCreate, "ProcessCreate", EventType.ProcessCreate));
                         break;
                      case SysmonEventId.NetworkConnect:
-                        activityMonitoringRules.AddRange(ProcessNetwork.ConvertRules(configGroupedListedRules.NetworkConnect));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.NetworkConnect, "NetworkConnect", EventType.NetConnect));
                         break;
                      case SysmonEventId.ProcessTerminate:
-                        activityMonitoringRules.AddRange(ProcessStop.ConvertRules(configGroupedListedRules.ProcessTerminate));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessTerminate, "ProcessTerminate", EventType.ProcessTerminate));
                         break;
                      case SysmonEventId.ImageLoad:
-                        activityMonitoringRules.AddRange(ImageLoad.ConvertRules(configGroupedListedRules.ImageLoad));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ImageLoad, "ImageLoad", EventType.ImageLoad));
                         break;
                      case SysmonEventId.CreateRemoteThread:
-                        activityMonitoringRules.AddRange(CreateRemoteThread.ConvertRules(configGroupedListedRules.CreateRemoteThread));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.CreateRemoteThread, "CreateRemoteThread", EventType.CreateRemoteThread));
                         break;
                      case SysmonEventId.RegistryEvent:
-                        activityMonitoringRules.AddRange(Registry.ConvertRules(configGroupedListedRules.RegistryEvent));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", EventType.RegAny));
                         break;
                      case SysmonEventId.ProcessTampering:
-                        activityMonitoringRules.AddRange(ProcessTampering.ConvertRules(configGroupedListedRules.ProcessTampering));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessTampering, "ProcessTampering", EventType.ProcessTampering));
                         break;
                      case SysmonEventId.DriverLoad:
-                        activityMonitoringRules.AddRange(DriverLoad.ConvertRules(configGroupedListedRules.DriverLoad));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.DriverLoad, "DriverLoad", EventType.DriverLoad));
                         break;
                      case SysmonEventId.FileCreateStreamHash:
-                        activityMonitoringRules.AddRange(FileCreateStreamHash.ConvertRules(configGroupedListedRules.FileCreateStreamHash));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileCreateStreamHash, "FileCreateStreamHash", EventType.FileCreateStreamHash));
                         break;
                      case SysmonEventId.FileCreateTime:
-                        activityMonitoringRules.AddRange(FileCreateTime.ConvertRules(configGroupedListedRules.FileCreateTime));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileCreateTime, "FileCreateTime", EventType.FileCreateTime));
                         break;
                      case SysmonEventId.RawAccessRead:
-                        activityMonitoringRules.AddRange(FileRawAccessRead.ConvertRules(configGroupedListedRules.RawAccessRead));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RawAccessRead, "RawAccessRead", EventType.RawAccessRead));
                         break;
                      case SysmonEventId.FileCreate:
-                        activityMonitoringRules.AddRange(FileCreate.ConvertRules(configGroupedListedRules.FileCreate));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileCreate, "FileCreate", EventType.FileCreate));
                         break;
                      case SysmonEventId.PipeEvent:
-                        activityMonitoringRules.AddRange(FilePipeEvent.ConvertRules(configGroupedListedRules.PipeEvent));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.PipeEvent, "PipeEvent", EventType.FilePipeConnected));
                         break;
                      case SysmonEventId.FileDelete:
                      case SysmonEventId.FileDeleteDetected:
-                        activityMonitoringRules.AddRange(FileDelete.ConvertRules(configGroupedListedRules.FileDelete));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileDelete, "FileDelete", EventType.FileDelete));
                         break;
                      case SysmonEventId.ClipboardChange:
                      case SysmonEventId.WmiEvent:
@@ -169,7 +170,7 @@ namespace vl.Sysmon.Converter
                         Log.Warning("Rule: {0} is currently not supported!", ruleId);
                         break;
                   }
-               }*/
+               }
             }
 
             Log.Information("---- Finished converting file: {0} ----", namedConfig.Name);

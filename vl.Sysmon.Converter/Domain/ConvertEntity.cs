@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,7 +7,6 @@ using Serilog;
 using vl.Core.Domain.Activity;
 using vl.Core.Domain.Attributes;
 using vl.Core.Domain.EventData;
-using vl.Sysmon.Converter.Domain.Activity;
 using vl.Sysmon.Converter.Domain.EventData;
 
 namespace vl.Sysmon.Converter.Domain

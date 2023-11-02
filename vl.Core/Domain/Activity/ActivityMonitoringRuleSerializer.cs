@@ -27,6 +27,9 @@ namespace vl.Core.Domain.Activity
          {
             foreach (var rule in options.Rules)
             {
+               if (string.IsNullOrEmpty(rule.Query))
+                  continue;
+
                sw.WriteLine("[ActivityMonitoringRule]");
 
                if (string.IsNullOrEmpty(rule.Name))

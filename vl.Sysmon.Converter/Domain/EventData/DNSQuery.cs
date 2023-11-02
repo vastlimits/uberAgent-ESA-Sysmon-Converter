@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Serilog;
 using vl.Core.Domain.EventData;
 
 namespace vl.Sysmon.Converter.Domain.EventData
 {
-   public class DNSQuery : ConvertEntity
+   public class DNSQuery
    {
       public static IEnumerable<EventDataFilter> ConvertExcludeRules(List<SysmonEventFilteringRuleGroupDnsQuery> dnsRules)
       {
@@ -38,7 +39,7 @@ namespace vl.Sysmon.Converter.Domain.EventData
                      case SysmonEventFilteringRuleGroupDnsQueryQueryName c:
                         uberAgentMetricField = MetricFields.DnsRequest;
 
-                        filter = Convert(new SysmonEventDataFilter
+                        filter = ConvertEntity.Convert(new SysmonEventDataFilter
                         {
                            Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
                            Sourcetypes = sourcetypes
