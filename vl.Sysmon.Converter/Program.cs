@@ -20,6 +20,10 @@ namespace vl.Sysmon.Converter
                                             .WriteTo.Console()
                                             .CreateLogger();
       private static Options _options = new();
+      private static List<EventType> RegistryEventTypes = new()
+      {
+         EventType.RegKeyCreate, EventType.RegKeyDelete, EventType.RegValueWrite, EventType.RegKeyRename
+      };
 
       private static void Main(string[] args)
       {
@@ -97,8 +101,17 @@ namespace vl.Sysmon.Converter
                activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessCreate, "ProcessCreate", EventType.ProcessCreate));
                activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessTerminate, "ProcessTerminate", EventType.ProcessTerminate));
                activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.NetworkConnect, "NetworkConnect", EventType.NetConnect));
-               //TODO: Restore Registry handling
-               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", EventType.RegAny));
+
+               var removedAnyEventType = HandlePreConvertingRegistry(configGroupedListedRules.RegistryEvent);
+               if (removedAnyEventType)
+               {
+                  activityMonitoringRules.AddRange(RegistryEventTypes.Select(eventType => SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", eventType)));
+               }
+               else
+               {
+                  activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", EventType.RegAny));
+               }
+
                activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ImageLoad, "ImageLoad", EventType.ImageLoad));
                activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.CreateRemoteThread, "CreateRemoteThread", EventType.CreateRemoteThread));
                activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessTampering, "ProcessTampering", EventType.ProcessTampering));
@@ -135,8 +148,15 @@ namespace vl.Sysmon.Converter
                      case SysmonEventId.CreateRemoteThread:
                         activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.CreateRemoteThread, "CreateRemoteThread", EventType.CreateRemoteThread));
                         break;
-                     case SysmonEventId.RegistryEvent:
-                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", EventType.RegAny));
+                     case SysmonEventId.RegistryEventAddDelete:
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", EventType.RegKeyCreate));
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", EventType.RegKeyDelete));
+                        break;
+                     case SysmonEventId.RegistryEventValueSet:
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", EventType.RegValueWrite));
+                        break;
+                     case SysmonEventId.RegistryEventobjectRenamed:
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", EventType.RegKeyRename));
                         break;
                      case SysmonEventId.ProcessTampering:
                         activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessTampering, "ProcessTampering", EventType.ProcessTampering));
@@ -179,6 +199,42 @@ namespace vl.Sysmon.Converter
          Console.WriteLine();
 
          return Serialize(_options, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
+      }
+
+      private static bool HandlePreConvertingRegistry(List<SysmonEventFilteringRuleGroupRegistryEvent> sysmonGroupActivities)
+      {
+         var retn = false;
+         var excludes = (from ruleGroup in sysmonGroupActivities
+            where ruleGroup.onmatch.Equals(Constants.SysmonExcludeOnMatchString) && ruleGroup.Items != null
+            select ruleGroup.Items.Where(c => c.GetType() == typeof(SysmonEventFilteringRuleGroupRegistryEventEventType))
+            into toExcludeEventTypes
+            from SysmonEventFilteringRuleGroupRegistryEventEventType item in toExcludeEventTypes
+            select item).ToArray();
+
+         foreach (var item in excludes)
+         {
+            switch (item.Value)
+            {
+               case "SetValue":
+                  RegistryEventTypes.Remove(EventType.RegValueWrite);
+                  retn = true;
+                  break;
+               case "CreateKey":
+                  RegistryEventTypes.Remove(EventType.RegKeyCreate);
+                  retn = true;
+                  break;
+               case "DeleteKey":
+                  RegistryEventTypes.Remove(EventType.RegKeyDelete);
+                  retn = true;
+                  break;
+               case "RenameKey":
+                  RegistryEventTypes.Remove(EventType.RegKeyRename);
+                  retn = true;
+                  break;
+            }
+         }
+
+         return retn;
       }
 
       private static bool Serialize(Options options, EventDataFilter[] filters, ActivityMonitoringRule[] rules)
