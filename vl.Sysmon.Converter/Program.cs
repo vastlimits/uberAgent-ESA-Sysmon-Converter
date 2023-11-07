@@ -93,8 +93,6 @@ namespace vl.Sysmon.Converter
                continue;
             }
 
-            
-
             if (!_options.RulesToConvert.Any())
             {
                eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
@@ -120,8 +118,8 @@ namespace vl.Sysmon.Converter
                activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileCreateTime, "FileCreateTime", EventType.FileCreateTime));
                activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileCreateStreamHash, "FileCreateStreamHash", EventType.FileCreateStreamHash));
                activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileDelete, "FileDelete", EventType.FileDelete));
-               //TODO: Correct Pipe event handling
-               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.PipeEvent, "PipeEvent", EventType.FilePipeConnected));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.PipeEvent, "FilePipeConnected", EventType.FilePipeConnected));
+               activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.PipeEvent, "FilePipeCreate", EventType.FilePipeCreate));
                activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.RawAccessRead, "RawAccessRead", EventType.RawAccessRead));
             }
             else
@@ -176,7 +174,10 @@ namespace vl.Sysmon.Converter
                      case SysmonEventId.FileCreate:
                         activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.FileCreate, "FileCreate", EventType.FileCreate));
                         break;
-                     case SysmonEventId.PipeEvent:
+                     case SysmonEventId.PipeEventCreated:
+                        activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.PipeEvent, "PipeEvent", EventType.FilePipeCreate));
+                        break;
+                     case SysmonEventId.PipeEventConnected:
                         activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.PipeEvent, "PipeEvent", EventType.FilePipeConnected));
                         break;
                      case SysmonEventId.FileDelete:
