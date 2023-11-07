@@ -3,554 +3,553 @@
 // Menu -> Insert content -> XML in clipboard and this class was generated.
 // ATTENTION: This file was also changed manually, because the generator does not generate the classes completely as intended.
 //
-namespace vl.Sysmon.Converter.Domain
+namespace vl.Sysmon.Converter.Domain;
+
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+public partial class Sysmon
 {
-   [System.SerializableAttribute()]
-   [System.ComponentModel.DesignerCategoryAttribute("code")]
-   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-   [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-   public partial class Sysmon
+
+   private string hashAlgorithmsField;
+
+   private object checkRevocationField;
+
+   private SysmonEventFiltering eventFilteringField;
+
+   private decimal schemaversionField;
+
+   /// <remarks/>
+   public string HashAlgorithms
    {
+      get { return this.hashAlgorithmsField; }
+      set { this.hashAlgorithmsField = value; }
+   }
 
-      private string hashAlgorithmsField;
+   /// <remarks/>
+   public object CheckRevocation
+   {
+      get { return this.checkRevocationField; }
+      set { this.checkRevocationField = value; }
+   }
 
-      private object checkRevocationField;
+   /// <remarks/>
+   public SysmonEventFiltering EventFiltering
+   {
+      get { return this.eventFilteringField; }
+      set { this.eventFilteringField = value; }
+   }
 
-      private SysmonEventFiltering eventFilteringField;
+   /// <remarks/>
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public decimal schemaversion
+   {
+      get { return this.schemaversionField; }
+      set { this.schemaversionField = value; }
+   }
+}
 
-      private decimal schemaversionField;
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class SysmonEventFiltering
+{
+   private object[] itemsField;
 
-      /// <remarks/>
-      public string HashAlgorithms
+   [System.Xml.Serialization.XmlElementAttribute("RuleGroup", typeof(SysmonEventFilteringRuleGroup))]
+   public object[] Items
+   {
+      get { return this.itemsField; }
+      set { this.itemsField = value; }
+   }
+   private SysmonEventFilteringProcessCreate[] processCreateField;
+
+   private SysmonEventFilteringFileCreateTime[] fileCreateTimeField;
+
+   private SysmonEventFilteringNetworkConnect[] networkConnectField;
+
+   private SysmonEventFilteringProcessTerminate[] processTerminateField;
+
+   private SysmonEventFilteringDriverLoad[] driverLoadField;
+
+   private SysmonEventFilteringImageLoad[] imageLoadField;
+
+   private SysmonEventFilteringCreateRemoteThread[] createRemoteThreadField;
+
+   private SysmonEventFilteringRawAccessRead[] rawAccessReadField;
+
+   private SysmonEventFilteringProcessAccess[] processAccessField;
+
+   private SysmonEventFilteringFileCreate[] fileCreateField;
+
+   private SysmonEventFilteringRegistryEvent[] registryEventField;
+
+   private SysmonEventFilteringFileCreateStreamHash[] fileCreateStreamHashField;
+
+   private SysmonEventFilteringPipeEvent[] pipeEventField;
+
+   private SysmonEventFilteringDnsQuery[] dnsQueryField;
+
+   private SysmonEventFilteringFileDelete[] fileDeleteField;
+
+   private SysmonEventFilteringClipboardChange[] clipboardChangeField;
+
+   private SysmonEventFilteringProcessTampering[] processTamperingField;
+
+   private SysmonEventFilteringFileDeleteDetected[] fileDeleteDetectedField;
+
+
+   /// <remarks/>
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("ProcessCreate")]
+   public SysmonEventFilteringProcessCreate[] ProcessCreate
+   {
+      get
       {
-         get { return this.hashAlgorithmsField; }
-         set { this.hashAlgorithmsField = value; }
+         return this.processCreateField;
       }
-
-      /// <remarks/>
-      public object CheckRevocation
+      set
       {
-         get { return this.checkRevocationField; }
-         set { this.checkRevocationField = value; }
-      }
-
-      /// <remarks/>
-      public SysmonEventFiltering EventFiltering
-      {
-         get { return this.eventFilteringField; }
-         set { this.eventFilteringField = value; }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlAttributeAttribute()]
-      public decimal schemaversion
-      {
-         get { return this.schemaversionField; }
-         set { this.schemaversionField = value; }
+         this.processCreateField = value;
       }
    }
 
    /// <remarks/>
-   [System.SerializableAttribute()]
-   [System.ComponentModel.DesignerCategoryAttribute("code")]
-   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-   public partial class SysmonEventFiltering
+   [System.Xml.Serialization.XmlElementAttribute("FileCreateTime")]
+   public SysmonEventFilteringFileCreateTime[] FileCreateTime
    {
-      private object[] itemsField;
-
-      [System.Xml.Serialization.XmlElementAttribute("RuleGroup", typeof(SysmonEventFilteringRuleGroup))]
-      public object[] Items
+      get
       {
-         get { return this.itemsField; }
-         set { this.itemsField = value; }
+         return this.fileCreateTimeField;
       }
-      private SysmonEventFilteringProcessCreate[] processCreateField;
-
-      private SysmonEventFilteringFileCreateTime[] fileCreateTimeField;
-
-      private SysmonEventFilteringNetworkConnect[] networkConnectField;
-
-      private SysmonEventFilteringProcessTerminate[] processTerminateField;
-
-      private SysmonEventFilteringDriverLoad[] driverLoadField;
-
-      private SysmonEventFilteringImageLoad[] imageLoadField;
-
-      private SysmonEventFilteringCreateRemoteThread[] createRemoteThreadField;
-
-      private SysmonEventFilteringRawAccessRead[] rawAccessReadField;
-
-      private SysmonEventFilteringProcessAccess[] processAccessField;
-
-      private SysmonEventFilteringFileCreate[] fileCreateField;
-
-      private SysmonEventFilteringRegistryEvent[] registryEventField;
-
-      private SysmonEventFilteringFileCreateStreamHash[] fileCreateStreamHashField;
-
-      private SysmonEventFilteringPipeEvent[] pipeEventField;
-
-      private SysmonEventFilteringDnsQuery[] dnsQueryField;
-
-      private SysmonEventFilteringFileDelete[] fileDeleteField;
-
-      private SysmonEventFilteringClipboardChange[] clipboardChangeField;
-
-      private SysmonEventFilteringProcessTampering[] processTamperingField;
-
-      private SysmonEventFilteringFileDeleteDetected[] fileDeleteDetectedField;
-
-
-      /// <remarks/>
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("ProcessCreate")]
-      public SysmonEventFilteringProcessCreate[] ProcessCreate
+      set
       {
-         get
-         {
-            return this.processCreateField;
-         }
-         set
-         {
-            this.processCreateField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("FileCreateTime")]
-      public SysmonEventFilteringFileCreateTime[] FileCreateTime
-      {
-         get
-         {
-            return this.fileCreateTimeField;
-         }
-         set
-         {
-            this.fileCreateTimeField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("NetworkConnect")]
-      public SysmonEventFilteringNetworkConnect[] NetworkConnect
-      {
-         get
-         {
-            return this.networkConnectField;
-         }
-         set
-         {
-            this.networkConnectField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("ProcessTerminate")]
-      public SysmonEventFilteringProcessTerminate[] ProcessTerminate
-      {
-         get
-         {
-            return this.processTerminateField;
-         }
-         set
-         {
-            this.processTerminateField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("DriverLoad")]
-      public SysmonEventFilteringDriverLoad[] DriverLoad
-      {
-         get
-         {
-            return this.driverLoadField;
-         }
-         set
-         {
-            this.driverLoadField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("ImageLoad")]
-      public SysmonEventFilteringImageLoad[] ImageLoad
-      {
-         get
-         {
-            return this.imageLoadField;
-         }
-         set
-         {
-            this.imageLoadField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("CreateRemoteThread")]
-      public SysmonEventFilteringCreateRemoteThread[] CreateRemoteThread
-      {
-         get
-         {
-            return this.createRemoteThreadField;
-         }
-         set
-         {
-            this.createRemoteThreadField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("RawAccessRead")]
-      public SysmonEventFilteringRawAccessRead[] RawAccessRead
-      {
-         get
-         {
-            return this.rawAccessReadField;
-         }
-         set
-         {
-            this.rawAccessReadField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("ProcessAccess")]
-      public SysmonEventFilteringProcessAccess[] ProcessAccess
-      {
-         get
-         {
-            return this.processAccessField;
-         }
-         set
-         {
-            this.processAccessField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("FileCreate")]
-      public SysmonEventFilteringFileCreate[] FileCreate
-      {
-         get
-         {
-            return this.fileCreateField;
-         }
-         set
-         {
-            this.fileCreateField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("RegistryEvent")]
-      public SysmonEventFilteringRegistryEvent[] RegistryEvent
-      {
-         get
-         {
-            return this.registryEventField;
-         }
-         set
-         {
-            this.registryEventField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("FileCreateStreamHash")]
-      public SysmonEventFilteringFileCreateStreamHash[] FileCreateStreamHash
-      {
-         get
-         {
-            return this.fileCreateStreamHashField;
-         }
-         set
-         {
-            this.fileCreateStreamHashField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("PipeEvent")]
-      public SysmonEventFilteringPipeEvent[] PipeEvent
-      {
-         get
-         {
-            return this.pipeEventField;
-         }
-         set
-         {
-            this.pipeEventField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("DnsQuery")]
-      public SysmonEventFilteringDnsQuery[] DnsQuery
-      {
-         get
-         {
-            return this.dnsQueryField;
-         }
-         set
-         {
-            this.dnsQueryField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("FileDelete")]
-      public SysmonEventFilteringFileDelete[] FileDelete
-      {
-         get
-         {
-            return this.fileDeleteField;
-         }
-         set
-         {
-            this.fileDeleteField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("ClipboardChange")]
-      public SysmonEventFilteringClipboardChange[] ClipboardChange
-      {
-         get
-         {
-            return this.clipboardChangeField;
-         }
-         set
-         {
-            this.clipboardChangeField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("ProcessTampering")]
-      public SysmonEventFilteringProcessTampering[] ProcessTampering
-      {
-         get
-         {
-            return this.processTamperingField;
-         }
-         set
-         {
-            this.processTamperingField = value;
-         }
-      }
-
-      /// <remarks/>
-      [System.Xml.Serialization.XmlElementAttribute("FileDeleteDetected")]
-      public SysmonEventFilteringFileDeleteDetected[] FileDeleteDetected
-      {
-         get
-         {
-            return this.fileDeleteDetectedField;
-         }
-         set
-         {
-            this.fileDeleteDetectedField = value;
-         }
+         this.fileCreateTimeField = value;
       }
    }
 
    /// <remarks/>
-   [System.SerializableAttribute()]
-   [System.ComponentModel.DesignerCategoryAttribute("code")]
-   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-   public partial class SysmonEventFilteringRuleGroup
+   [System.Xml.Serialization.XmlElementAttribute("NetworkConnect")]
+   public SysmonEventFilteringNetworkConnect[] NetworkConnect
    {
-
-      private SysmonEventFilteringRuleGroupFileDeleteDetected fileDeleteDetectedField;
-
-      private SysmonEventFilteringRuleGroupProcessTampering processTamperingField;
-
-      private SysmonEventFilteringRuleGroupClipboardChange clipboardChangeField;
-
-      private SysmonEventFilteringRuleGroupFileDelete fileDeleteField;
-
-      private SysmonEventFilteringRuleGroupDnsQuery dnsQueryField;
-
-      private SysmonEventFilteringRuleGroupWmiEvent wmiEventField;
-
-      private SysmonEventFilteringRuleGroupPipeEvent pipeEventField;
-
-      private SysmonEventFilteringRuleGroupFileCreateStreamHash fileCreateStreamHashField;
-
-      private SysmonEventFilteringRuleGroupRegistryEvent registryEventField;
-
-      private SysmonEventFilteringRuleGroupFileCreate fileCreateField;
-
-      private SysmonEventFilteringRuleGroupProcessAccess processAccessField;
-
-      private SysmonEventFilteringRuleGroupRawAccessRead rawAccessReadField;
-
-      private SysmonEventFilteringRuleGroupCreateRemoteThread createRemoteThreadField;
-
-      private SysmonEventFilteringRuleGroupImageLoad imageLoadField;
-
-      private SysmonEventFilteringRuleGroupDriverLoad driverLoadField;
-
-      private SysmonEventFilteringRuleGroupProcessTerminate processTerminateField;
-
-      private SysmonEventFilteringRuleGroupNetworkConnect networkConnectField;
-
-      private SysmonEventFilteringRuleGroupFileCreateTime fileCreateTimeField;
-
-      private SysmonEventFilteringRuleGroupProcessCreate processCreateField;
-
-      private string nameField;
-
-      private string groupRelationField;
-
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupFileDeleteDetected FileDeleteDetected
+      get
       {
-         get { return this.fileDeleteDetectedField; }
-         set { this.fileDeleteDetectedField = value; }
+         return this.networkConnectField;
       }
-
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupProcessTampering ProcessTampering
+      set
       {
-         get { return this.processTamperingField; }
-         set { this.processTamperingField = value; }
+         this.networkConnectField = value;
       }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupClipboardChange ClipboardChange
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("ProcessTerminate")]
+   public SysmonEventFilteringProcessTerminate[] ProcessTerminate
+   {
+      get
       {
-         get { return this.clipboardChangeField; }
-         set { this.clipboardChangeField = value; }
+         return this.processTerminateField;
       }
+      set
+      {
+         this.processTerminateField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupFileDelete FileDelete
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("DriverLoad")]
+   public SysmonEventFilteringDriverLoad[] DriverLoad
+   {
+      get
       {
-         get { return this.fileDeleteField; }
-         set { this.fileDeleteField = value; }
+         return this.driverLoadField;
       }
+      set
+      {
+         this.driverLoadField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupDnsQuery DnsQuery
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("ImageLoad")]
+   public SysmonEventFilteringImageLoad[] ImageLoad
+   {
+      get
       {
-         get { return this.dnsQueryField; }
-         set { this.dnsQueryField = value; }
+         return this.imageLoadField;
       }
+      set
+      {
+         this.imageLoadField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupWmiEvent WmiEvent
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("CreateRemoteThread")]
+   public SysmonEventFilteringCreateRemoteThread[] CreateRemoteThread
+   {
+      get
       {
-         get { return this.wmiEventField; }
-         set { this.wmiEventField = value; }
+         return this.createRemoteThreadField;
       }
+      set
+      {
+         this.createRemoteThreadField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupPipeEvent PipeEvent
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("RawAccessRead")]
+   public SysmonEventFilteringRawAccessRead[] RawAccessRead
+   {
+      get
       {
-         get { return this.pipeEventField; }
-         set { this.pipeEventField = value; }
+         return this.rawAccessReadField;
       }
+      set
+      {
+         this.rawAccessReadField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupFileCreateStreamHash FileCreateStreamHash
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("ProcessAccess")]
+   public SysmonEventFilteringProcessAccess[] ProcessAccess
+   {
+      get
       {
-         get { return this.fileCreateStreamHashField; }
-         set { this.fileCreateStreamHashField = value; }
+         return this.processAccessField;
       }
+      set
+      {
+         this.processAccessField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupRegistryEvent RegistryEvent
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("FileCreate")]
+   public SysmonEventFilteringFileCreate[] FileCreate
+   {
+      get
       {
-         get { return this.registryEventField; }
-         set { this.registryEventField = value; }
+         return this.fileCreateField;
       }
+      set
+      {
+         this.fileCreateField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupFileCreate FileCreate
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("RegistryEvent")]
+   public SysmonEventFilteringRegistryEvent[] RegistryEvent
+   {
+      get
       {
-         get { return this.fileCreateField; }
-         set { this.fileCreateField = value; }
+         return this.registryEventField;
       }
+      set
+      {
+         this.registryEventField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupProcessAccess ProcessAccess
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("FileCreateStreamHash")]
+   public SysmonEventFilteringFileCreateStreamHash[] FileCreateStreamHash
+   {
+      get
       {
-         get { return this.processAccessField; }
-         set { this.processAccessField = value; }
+         return this.fileCreateStreamHashField;
       }
+      set
+      {
+         this.fileCreateStreamHashField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupRawAccessRead RawAccessRead
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("PipeEvent")]
+   public SysmonEventFilteringPipeEvent[] PipeEvent
+   {
+      get
       {
-         get { return this.rawAccessReadField; }
-         set { this.rawAccessReadField = value; }
+         return this.pipeEventField;
       }
+      set
+      {
+         this.pipeEventField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupCreateRemoteThread CreateRemoteThread
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("DnsQuery")]
+   public SysmonEventFilteringDnsQuery[] DnsQuery
+   {
+      get
       {
-         get { return this.createRemoteThreadField; }
-         set { this.createRemoteThreadField = value; }
+         return this.dnsQueryField;
       }
+      set
+      {
+         this.dnsQueryField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupImageLoad ImageLoad
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("FileDelete")]
+   public SysmonEventFilteringFileDelete[] FileDelete
+   {
+      get
       {
-         get { return this.imageLoadField; }
-         set { this.imageLoadField = value; }
+         return this.fileDeleteField;
       }
+      set
+      {
+         this.fileDeleteField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupDriverLoad DriverLoad
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("ClipboardChange")]
+   public SysmonEventFilteringClipboardChange[] ClipboardChange
+   {
+      get
       {
-         get { return this.driverLoadField; }
-         set { this.driverLoadField = value; }
+         return this.clipboardChangeField;
       }
+      set
+      {
+         this.clipboardChangeField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupProcessTerminate ProcessTerminate
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("ProcessTampering")]
+   public SysmonEventFilteringProcessTampering[] ProcessTampering
+   {
+      get
       {
-         get { return this.processTerminateField; }
-         set { this.processTerminateField = value; }
+         return this.processTamperingField;
       }
+      set
+      {
+         this.processTamperingField = value;
+      }
+   }
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupNetworkConnect NetworkConnect
+   /// <remarks/>
+   [System.Xml.Serialization.XmlElementAttribute("FileDeleteDetected")]
+   public SysmonEventFilteringFileDeleteDetected[] FileDeleteDetected
+   {
+      get
       {
-         get { return this.networkConnectField; }
-         set { this.networkConnectField = value; }
+         return this.fileDeleteDetectedField;
       }
+      set
+      {
+         this.fileDeleteDetectedField = value;
+      }
+   }
+}
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupFileCreateTime FileCreateTime
-      {
-         get { return this.fileCreateTimeField; }
-         set { this.fileCreateTimeField = value; }
-      }
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class SysmonEventFilteringRuleGroup
+{
 
-      /// <remarks/>
-      public SysmonEventFilteringRuleGroupProcessCreate ProcessCreate
-      {
-         get { return this.processCreateField; }
-         set { this.processCreateField = value; }
-      }
+   private SysmonEventFilteringRuleGroupFileDeleteDetected fileDeleteDetectedField;
 
-      /// <remarks/>
-      [System.Xml.Serialization.XmlAttributeAttribute()]
-      public string name
-      {
-         get { return this.nameField; }
-         set { this.nameField = value; }
-      }
+   private SysmonEventFilteringRuleGroupProcessTampering processTamperingField;
 
-      /// <remarks/>
-      [System.Xml.Serialization.XmlAttributeAttribute()]
-      public string groupRelation
-      {
-         get { return this.groupRelationField; }
-         set { this.groupRelationField = value; }
-      }
+   private SysmonEventFilteringRuleGroupClipboardChange clipboardChangeField;
+
+   private SysmonEventFilteringRuleGroupFileDelete fileDeleteField;
+
+   private SysmonEventFilteringRuleGroupDnsQuery dnsQueryField;
+
+   private SysmonEventFilteringRuleGroupWmiEvent wmiEventField;
+
+   private SysmonEventFilteringRuleGroupPipeEvent pipeEventField;
+
+   private SysmonEventFilteringRuleGroupFileCreateStreamHash fileCreateStreamHashField;
+
+   private SysmonEventFilteringRuleGroupRegistryEvent registryEventField;
+
+   private SysmonEventFilteringRuleGroupFileCreate fileCreateField;
+
+   private SysmonEventFilteringRuleGroupProcessAccess processAccessField;
+
+   private SysmonEventFilteringRuleGroupRawAccessRead rawAccessReadField;
+
+   private SysmonEventFilteringRuleGroupCreateRemoteThread createRemoteThreadField;
+
+   private SysmonEventFilteringRuleGroupImageLoad imageLoadField;
+
+   private SysmonEventFilteringRuleGroupDriverLoad driverLoadField;
+
+   private SysmonEventFilteringRuleGroupProcessTerminate processTerminateField;
+
+   private SysmonEventFilteringRuleGroupNetworkConnect networkConnectField;
+
+   private SysmonEventFilteringRuleGroupFileCreateTime fileCreateTimeField;
+
+   private SysmonEventFilteringRuleGroupProcessCreate processCreateField;
+
+   private string nameField;
+
+   private string groupRelationField;
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupFileDeleteDetected FileDeleteDetected
+   {
+      get { return this.fileDeleteDetectedField; }
+      set { this.fileDeleteDetectedField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupProcessTampering ProcessTampering
+   {
+      get { return this.processTamperingField; }
+      set { this.processTamperingField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupClipboardChange ClipboardChange
+   {
+      get { return this.clipboardChangeField; }
+      set { this.clipboardChangeField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupFileDelete FileDelete
+   {
+      get { return this.fileDeleteField; }
+      set { this.fileDeleteField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupDnsQuery DnsQuery
+   {
+      get { return this.dnsQueryField; }
+      set { this.dnsQueryField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupWmiEvent WmiEvent
+   {
+      get { return this.wmiEventField; }
+      set { this.wmiEventField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupPipeEvent PipeEvent
+   {
+      get { return this.pipeEventField; }
+      set { this.pipeEventField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupFileCreateStreamHash FileCreateStreamHash
+   {
+      get { return this.fileCreateStreamHashField; }
+      set { this.fileCreateStreamHashField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupRegistryEvent RegistryEvent
+   {
+      get { return this.registryEventField; }
+      set { this.registryEventField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupFileCreate FileCreate
+   {
+      get { return this.fileCreateField; }
+      set { this.fileCreateField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupProcessAccess ProcessAccess
+   {
+      get { return this.processAccessField; }
+      set { this.processAccessField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupRawAccessRead RawAccessRead
+   {
+      get { return this.rawAccessReadField; }
+      set { this.rawAccessReadField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupCreateRemoteThread CreateRemoteThread
+   {
+      get { return this.createRemoteThreadField; }
+      set { this.createRemoteThreadField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupImageLoad ImageLoad
+   {
+      get { return this.imageLoadField; }
+      set { this.imageLoadField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupDriverLoad DriverLoad
+   {
+      get { return this.driverLoadField; }
+      set { this.driverLoadField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupProcessTerminate ProcessTerminate
+   {
+      get { return this.processTerminateField; }
+      set { this.processTerminateField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupNetworkConnect NetworkConnect
+   {
+      get { return this.networkConnectField; }
+      set { this.networkConnectField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupFileCreateTime FileCreateTime
+   {
+      get { return this.fileCreateTimeField; }
+      set { this.fileCreateTimeField = value; }
+   }
+
+   /// <remarks/>
+   public SysmonEventFilteringRuleGroupProcessCreate ProcessCreate
+   {
+      get { return this.processCreateField; }
+      set { this.processCreateField = value; }
+   }
+
+   /// <remarks/>
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string name
+   {
+      get { return this.nameField; }
+      set { this.nameField = value; }
+   }
+
+   /// <remarks/>
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }

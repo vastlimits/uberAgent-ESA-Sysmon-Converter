@@ -5,89 +5,88 @@ using System.Linq;
 using vl.Core.Domain.Activity;
 using vl.Core.Domain.Extensions;
 
-namespace vl.Sysmon.Converter.Domain.Activity
+namespace vl.Sysmon.Converter.Domain.Activity;
+
+public class SysmonActivityMonitoringRule : ActivityMonitoringRule
 {
-   public class SysmonActivityMonitoringRule : ActivityMonitoringRule
+   public static ActivityMonitoringRule Create<T>(List<T> sysmonGroupActivities, string eventName, EventType eventType) where T : ISysmonEventFilteringRuleGroup
    {
-      public static ActivityMonitoringRule Create<T>(List<T> sysmonGroupActivities, string eventName, EventType eventType) where T : ISysmonEventFilteringRuleGroup
+      if (sysmonGroupActivities == null || sysmonGroupActivities.Count == 0)
+         return new ActivityMonitoringRule();
+
+      sysmonGroupActivities = sysmonGroupActivities.Where(c => c.Items is { Length: > 0 }).ToList();
+      if (sysmonGroupActivities.Count == 0)
+         return new ActivityMonitoringRule();
+
+      try
       {
-         if (sysmonGroupActivities == null || sysmonGroupActivities.Count == 0)
-            return new ActivityMonitoringRule();
+         Log.Information("Converting rules for {0}..", eventName);
+         var result = new List<string>();
+         var activityName = sysmonGroupActivities[0].GetType().Name;
 
-         sysmonGroupActivities = sysmonGroupActivities.Where(c => c.Items is { Length: > 0 }).ToList();
-         if (sysmonGroupActivities.Count == 0)
-            return new ActivityMonitoringRule();
-
-         try
+         var activityConverterSettings = new SysmonActivityMonitoringRule
          {
-            Log.Information("Converting rules for {0}..", eventName);
-            var result = new List<string>();
-            var activityName = sysmonGroupActivities[0].GetType().Name;
+            Id = Guid.NewGuid(),
+            EventType = eventType,
+         };
 
-            var activityConverterSettings = new SysmonActivityMonitoringRule
+         // Start always with include first then exclude
+         foreach (var rule in sysmonGroupActivities.OrderByDescending(c => c.onmatch))
+         {
+            var onMatch = rule.onmatch.ToLower();
+            if (!onMatch.Equals(Constants.SysmonExcludeOnMatchString) &&
+                !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
+               continue;
+
+            if (rule.Items == null || rule.Items.Length == 0)
+               continue;
+
+            activityConverterSettings.Name = rule.name;
+            activityConverterSettings.Tag = rule.name;
+
+            var conditions = ConvertEntity.ParseRule(rule).ToArray();
+            var mainGroupRelation = rule.groupRelation;
+
+            if (conditions.Length == 0)
+               continue;
+
+            if (activityName.EndsWith("RegistryEvent"))
             {
-               Id = Guid.NewGuid(),
-               EventType = eventType,
-            };
+               var hive = Hive.All;
 
-            // Start always with include first then exclude
-            foreach (var rule in sysmonGroupActivities.OrderByDescending(c => c.onmatch))
-            {
-               var onMatch = rule.onmatch.ToLower();
-               if (!onMatch.Equals(Constants.SysmonExcludeOnMatchString) &&
-                   !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
-                  continue;
-
-               if (rule.Items == null || rule.Items.Length == 0)
-                  continue;
-
-               activityConverterSettings.Name = rule.name;
-               activityConverterSettings.Tag = rule.name;
-
-               var conditions = ConvertEntity.ParseRule(rule).ToArray();
-               var mainGroupRelation = rule.groupRelation;
-
-               if (conditions.Length == 0)
-                  continue;
-
-               if (activityName.EndsWith("RegistryEvent"))
+               var canSpecifyHive = conditions.All(c => c.Condition.Equals("is") || c.Condition.Equals("begin with"));
+               if (canSpecifyHive)
                {
-                   var hive = Hive.All;
+                  var hives = conditions.Where(c => c.Condition.Equals("is") || c.Condition.Equals("begin with"))
+                     .Select(c => c.Value.Split(@"\").FirstOrDefault()?.ToLower())
+                     .Distinct()
+                     .Where(c => !string.IsNullOrEmpty(c))
+                     .ToArray();
 
-                   var canSpecifyHive = conditions.All(c => c.Condition.Equals("is") || c.Condition.Equals("begin with"));
-                   if (canSpecifyHive)
-                   {
-                      var hives = conditions.Where(c => c.Condition.Equals("is") || c.Condition.Equals("begin with"))
-                         .Select(c => c.Value.Split(@"\").FirstOrDefault()?.ToLower())
-                         .Distinct()
-                         .Where(c => !string.IsNullOrEmpty(c))
-                         .ToArray();
-
-                      if (hives.Length == 1)
-                         hive = hives.First().FromString();
-                   }
-
-                   activityConverterSettings.Hive = hive;
+                  if (hives.Length == 1)
+                     hive = hives.First().FromString();
                }
 
-               result.Add(ConvertEntity.Convert(conditions, mainGroupRelation));
+               activityConverterSettings.Hive = hive;
             }
 
-            if (result.Count == 0)
-               return new ActivityMonitoringRule();
-
-            activityConverterSettings.Query = string.Join(" and ", result);
-
-
-            Log.Information("Converted {converted}/{rules} rules.", result.Count, sysmonGroupActivities.Count);
-            return activityConverterSettings;
-         }
-         catch (Exception ex)
-         {
-            Log.Error(ex, $"Failure to convert rules for {eventName}.");
+            result.Add(ConvertEntity.Convert(conditions, mainGroupRelation));
          }
 
-         return new ActivityMonitoringRule();
+         if (result.Count == 0)
+            return new ActivityMonitoringRule();
+
+         activityConverterSettings.Query = string.Join(" and ", result);
+
+
+         Log.Information("Converted {converted}/{rules} rules.", result.Count, sysmonGroupActivities.Count);
+         return activityConverterSettings;
       }
+      catch (Exception ex)
+      {
+         Log.Error(ex, $"Failure to convert rules for {eventName}.");
+      }
+
+      return new ActivityMonitoringRule();
    }
 }
