@@ -238,7 +238,7 @@ namespace vl.Sysmon.Converter.Domain
                {
                   GroupRelation = groupRelationProperty,
                   Field = baseProperties.Field,
-                  Value = baseProperties.Value,
+                  Value = baseProperties.Value.Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
                   DataType = baseProperties.DataType,
                   Condition = baseProperties.Condition,
                   OnMatch = onMatchProperty,
@@ -290,7 +290,7 @@ namespace vl.Sysmon.Converter.Domain
                RuleId = ruleId,
                GroupRelation = groupRelationProperty,
                Field = baseCondition.Field,
-               Value = baseCondition.Value,
+               Value = baseCondition.Value.Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
                Condition = baseCondition.Condition,
                OnMatch = onMatch,
                DataType = baseCondition.DataType,
@@ -389,7 +389,7 @@ namespace vl.Sysmon.Converter.Domain
                {
                   Field = attribute.GetTargetField(itemValue),
                   Condition = itemCondition ?? "is",
-                  Value = attribute.TransformValue(itemValue),
+                  Value = attribute.TransformValue(itemValue).Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
                   DataType = attribute.GetDataType()
                };
             }
