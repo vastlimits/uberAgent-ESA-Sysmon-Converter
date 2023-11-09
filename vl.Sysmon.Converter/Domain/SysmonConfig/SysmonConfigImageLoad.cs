@@ -21,6 +21,7 @@ public partial class SysmonEventFilteringRuleGroupImageLoad : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Signature",typeof(SysmonEventFilteringRuleGroupImageLoadSignature))]
 [System.Xml.Serialization.XmlElementAttribute("SignatureStatus",typeof(SysmonEventFilteringRuleGroupImageLoadSignatureStatus))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupImageLoadUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupImageLoadRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -77,6 +78,7 @@ public partial class SysmonEventFilteringImageLoad : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Signature",typeof(SysmonEventFilteringImageLoadSignature))]
 [System.Xml.Serialization.XmlElementAttribute("SignatureStatus",typeof(SysmonEventFilteringImageLoadSignatureStatus))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringImageLoadUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringImageLoadRule))]
    public object[] Items
    {
       get { return this.itemsField; }

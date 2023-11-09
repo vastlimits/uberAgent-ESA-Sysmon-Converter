@@ -13,6 +13,7 @@ public partial class SysmonEventFilteringRuleGroupPipeEvent : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("PipeName",typeof(SysmonEventFilteringRuleGroupPipeEventPipeName))]
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringRuleGroupPipeEventImage))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupPipeEventUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupPipeEventRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -53,6 +54,7 @@ public partial class SysmonEventFilteringPipeEvent : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("PipeName",typeof(SysmonEventFilteringPipeEventPipeName))]
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringPipeEventImage))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringPipeEventUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringPipeEventRule))]
    public object[] Items
    {
       get { return this.itemsField; }

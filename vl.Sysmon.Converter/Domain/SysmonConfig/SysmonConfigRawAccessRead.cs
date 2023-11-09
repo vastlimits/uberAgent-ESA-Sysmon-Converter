@@ -12,6 +12,7 @@ public partial class SysmonEventFilteringRuleGroupRawAccessRead : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringRuleGroupRawAccessReadImage))]
 [System.Xml.Serialization.XmlElementAttribute("Device",typeof(SysmonEventFilteringRuleGroupRawAccessReadDevice))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupRawAccessReadUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupRawAccessReadRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -50,6 +51,7 @@ public partial class SysmonEventFilteringRawAccessRead : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringRawAccessReadImage))]
 [System.Xml.Serialization.XmlElementAttribute("Device",typeof(SysmonEventFilteringRawAccessReadDevice))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRawAccessReadUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRawAccessReadRule))]
    public object[] Items
    {
       get { return this.itemsField; }

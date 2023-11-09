@@ -23,6 +23,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnect : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("DestinationHostname",typeof(SysmonEventFilteringRuleGroupNetworkConnectDestinationHostname))]
 [System.Xml.Serialization.XmlElementAttribute("DestinationPort",typeof(SysmonEventFilteringRuleGroupNetworkConnectDestinationPort))]
 [System.Xml.Serialization.XmlElementAttribute("DestinationPortName",typeof(SysmonEventFilteringRuleGroupNetworkConnectDestinationPortName))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupNetworkConnectRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -83,6 +84,7 @@ public partial class SysmonEventFilteringNetworkConnect : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("DestinationHostname",typeof(SysmonEventFilteringNetworkConnectDestinationHostname))]
 [System.Xml.Serialization.XmlElementAttribute("DestinationPort",typeof(SysmonEventFilteringNetworkConnectDestinationPort))]
 [System.Xml.Serialization.XmlElementAttribute("DestinationPortName",typeof(SysmonEventFilteringNetworkConnectDestinationPortName))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringNetworkConnectRule))]
    public object[] Items
    {
       get { return this.itemsField; }

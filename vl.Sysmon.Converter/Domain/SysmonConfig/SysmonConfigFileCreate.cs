@@ -13,6 +13,7 @@ public partial class SysmonEventFilteringRuleGroupFileCreate : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("TargetFilename",typeof(SysmonEventFilteringRuleGroupFileCreateTargetFilename))]
 [System.Xml.Serialization.XmlElementAttribute("CreationUtcTime",typeof(SysmonEventFilteringRuleGroupFileCreateCreationUtcTime))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupFileCreateUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupFileCreateRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -53,6 +54,7 @@ public partial class SysmonEventFilteringFileCreate : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("TargetFilename",typeof(SysmonEventFilteringFileCreateTargetFilename))]
 [System.Xml.Serialization.XmlElementAttribute("CreationUtcTime",typeof(SysmonEventFilteringFileCreateCreationUtcTime))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringFileCreateUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringFileCreateRule))]
    public object[] Items
    {
       get { return this.itemsField; }

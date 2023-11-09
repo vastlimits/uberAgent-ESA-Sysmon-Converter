@@ -15,6 +15,7 @@ public partial class SysmonEventFilteringRuleGroupFileDelete : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringRuleGroupFileDeleteHashes))]
 [System.Xml.Serialization.XmlElementAttribute("IsExecutable",typeof(SysmonEventFilteringRuleGroupFileDeleteIsExecutable))]
 [System.Xml.Serialization.XmlElementAttribute("Archived",typeof(SysmonEventFilteringRuleGroupFileDeleteArchived))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupFileDeleteRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -59,6 +60,7 @@ public partial class SysmonEventFilteringFileDelete : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringFileDeleteHashes))]
 [System.Xml.Serialization.XmlElementAttribute("IsExecutable",typeof(SysmonEventFilteringFileDeleteIsExecutable))]
 [System.Xml.Serialization.XmlElementAttribute("Archived",typeof(SysmonEventFilteringFileDeleteArchived))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringFileDeleteRule))]
    public object[] Items
    {
       get { return this.itemsField; }

@@ -18,6 +18,7 @@ public partial class SysmonEventFilteringRuleGroupProcessAccess : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("CallTrace",typeof(SysmonEventFilteringRuleGroupProcessAccessCallTrace))]
 [System.Xml.Serialization.XmlElementAttribute("SourceUser",typeof(SysmonEventFilteringRuleGroupProcessAccessSourceUser))]
 [System.Xml.Serialization.XmlElementAttribute("TargetUser",typeof(SysmonEventFilteringRuleGroupProcessAccessTargetUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupProcessAccessRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -68,6 +69,7 @@ public partial class SysmonEventFilteringProcessAccess : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("CallTrace",typeof(SysmonEventFilteringProcessAccessCallTrace))]
 [System.Xml.Serialization.XmlElementAttribute("SourceUser",typeof(SysmonEventFilteringProcessAccessSourceUser))]
 [System.Xml.Serialization.XmlElementAttribute("TargetUser",typeof(SysmonEventFilteringProcessAccessTargetUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringProcessAccessRule))]
    public object[] Items
    {
       get { return this.itemsField; }

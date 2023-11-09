@@ -28,6 +28,7 @@ public partial class SysmonEventFilteringRuleGroupProcessCreate : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("ParentImage",typeof(SysmonEventFilteringRuleGroupProcessCreateParentImage))]
 [System.Xml.Serialization.XmlElementAttribute("ParentCommandLine",typeof(SysmonEventFilteringRuleGroupProcessCreateParentCommandLine))]
 [System.Xml.Serialization.XmlElementAttribute("ParentUser",typeof(SysmonEventFilteringRuleGroupProcessCreateParentUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupProcessCreateRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -98,6 +99,7 @@ public partial class SysmonEventFilteringProcessCreate : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("ParentImage",typeof(SysmonEventFilteringProcessCreateParentImage))]
 [System.Xml.Serialization.XmlElementAttribute("ParentCommandLine",typeof(SysmonEventFilteringProcessCreateParentCommandLine))]
 [System.Xml.Serialization.XmlElementAttribute("ParentUser",typeof(SysmonEventFilteringProcessCreateParentUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringProcessCreateRule))]
    public object[] Items
    {
       get { return this.itemsField; }

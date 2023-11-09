@@ -14,6 +14,7 @@ public partial class SysmonEventFilteringRuleGroupDnsQuery : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("QueryResults",typeof(SysmonEventFilteringRuleGroupDnsQueryQueryResults))]
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringRuleGroupDnsQueryImage))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupDnsQueryUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupDnsQueryRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -56,6 +57,7 @@ public partial class SysmonEventFilteringDnsQuery : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("QueryResults",typeof(SysmonEventFilteringDnsQueryQueryResults))]
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringDnsQueryImage))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringDnsQueryUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringDnsQueryRule))]
    public object[] Items
    {
       get { return this.itemsField; }

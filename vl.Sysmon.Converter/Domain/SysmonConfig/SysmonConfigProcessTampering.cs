@@ -12,6 +12,7 @@ public partial class SysmonEventFilteringRuleGroupProcessTampering : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringRuleGroupProcessTamperingImage))]
 [System.Xml.Serialization.XmlElementAttribute("Type",typeof(SysmonEventFilteringRuleGroupProcessTamperingType))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupProcessTamperingUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupProcessTamperingRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -50,6 +51,7 @@ public partial class SysmonEventFilteringProcessTampering : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringProcessTamperingImage))]
 [System.Xml.Serialization.XmlElementAttribute("Type",typeof(SysmonEventFilteringProcessTamperingType))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringProcessTamperingUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringProcessTamperingRule))]
    public object[] Items
    {
       get { return this.itemsField; }

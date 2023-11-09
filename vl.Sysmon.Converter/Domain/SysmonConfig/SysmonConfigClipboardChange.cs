@@ -15,6 +15,7 @@ public partial class SysmonEventFilteringRuleGroupClipboardChange : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringRuleGroupClipboardChangeHashes))]
 [System.Xml.Serialization.XmlElementAttribute("Archived",typeof(SysmonEventFilteringRuleGroupClipboardChangeArchived))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupClipboardChangeUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupClipboardChangeRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -59,6 +60,7 @@ public partial class SysmonEventFilteringClipboardChange : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringClipboardChangeHashes))]
 [System.Xml.Serialization.XmlElementAttribute("Archived",typeof(SysmonEventFilteringClipboardChangeArchived))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringClipboardChangeUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringClipboardChangeRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -325,12 +327,14 @@ public partial class SysmonEventFilteringClipboardChangeRuleHashes : BaseObject<
 {
 }
 
+
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class SysmonEventFilteringClipboardChangeRuleArchived : BaseObject<string>
 {
 }
+
 
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]

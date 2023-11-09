@@ -13,6 +13,7 @@ public partial class SysmonEventFilteringRuleGroupFileExecutableDetected : BaseR
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringRuleGroupFileExecutableDetectedImage))]
 [System.Xml.Serialization.XmlElementAttribute("TargetFilename",typeof(SysmonEventFilteringRuleGroupFileExecutableDetectedTargetFilename))]
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringRuleGroupFileExecutableDetectedHashes))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupFileExecutableDetectedRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -53,6 +54,7 @@ public partial class SysmonEventFilteringFileExecutableDetected : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringFileExecutableDetectedImage))]
 [System.Xml.Serialization.XmlElementAttribute("TargetFilename",typeof(SysmonEventFilteringFileExecutableDetectedTargetFilename))]
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringFileExecutableDetectedHashes))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringFileExecutableDetectedRule))]
    public object[] Items
    {
       get { return this.itemsField; }

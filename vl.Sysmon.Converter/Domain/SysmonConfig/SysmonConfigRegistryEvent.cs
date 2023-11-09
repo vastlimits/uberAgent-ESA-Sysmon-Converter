@@ -15,6 +15,7 @@ public partial class SysmonEventFilteringRuleGroupRegistryEvent : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupRegistryEventUser))]
 [System.Xml.Serialization.XmlElementAttribute("Details",typeof(SysmonEventFilteringRuleGroupRegistryEventDetails))]
 [System.Xml.Serialization.XmlElementAttribute("NewName",typeof(SysmonEventFilteringRuleGroupRegistryEventNewName))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupRegistryEventRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -59,6 +60,7 @@ public partial class SysmonEventFilteringRegistryEvent : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRegistryEventUser))]
 [System.Xml.Serialization.XmlElementAttribute("Details",typeof(SysmonEventFilteringRegistryEventDetails))]
 [System.Xml.Serialization.XmlElementAttribute("NewName",typeof(SysmonEventFilteringRegistryEventNewName))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRegistryEventRule))]
    public object[] Items
    {
       get { return this.itemsField; }

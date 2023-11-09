@@ -19,6 +19,7 @@ public partial class SysmonEventFilteringRuleGroupCreateRemoteThread : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("StartFunction",typeof(SysmonEventFilteringRuleGroupCreateRemoteThreadStartFunction))]
 [System.Xml.Serialization.XmlElementAttribute("SourceUser",typeof(SysmonEventFilteringRuleGroupCreateRemoteThreadSourceUser))]
 [System.Xml.Serialization.XmlElementAttribute("TargetUser",typeof(SysmonEventFilteringRuleGroupCreateRemoteThreadTargetUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupCreateRemoteThreadRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -71,6 +72,7 @@ public partial class SysmonEventFilteringCreateRemoteThread : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("StartFunction",typeof(SysmonEventFilteringCreateRemoteThreadStartFunction))]
 [System.Xml.Serialization.XmlElementAttribute("SourceUser",typeof(SysmonEventFilteringCreateRemoteThreadSourceUser))]
 [System.Xml.Serialization.XmlElementAttribute("TargetUser",typeof(SysmonEventFilteringCreateRemoteThreadTargetUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringCreateRemoteThreadRule))]
    public object[] Items
    {
       get { return this.itemsField; }

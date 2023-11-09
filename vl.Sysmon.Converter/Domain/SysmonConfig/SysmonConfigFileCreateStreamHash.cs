@@ -15,6 +15,7 @@ public partial class SysmonEventFilteringRuleGroupFileCreateStreamHash : BaseRul
 [System.Xml.Serialization.XmlElementAttribute("Hash",typeof(SysmonEventFilteringRuleGroupFileCreateStreamHashHash))]
 [System.Xml.Serialization.XmlElementAttribute("Contents",typeof(SysmonEventFilteringRuleGroupFileCreateStreamHashContents))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupFileCreateStreamHashUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupFileCreateStreamHashRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -59,6 +60,7 @@ public partial class SysmonEventFilteringFileCreateStreamHash : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Hash",typeof(SysmonEventFilteringFileCreateStreamHashHash))]
 [System.Xml.Serialization.XmlElementAttribute("Contents",typeof(SysmonEventFilteringFileCreateStreamHashContents))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringFileCreateStreamHashUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringFileCreateStreamHashRule))]
    public object[] Items
    {
       get { return this.itemsField; }

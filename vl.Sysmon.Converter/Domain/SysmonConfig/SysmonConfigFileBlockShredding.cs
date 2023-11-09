@@ -14,6 +14,7 @@ public partial class SysmonEventFilteringRuleGroupFileBlockShredding : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("TargetFilename",typeof(SysmonEventFilteringRuleGroupFileBlockShreddingTargetFilename))]
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringRuleGroupFileBlockShreddingHashes))]
 [System.Xml.Serialization.XmlElementAttribute("IsExecutable",typeof(SysmonEventFilteringRuleGroupFileBlockShreddingIsExecutable))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupFileBlockShreddingRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -56,6 +57,7 @@ public partial class SysmonEventFilteringFileBlockShredding : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("TargetFilename",typeof(SysmonEventFilteringFileBlockShreddingTargetFilename))]
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringFileBlockShreddingHashes))]
 [System.Xml.Serialization.XmlElementAttribute("IsExecutable",typeof(SysmonEventFilteringFileBlockShreddingIsExecutable))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringFileBlockShreddingRule))]
    public object[] Items
    {
       get { return this.itemsField; }
