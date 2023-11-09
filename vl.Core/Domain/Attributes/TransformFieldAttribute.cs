@@ -8,18 +8,21 @@ namespace vl.Core.Domain.Attributes
       protected string TargetField { get; }
       protected TransformDataType DataType { get; } = TransformDataType.String;
       
-      public TransformFieldAttribute(string sourceField, string targetField) : base(sourceField)
+      public TransformFieldAttribute(string sourceField, string targetField, UAVersion uASupportedVersion) 
+         : base(sourceField, uASupportedVersion)
       {
          TargetField = targetField;
       }
 
-      public TransformFieldAttribute(string sourceField, string targetField, TransformDataType transformDataType) : base(sourceField)
+      public TransformFieldAttribute(string sourceField, string targetField, TransformDataType transformDataType, UAVersion uASupportedVersion) 
+         : base(sourceField, uASupportedVersion)
       {
          TargetField = targetField;
          DataType = transformDataType;
       }
 
-      public TransformFieldAttribute(string sourceField, string targetField, TransformMethod transformMethod) : base(sourceField, transformMethod)
+      public TransformFieldAttribute(string sourceField, string targetField, TransformMethod transformMethod, UAVersion uASupportedVersion) 
+         : base(sourceField, transformMethod,uASupportedVersion)
       {
          TargetField = targetField;
       }
