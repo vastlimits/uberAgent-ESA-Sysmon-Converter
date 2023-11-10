@@ -86,7 +86,7 @@ public partial class SysmonEventFilteringRuleGroupProcessTerminateProcessGuid : 
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupProcessTerminateProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupProcessTerminateProcessId : BaseObject<string>
 {
 }
 
@@ -117,7 +117,7 @@ public partial class SysmonEventFilteringRuleGroupProcessTerminateRuleProcessGui
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupProcessTerminateRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupProcessTerminateRuleProcessId : BaseObject<string>
 {
 }
 
@@ -148,7 +148,7 @@ public partial class SysmonEventFilteringProcessTerminateProcessGuid : BaseObjec
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringProcessTerminateProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringProcessTerminateProcessId : BaseObject<string>
 {
 }
 
@@ -179,7 +179,7 @@ public partial class SysmonEventFilteringProcessTerminateRuleProcessGuid : BaseO
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringProcessTerminateRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringProcessTerminateRuleProcessId : BaseObject<string>
 {
 }
 

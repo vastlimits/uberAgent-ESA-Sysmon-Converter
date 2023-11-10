@@ -1,4 +1,6 @@
-﻿namespace vl.Sysmon.Converter.Domain;
+﻿using System;
+
+namespace vl.Sysmon.Converter.Domain;
 
 public partial class BaseObject<T>
 {

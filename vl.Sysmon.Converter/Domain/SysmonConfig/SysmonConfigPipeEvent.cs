@@ -102,7 +102,7 @@ public partial class SysmonEventFilteringRuleGroupPipeEventProcessGuid : BaseObj
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupPipeEventProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupPipeEventProcessId : BaseObject<string>
 {
 }
 
@@ -149,7 +149,7 @@ public partial class SysmonEventFilteringRuleGroupPipeEventRuleProcessGuid : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupPipeEventRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupPipeEventRuleProcessId : BaseObject<string>
 {
 }
 
@@ -196,7 +196,7 @@ public partial class SysmonEventFilteringPipeEventProcessGuid : BaseObject<strin
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringPipeEventProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringPipeEventProcessId : BaseObject<string>
 {
 }
 
@@ -243,7 +243,7 @@ public partial class SysmonEventFilteringPipeEventRuleProcessGuid : BaseObject<s
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringPipeEventRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringPipeEventRuleProcessId : BaseObject<string>
 {
 }
 

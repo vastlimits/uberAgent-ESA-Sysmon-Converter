@@ -126,7 +126,7 @@ public partial class SysmonEventFilteringRuleGroupImageLoadProcessGuid : BaseObj
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupImageLoadProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupImageLoadProcessId : BaseObject<string>
 {
 }
 
@@ -237,7 +237,7 @@ public partial class SysmonEventFilteringRuleGroupImageLoadRuleProcessGuid : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupImageLoadRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupImageLoadRuleProcessId : BaseObject<string>
 {
 }
 
@@ -348,7 +348,7 @@ public partial class SysmonEventFilteringImageLoadProcessGuid : BaseObject<strin
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringImageLoadProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringImageLoadProcessId : BaseObject<string>
 {
 }
 
@@ -459,7 +459,7 @@ public partial class SysmonEventFilteringImageLoadRuleProcessGuid : BaseObject<s
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringImageLoadRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringImageLoadRuleProcessId : BaseObject<string>
 {
 }
 

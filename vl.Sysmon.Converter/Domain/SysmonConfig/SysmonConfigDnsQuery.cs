@@ -98,7 +98,7 @@ public partial class SysmonEventFilteringRuleGroupDnsQueryProcessGuid : BaseObje
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupDnsQueryProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupDnsQueryProcessId : BaseObject<string>
 {
 }
 
@@ -153,7 +153,7 @@ public partial class SysmonEventFilteringRuleGroupDnsQueryRuleProcessGuid : Base
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupDnsQueryRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupDnsQueryRuleProcessId : BaseObject<string>
 {
 }
 
@@ -208,7 +208,7 @@ public partial class SysmonEventFilteringDnsQueryProcessGuid : BaseObject<string
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringDnsQueryProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringDnsQueryProcessId : BaseObject<string>
 {
 }
 
@@ -263,7 +263,7 @@ public partial class SysmonEventFilteringDnsQueryRuleProcessGuid : BaseObject<st
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringDnsQueryRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringDnsQueryRuleProcessId : BaseObject<string>
 {
 }
 

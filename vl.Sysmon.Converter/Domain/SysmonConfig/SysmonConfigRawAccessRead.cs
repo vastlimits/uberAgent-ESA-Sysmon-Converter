@@ -90,7 +90,7 @@ public partial class SysmonEventFilteringRuleGroupRawAccessReadProcessGuid : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupRawAccessReadProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupRawAccessReadProcessId : BaseObject<string>
 {
 }
 
@@ -129,7 +129,7 @@ public partial class SysmonEventFilteringRuleGroupRawAccessReadRuleProcessGuid :
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupRawAccessReadRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupRawAccessReadRuleProcessId : BaseObject<string>
 {
 }
 
@@ -168,7 +168,7 @@ public partial class SysmonEventFilteringRawAccessReadProcessGuid : BaseObject<s
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRawAccessReadProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRawAccessReadProcessId : BaseObject<string>
 {
 }
 
@@ -207,7 +207,7 @@ public partial class SysmonEventFilteringRawAccessReadRuleProcessGuid : BaseObje
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRawAccessReadRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRawAccessReadRuleProcessId : BaseObject<string>
 {
 }
 

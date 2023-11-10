@@ -154,7 +154,7 @@ public partial class SysmonEventFilteringRuleGroupProcessCreateProcessGuid : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupProcessCreateProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupProcessCreateProcessId : BaseObject<string>
 {
 }
 
@@ -250,7 +250,7 @@ public partial class SysmonEventFilteringRuleGroupProcessCreateLogonId : BaseObj
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupProcessCreateTerminalSessionId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupProcessCreateTerminalSessionId : BaseObject<string>
 {
 }
 
@@ -282,7 +282,7 @@ public partial class SysmonEventFilteringRuleGroupProcessCreateParentProcessGuid
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupProcessCreateParentProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupProcessCreateParentProcessId : BaseObject<string>
 {
 }
 
@@ -321,7 +321,7 @@ public partial class SysmonEventFilteringRuleGroupProcessCreateRuleProcessGuid :
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupProcessCreateRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupProcessCreateRuleProcessId : BaseObject<string>
 {
 }
 
@@ -417,7 +417,7 @@ public partial class SysmonEventFilteringRuleGroupProcessCreateRuleLogonId : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupProcessCreateRuleTerminalSessionId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupProcessCreateRuleTerminalSessionId : BaseObject<string>
 {
 }
 
@@ -449,7 +449,7 @@ public partial class SysmonEventFilteringRuleGroupProcessCreateRuleParentProcess
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupProcessCreateRuleParentProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupProcessCreateRuleParentProcessId : BaseObject<string>
 {
 }
 
@@ -488,7 +488,7 @@ public partial class SysmonEventFilteringProcessCreateProcessGuid : BaseObject<s
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringProcessCreateProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringProcessCreateProcessId : BaseObject<string>
 {
 }
 
@@ -584,7 +584,7 @@ public partial class SysmonEventFilteringProcessCreateLogonId : BaseObject<strin
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringProcessCreateTerminalSessionId : BaseObject<uint>
+public partial class SysmonEventFilteringProcessCreateTerminalSessionId : BaseObject<string>
 {
 }
 
@@ -616,7 +616,7 @@ public partial class SysmonEventFilteringProcessCreateParentProcessGuid : BaseOb
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringProcessCreateParentProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringProcessCreateParentProcessId : BaseObject<string>
 {
 }
 
@@ -655,7 +655,7 @@ public partial class SysmonEventFilteringProcessCreateRuleProcessGuid : BaseObje
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringProcessCreateRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringProcessCreateRuleProcessId : BaseObject<string>
 {
 }
 
@@ -751,7 +751,7 @@ public partial class SysmonEventFilteringProcessCreateRuleLogonId : BaseObject<s
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringProcessCreateRuleTerminalSessionId : BaseObject<uint>
+public partial class SysmonEventFilteringProcessCreateRuleTerminalSessionId : BaseObject<string>
 {
 }
 
@@ -783,7 +783,7 @@ public partial class SysmonEventFilteringProcessCreateRuleParentProcessGuid : Ba
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringProcessCreateRuleParentProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringProcessCreateRuleParentProcessId : BaseObject<string>
 {
 }
 

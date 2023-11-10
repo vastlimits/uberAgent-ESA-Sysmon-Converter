@@ -102,7 +102,7 @@ public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashProcessGui
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashProcessId : BaseObject<string>
 {
 }
 
@@ -165,7 +165,7 @@ public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashRuleProces
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashRuleProcessId : BaseObject<string>
 {
 }
 
@@ -228,7 +228,7 @@ public partial class SysmonEventFilteringFileCreateStreamHashProcessGuid : BaseO
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileCreateStreamHashProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringFileCreateStreamHashProcessId : BaseObject<string>
 {
 }
 
@@ -291,7 +291,7 @@ public partial class SysmonEventFilteringFileCreateStreamHashRuleProcessGuid : B
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileCreateStreamHashRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringFileCreateStreamHashRuleProcessId : BaseObject<string>
 {
 }
 

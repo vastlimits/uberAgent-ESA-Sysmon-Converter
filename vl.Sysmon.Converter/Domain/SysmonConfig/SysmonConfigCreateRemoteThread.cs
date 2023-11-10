@@ -118,7 +118,7 @@ public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadSourceProces
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadSourceProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadSourceProcessId : BaseObject<string>
 {
 }
 
@@ -142,7 +142,7 @@ public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadTargetProces
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadTargetProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadTargetProcessId : BaseObject<string>
 {
 }
 
@@ -158,7 +158,7 @@ public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadTargetImage 
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadNewThreadId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadNewThreadId : BaseObject<string>
 {
 }
 
@@ -213,7 +213,7 @@ public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRuleSourcePr
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRuleSourceProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRuleSourceProcessId : BaseObject<string>
 {
 }
 
@@ -237,7 +237,7 @@ public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRuleTargetPr
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRuleTargetProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRuleTargetProcessId : BaseObject<string>
 {
 }
 
@@ -253,7 +253,7 @@ public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRuleTargetIm
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRuleNewThreadId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRuleNewThreadId : BaseObject<string>
 {
 }
 
@@ -308,7 +308,7 @@ public partial class SysmonEventFilteringCreateRemoteThreadSourceProcessGuid : B
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringCreateRemoteThreadSourceProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringCreateRemoteThreadSourceProcessId : BaseObject<string>
 {
 }
 
@@ -332,7 +332,7 @@ public partial class SysmonEventFilteringCreateRemoteThreadTargetProcessGuid : B
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringCreateRemoteThreadTargetProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringCreateRemoteThreadTargetProcessId : BaseObject<string>
 {
 }
 
@@ -348,7 +348,7 @@ public partial class SysmonEventFilteringCreateRemoteThreadTargetImage : BaseObj
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringCreateRemoteThreadNewThreadId : BaseObject<uint>
+public partial class SysmonEventFilteringCreateRemoteThreadNewThreadId : BaseObject<string>
 {
 }
 
@@ -403,7 +403,7 @@ public partial class SysmonEventFilteringCreateRemoteThreadRuleSourceProcessGuid
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringCreateRemoteThreadRuleSourceProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringCreateRemoteThreadRuleSourceProcessId : BaseObject<string>
 {
 }
 
@@ -427,7 +427,7 @@ public partial class SysmonEventFilteringCreateRemoteThreadRuleTargetProcessGuid
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringCreateRemoteThreadRuleTargetProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringCreateRemoteThreadRuleTargetProcessId : BaseObject<string>
 {
 }
 
@@ -443,7 +443,7 @@ public partial class SysmonEventFilteringCreateRemoteThreadRuleTargetImage : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringCreateRemoteThreadRuleNewThreadId : BaseObject<uint>
+public partial class SysmonEventFilteringCreateRemoteThreadRuleNewThreadId : BaseObject<string>
 {
 }
 

@@ -90,7 +90,7 @@ public partial class SysmonEventFilteringRuleGroupProcessTamperingProcessGuid : 
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupProcessTamperingProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupProcessTamperingProcessId : BaseObject<string>
 {
 }
 
@@ -129,7 +129,7 @@ public partial class SysmonEventFilteringRuleGroupProcessTamperingRuleProcessGui
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupProcessTamperingRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupProcessTamperingRuleProcessId : BaseObject<string>
 {
 }
 
@@ -168,7 +168,7 @@ public partial class SysmonEventFilteringProcessTamperingProcessGuid : BaseObjec
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringProcessTamperingProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringProcessTamperingProcessId : BaseObject<string>
 {
 }
 
@@ -207,7 +207,7 @@ public partial class SysmonEventFilteringProcessTamperingRuleProcessGuid : BaseO
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringProcessTamperingRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringProcessTamperingRuleProcessId : BaseObject<string>
 {
 }
 

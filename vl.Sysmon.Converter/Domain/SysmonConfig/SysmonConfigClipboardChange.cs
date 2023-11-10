@@ -102,7 +102,7 @@ public partial class SysmonEventFilteringRuleGroupClipboardChangeProcessGuid : B
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupClipboardChangeProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupClipboardChangeProcessId : BaseObject<string>
 {
 }
 
@@ -118,7 +118,7 @@ public partial class SysmonEventFilteringRuleGroupClipboardChangeImage : BaseObj
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupClipboardChangeSession : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupClipboardChangeSession : BaseObject<string>
 {
 }
 
@@ -165,7 +165,7 @@ public partial class SysmonEventFilteringRuleGroupClipboardChangeRuleProcessGuid
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupClipboardChangeRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupClipboardChangeRuleProcessId : BaseObject<string>
 {
 }
 
@@ -181,7 +181,7 @@ public partial class SysmonEventFilteringRuleGroupClipboardChangeRuleImage : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupClipboardChangeRuleSession : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupClipboardChangeRuleSession : BaseObject<string>
 {
 }
 
@@ -228,7 +228,7 @@ public partial class SysmonEventFilteringClipboardChangeProcessGuid : BaseObject
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringClipboardChangeProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringClipboardChangeProcessId : BaseObject<string>
 {
 }
 
@@ -244,7 +244,7 @@ public partial class SysmonEventFilteringClipboardChangeImage : BaseObject<strin
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringClipboardChangeSession : BaseObject<uint>
+public partial class SysmonEventFilteringClipboardChangeSession : BaseObject<string>
 {
 }
 
@@ -291,7 +291,7 @@ public partial class SysmonEventFilteringClipboardChangeRuleProcessGuid : BaseOb
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringClipboardChangeRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringClipboardChangeRuleProcessId : BaseObject<string>
 {
 }
 
@@ -307,7 +307,7 @@ public partial class SysmonEventFilteringClipboardChangeRuleImage : BaseObject<s
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringClipboardChangeRuleSession : BaseObject<uint>
+public partial class SysmonEventFilteringClipboardChangeRuleSession : BaseObject<string>
 {
 }
 

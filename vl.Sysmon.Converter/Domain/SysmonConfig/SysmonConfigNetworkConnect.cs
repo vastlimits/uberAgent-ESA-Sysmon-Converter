@@ -134,7 +134,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectProcessGuid : Ba
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectProcessId : BaseObject<string>
 {
 }
 
@@ -166,7 +166,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectProtocol : BaseO
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectInitiated : BaseObject<bool>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectInitiated : BaseObject<string>
 {
 }
 
@@ -174,7 +174,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectInitiated : Base
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectSourceIsIpv6 : BaseObject<bool>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectSourceIsIpv6 : BaseObject<string>
 {
 }
 
@@ -198,7 +198,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectSourceHostname :
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectSourcePort : BaseObject<ushort>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectSourcePort : BaseObject<string>
 {
 }
 
@@ -214,7 +214,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectSourcePortName :
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectDestinationIsIpv6 : BaseObject<bool>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectDestinationIsIpv6 : BaseObject<string>
 {
 }
 
@@ -238,7 +238,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectDestinationHostn
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectDestinationPort : BaseObject<ushort>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectDestinationPort : BaseObject<string>
 {
 }
 
@@ -261,7 +261,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleProcessGuid 
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleProcessId : BaseObject<string>
 {
 }
 
@@ -293,7 +293,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleProtocol : B
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleInitiated : BaseObject<bool>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleInitiated : BaseObject<string>
 {
 }
 
@@ -301,7 +301,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleInitiated : 
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleSourceIsIpv6 : BaseObject<bool>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleSourceIsIpv6 : BaseObject<string>
 {
 }
 
@@ -325,7 +325,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleSourceHostna
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleSourcePort : BaseObject<ushort>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleSourcePort : BaseObject<string>
 {
 }
 
@@ -341,7 +341,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleSourcePortNa
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleDestinationIsIpv6 : BaseObject<bool>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleDestinationIsIpv6 : BaseObject<string>
 {
 }
 
@@ -365,7 +365,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleDestinationH
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleDestinationPort : BaseObject<ushort>
+public partial class SysmonEventFilteringRuleGroupNetworkConnectRuleDestinationPort : BaseObject<string>
 {
 }
 
@@ -388,7 +388,7 @@ public partial class SysmonEventFilteringNetworkConnectProcessGuid : BaseObject<
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringNetworkConnectProcessId : BaseObject<string>
 {
 }
 
@@ -420,7 +420,7 @@ public partial class SysmonEventFilteringNetworkConnectProtocol : BaseObject<str
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectInitiated : BaseObject<bool>
+public partial class SysmonEventFilteringNetworkConnectInitiated : BaseObject<string>
 {
 }
 
@@ -428,7 +428,7 @@ public partial class SysmonEventFilteringNetworkConnectInitiated : BaseObject<bo
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectSourceIsIpv6 : BaseObject<bool>
+public partial class SysmonEventFilteringNetworkConnectSourceIsIpv6 : BaseObject<string>
 {
 }
 
@@ -452,7 +452,7 @@ public partial class SysmonEventFilteringNetworkConnectSourceHostname : BaseObje
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectSourcePort : BaseObject<ushort>
+public partial class SysmonEventFilteringNetworkConnectSourcePort : BaseObject<string>
 {
 }
 
@@ -468,7 +468,7 @@ public partial class SysmonEventFilteringNetworkConnectSourcePortName : BaseObje
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectDestinationIsIpv6 : BaseObject<bool>
+public partial class SysmonEventFilteringNetworkConnectDestinationIsIpv6 : BaseObject<string>
 {
 }
 
@@ -492,7 +492,7 @@ public partial class SysmonEventFilteringNetworkConnectDestinationHostname : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectDestinationPort : BaseObject<ushort>
+public partial class SysmonEventFilteringNetworkConnectDestinationPort : BaseObject<string>
 {
 }
 
@@ -515,7 +515,7 @@ public partial class SysmonEventFilteringNetworkConnectRuleProcessGuid : BaseObj
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringNetworkConnectRuleProcessId : BaseObject<string>
 {
 }
 
@@ -547,7 +547,7 @@ public partial class SysmonEventFilteringNetworkConnectRuleProtocol : BaseObject
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectRuleInitiated : BaseObject<bool>
+public partial class SysmonEventFilteringNetworkConnectRuleInitiated : BaseObject<string>
 {
 }
 
@@ -555,7 +555,7 @@ public partial class SysmonEventFilteringNetworkConnectRuleInitiated : BaseObjec
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectRuleSourceIsIpv6 : BaseObject<bool>
+public partial class SysmonEventFilteringNetworkConnectRuleSourceIsIpv6 : BaseObject<string>
 {
 }
 
@@ -579,7 +579,7 @@ public partial class SysmonEventFilteringNetworkConnectRuleSourceHostname : Base
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectRuleSourcePort : BaseObject<ushort>
+public partial class SysmonEventFilteringNetworkConnectRuleSourcePort : BaseObject<string>
 {
 }
 
@@ -595,7 +595,7 @@ public partial class SysmonEventFilteringNetworkConnectRuleSourcePortName : Base
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectRuleDestinationIsIpv6 : BaseObject<bool>
+public partial class SysmonEventFilteringNetworkConnectRuleDestinationIsIpv6 : BaseObject<string>
 {
 }
 
@@ -619,7 +619,7 @@ public partial class SysmonEventFilteringNetworkConnectRuleDestinationHostname :
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringNetworkConnectRuleDestinationPort : BaseObject<ushort>
+public partial class SysmonEventFilteringNetworkConnectRuleDestinationPort : BaseObject<string>
 {
 }
 
