@@ -15,6 +15,7 @@ public partial class SysmonEventFilteringRuleGroupFileDelete : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringRuleGroupFileDeleteHashes))]
 [System.Xml.Serialization.XmlElementAttribute("IsExecutable",typeof(SysmonEventFilteringRuleGroupFileDeleteIsExecutable))]
 [System.Xml.Serialization.XmlElementAttribute("Archived",typeof(SysmonEventFilteringRuleGroupFileDeleteArchived))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupFileDeleteRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -59,6 +60,7 @@ public partial class SysmonEventFilteringFileDelete : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringFileDeleteHashes))]
 [System.Xml.Serialization.XmlElementAttribute("IsExecutable",typeof(SysmonEventFilteringFileDeleteIsExecutable))]
 [System.Xml.Serialization.XmlElementAttribute("Archived",typeof(SysmonEventFilteringFileDeleteArchived))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringFileDeleteRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -100,7 +102,7 @@ public partial class SysmonEventFilteringRuleGroupFileDeleteProcessGuid : BaseOb
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileDeleteProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupFileDeleteProcessId : BaseObject<string>
 {
 }
 
@@ -140,7 +142,7 @@ public partial class SysmonEventFilteringRuleGroupFileDeleteHashes : BaseObject<
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileDeleteIsExecutable : BaseObject<bool>
+public partial class SysmonEventFilteringRuleGroupFileDeleteIsExecutable : BaseObject<string>
 {
 }
 
@@ -163,7 +165,7 @@ public partial class SysmonEventFilteringRuleGroupFileDeleteRuleProcessGuid : Ba
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileDeleteRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupFileDeleteRuleProcessId : BaseObject<string>
 {
 }
 
@@ -203,7 +205,7 @@ public partial class SysmonEventFilteringRuleGroupFileDeleteRuleHashes : BaseObj
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileDeleteRuleIsExecutable : BaseObject<bool>
+public partial class SysmonEventFilteringRuleGroupFileDeleteRuleIsExecutable : BaseObject<string>
 {
 }
 
@@ -226,7 +228,7 @@ public partial class SysmonEventFilteringFileDeleteProcessGuid : BaseObject<stri
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileDeleteProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringFileDeleteProcessId : BaseObject<string>
 {
 }
 
@@ -266,7 +268,7 @@ public partial class SysmonEventFilteringFileDeleteHashes : BaseObject<string>
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileDeleteIsExecutable : BaseObject<bool>
+public partial class SysmonEventFilteringFileDeleteIsExecutable : BaseObject<string>
 {
 }
 
@@ -289,7 +291,7 @@ public partial class SysmonEventFilteringFileDeleteRuleProcessGuid : BaseObject<
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileDeleteRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringFileDeleteRuleProcessId : BaseObject<string>
 {
 }
 
@@ -329,7 +331,7 @@ public partial class SysmonEventFilteringFileDeleteRuleHashes : BaseObject<strin
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileDeleteRuleIsExecutable : BaseObject<bool>
+public partial class SysmonEventFilteringFileDeleteRuleIsExecutable : BaseObject<string>
 {
 }
 

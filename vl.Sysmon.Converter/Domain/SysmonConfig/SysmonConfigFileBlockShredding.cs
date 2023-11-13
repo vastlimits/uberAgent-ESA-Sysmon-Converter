@@ -14,6 +14,7 @@ public partial class SysmonEventFilteringRuleGroupFileBlockShredding : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("TargetFilename",typeof(SysmonEventFilteringRuleGroupFileBlockShreddingTargetFilename))]
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringRuleGroupFileBlockShreddingHashes))]
 [System.Xml.Serialization.XmlElementAttribute("IsExecutable",typeof(SysmonEventFilteringRuleGroupFileBlockShreddingIsExecutable))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupFileBlockShreddingRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -56,6 +57,7 @@ public partial class SysmonEventFilteringFileBlockShredding : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("TargetFilename",typeof(SysmonEventFilteringFileBlockShreddingTargetFilename))]
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringFileBlockShreddingHashes))]
 [System.Xml.Serialization.XmlElementAttribute("IsExecutable",typeof(SysmonEventFilteringFileBlockShreddingIsExecutable))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringFileBlockShreddingRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -96,7 +98,7 @@ public partial class SysmonEventFilteringRuleGroupFileBlockShreddingProcessGuid 
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileBlockShreddingProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupFileBlockShreddingProcessId : BaseObject<string>
 {
 }
 
@@ -136,7 +138,7 @@ public partial class SysmonEventFilteringRuleGroupFileBlockShreddingHashes : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileBlockShreddingIsExecutable : BaseObject<bool>
+public partial class SysmonEventFilteringRuleGroupFileBlockShreddingIsExecutable : BaseObject<string>
 {
 }
 
@@ -151,7 +153,7 @@ public partial class SysmonEventFilteringRuleGroupFileBlockShreddingRuleProcessG
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileBlockShreddingRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupFileBlockShreddingRuleProcessId : BaseObject<string>
 {
 }
 
@@ -191,7 +193,7 @@ public partial class SysmonEventFilteringRuleGroupFileBlockShreddingRuleHashes :
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileBlockShreddingRuleIsExecutable : BaseObject<bool>
+public partial class SysmonEventFilteringRuleGroupFileBlockShreddingRuleIsExecutable : BaseObject<string>
 {
 }
 
@@ -206,7 +208,7 @@ public partial class SysmonEventFilteringFileBlockShreddingProcessGuid : BaseObj
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileBlockShreddingProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringFileBlockShreddingProcessId : BaseObject<string>
 {
 }
 
@@ -246,7 +248,7 @@ public partial class SysmonEventFilteringFileBlockShreddingHashes : BaseObject<s
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileBlockShreddingIsExecutable : BaseObject<bool>
+public partial class SysmonEventFilteringFileBlockShreddingIsExecutable : BaseObject<string>
 {
 }
 
@@ -261,7 +263,7 @@ public partial class SysmonEventFilteringFileBlockShreddingRuleProcessGuid : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileBlockShreddingRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringFileBlockShreddingRuleProcessId : BaseObject<string>
 {
 }
 
@@ -301,6 +303,6 @@ public partial class SysmonEventFilteringFileBlockShreddingRuleHashes : BaseObje
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileBlockShreddingRuleIsExecutable : BaseObject<bool>
+public partial class SysmonEventFilteringFileBlockShreddingRuleIsExecutable : BaseObject<string>
 {
 }

@@ -13,6 +13,7 @@ public partial class SysmonEventFilteringRuleGroupFileExecutableDetected : BaseR
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringRuleGroupFileExecutableDetectedImage))]
 [System.Xml.Serialization.XmlElementAttribute("TargetFilename",typeof(SysmonEventFilteringRuleGroupFileExecutableDetectedTargetFilename))]
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringRuleGroupFileExecutableDetectedHashes))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupFileExecutableDetectedRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -53,6 +54,7 @@ public partial class SysmonEventFilteringFileExecutableDetected : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Image",typeof(SysmonEventFilteringFileExecutableDetectedImage))]
 [System.Xml.Serialization.XmlElementAttribute("TargetFilename",typeof(SysmonEventFilteringFileExecutableDetectedTargetFilename))]
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringFileExecutableDetectedHashes))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringFileExecutableDetectedRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -92,7 +94,7 @@ public partial class SysmonEventFilteringRuleGroupFileExecutableDetectedProcessG
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileExecutableDetectedProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupFileExecutableDetectedProcessId : BaseObject<string>
 {
 }
 
@@ -139,7 +141,7 @@ public partial class SysmonEventFilteringRuleGroupFileExecutableDetectedRuleProc
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileExecutableDetectedRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupFileExecutableDetectedRuleProcessId : BaseObject<string>
 {
 }
 
@@ -186,7 +188,7 @@ public partial class SysmonEventFilteringFileExecutableDetectedProcessGuid : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileExecutableDetectedProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringFileExecutableDetectedProcessId : BaseObject<string>
 {
 }
 
@@ -233,7 +235,7 @@ public partial class SysmonEventFilteringFileExecutableDetectedRuleProcessGuid :
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileExecutableDetectedRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringFileExecutableDetectedRuleProcessId : BaseObject<string>
 {
 }
 

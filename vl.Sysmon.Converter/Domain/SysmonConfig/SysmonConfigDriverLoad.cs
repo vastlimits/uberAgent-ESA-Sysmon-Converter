@@ -12,6 +12,7 @@ public partial class SysmonEventFilteringRuleGroupDriverLoad : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Signed",typeof(SysmonEventFilteringRuleGroupDriverLoadSigned))]
 [System.Xml.Serialization.XmlElementAttribute("Signature",typeof(SysmonEventFilteringRuleGroupDriverLoadSignature))]
 [System.Xml.Serialization.XmlElementAttribute("SignatureStatus",typeof(SysmonEventFilteringRuleGroupDriverLoadSignatureStatus))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupDriverLoadRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -50,6 +51,7 @@ public partial class SysmonEventFilteringDriverLoad : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Signed",typeof(SysmonEventFilteringDriverLoadSigned))]
 [System.Xml.Serialization.XmlElementAttribute("Signature",typeof(SysmonEventFilteringDriverLoadSignature))]
 [System.Xml.Serialization.XmlElementAttribute("SignatureStatus",typeof(SysmonEventFilteringDriverLoadSignatureStatus))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringDriverLoadRule))]
    public object[] Items
    {
       get { return this.itemsField; }

@@ -15,6 +15,7 @@ public partial class SysmonEventFilteringRuleGroupFileCreateStreamHash : BaseRul
 [System.Xml.Serialization.XmlElementAttribute("Hash",typeof(SysmonEventFilteringRuleGroupFileCreateStreamHashHash))]
 [System.Xml.Serialization.XmlElementAttribute("Contents",typeof(SysmonEventFilteringRuleGroupFileCreateStreamHashContents))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupFileCreateStreamHashUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupFileCreateStreamHashRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -59,6 +60,7 @@ public partial class SysmonEventFilteringFileCreateStreamHash : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("Hash",typeof(SysmonEventFilteringFileCreateStreamHashHash))]
 [System.Xml.Serialization.XmlElementAttribute("Contents",typeof(SysmonEventFilteringFileCreateStreamHashContents))]
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringFileCreateStreamHashUser))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringFileCreateStreamHashRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -100,7 +102,7 @@ public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashProcessGui
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashProcessId : BaseObject<string>
 {
 }
 
@@ -163,7 +165,7 @@ public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashRuleProces
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupFileCreateStreamHashRuleProcessId : BaseObject<string>
 {
 }
 
@@ -226,7 +228,7 @@ public partial class SysmonEventFilteringFileCreateStreamHashProcessGuid : BaseO
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileCreateStreamHashProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringFileCreateStreamHashProcessId : BaseObject<string>
 {
 }
 
@@ -289,7 +291,7 @@ public partial class SysmonEventFilteringFileCreateStreamHashRuleProcessGuid : B
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringFileCreateStreamHashRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringFileCreateStreamHashRuleProcessId : BaseObject<string>
 {
 }
 

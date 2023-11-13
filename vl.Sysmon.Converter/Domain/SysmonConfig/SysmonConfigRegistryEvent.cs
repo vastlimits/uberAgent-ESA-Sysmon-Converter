@@ -15,6 +15,7 @@ public partial class SysmonEventFilteringRuleGroupRegistryEvent : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRuleGroupRegistryEventUser))]
 [System.Xml.Serialization.XmlElementAttribute("Details",typeof(SysmonEventFilteringRuleGroupRegistryEventDetails))]
 [System.Xml.Serialization.XmlElementAttribute("NewName",typeof(SysmonEventFilteringRuleGroupRegistryEventNewName))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRuleGroupRegistryEventRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -59,6 +60,7 @@ public partial class SysmonEventFilteringRegistryEvent : BaseRule
 [System.Xml.Serialization.XmlElementAttribute("User",typeof(SysmonEventFilteringRegistryEventUser))]
 [System.Xml.Serialization.XmlElementAttribute("Details",typeof(SysmonEventFilteringRegistryEventDetails))]
 [System.Xml.Serialization.XmlElementAttribute("NewName",typeof(SysmonEventFilteringRegistryEventNewName))]
+[System.Xml.Serialization.XmlElementAttribute("Rule",typeof(SysmonEventFilteringRegistryEventRule))]
    public object[] Items
    {
       get { return this.itemsField; }
@@ -108,7 +110,7 @@ public partial class SysmonEventFilteringRuleGroupRegistryEventProcessGuid : Bas
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupRegistryEventProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupRegistryEventProcessId : BaseObject<string>
 {
 }
 
@@ -171,7 +173,7 @@ public partial class SysmonEventFilteringRuleGroupRegistryEventRuleProcessGuid :
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRuleGroupRegistryEventRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRuleGroupRegistryEventRuleProcessId : BaseObject<string>
 {
 }
 
@@ -234,7 +236,7 @@ public partial class SysmonEventFilteringRegistryEventProcessGuid : BaseObject<s
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRegistryEventProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRegistryEventProcessId : BaseObject<string>
 {
 }
 
@@ -297,7 +299,7 @@ public partial class SysmonEventFilteringRegistryEventRuleProcessGuid : BaseObje
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class SysmonEventFilteringRegistryEventRuleProcessId : BaseObject<uint>
+public partial class SysmonEventFilteringRegistryEventRuleProcessId : BaseObject<string>
 {
 }
 
