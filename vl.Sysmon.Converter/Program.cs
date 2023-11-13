@@ -32,7 +32,7 @@ class Program
       Parser.Default.ParseArguments<Options>(args)
          .WithParsed(o =>
          {
-            _options = o;
+            Globals.Options = o;
          })
          .WithNotParsed(e =>
          {
@@ -41,10 +41,10 @@ class Program
 
       try
       {
-         if (!Directory.Exists(_options.OutputDirectory))
+         if (!Directory.Exists(Globals.Options.OutputDirectory))
          {
-            Log.Information("Directory does not exist, create directory: {directory}", _options.OutputDirectory);
-            Directory.CreateDirectory(_options.OutputDirectory);
+            Log.Information("Directory does not exist, create directory: {directory}", Globals.Options.OutputDirectory);
+            Directory.CreateDirectory(Globals.Options.OutputDirectory);
          }
       }
       catch (Exception e)
@@ -53,7 +53,7 @@ class Program
       }
          
 
-      foreach (var file in _options.InputFiles)
+      foreach (var file in Globals.Options.InputFiles)
       {
          var config = ParseConfiguration(file);
          if (config == null)
@@ -91,7 +91,7 @@ class Program
             continue;
          }
 
-         if (!_options.RulesToConvert.Any())
+         if (!Globals.Options.RulesToConvert.Any())
          {
             eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
             activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessCreate, "ProcessCreate", EventType.ProcessCreate));
@@ -122,7 +122,7 @@ class Program
          }
          else
          {
-            foreach (var ruleId in _options.RulesToConvert)
+            foreach (var ruleId in Globals.Options.RulesToConvert)
             {
                switch (ruleId)
                {
@@ -197,7 +197,7 @@ class Program
          
       Console.WriteLine();
 
-      return Serialize(_options, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
+      return Serialize(Globals.Options, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
    }
 
    private static bool HandlePreConvertingRegistry(List<SysmonEventFilteringRuleGroupRegistryEvent> sysmonGroupActivities)
