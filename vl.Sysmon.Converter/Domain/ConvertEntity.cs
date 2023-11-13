@@ -222,23 +222,25 @@ public static class ConvertEntity
 
             if (ruleItemName.EndsWith("Rule"))
             {
-               var innerRuleResult = ParseInnerRule(item, ++ruleId, onMatchProperty).ToList();
-               if (innerRuleResult.Count == 0)
+               var subRuleset = ParseSubRule(item, ++ruleId, onMatchProperty).ToList();
+               if (subRuleset.Count == 0)
                   continue;
 
-               var removedUnsupported = innerRuleResult.RemoveAll(c => !c.IsSupportedByCurrentUberAgentVersion);
-               if (removedUnsupported > 0 && groupRelationProperty.Contains("and"))
+               var subRuleGroupRelation = subRuleset.FirstOrDefault()?.GroupRelation ?? "or";
+
+               var removedUnsupported = subRuleset.RemoveAll(c => !c.IsSupportedByCurrentUberAgentVersion);
+               if (removedUnsupported > 0 && subRuleGroupRelation.Contains("and"))
                {
                   Log.Warning("Found {0} unsupported rules in {1}, the entire rule is ignored due to logical concatenation <and>.", removedUnsupported, ruleItemName);
                   continue;
                }
 
-               if (removedUnsupported > 0 && groupRelationProperty.Contains("or"))
+               if (removedUnsupported > 0 && subRuleGroupRelation.Contains("or"))
                {
                   Log.Warning("Found {0} unsupported rules in {1}, only the unsupported rules have been removed, due to logical concatenation <or>.", removedUnsupported, ruleItemName);
                }
 
-               conditions.AddRange(innerRuleResult);
+               conditions.AddRange(subRuleset);
                continue;
             }
 
@@ -262,7 +264,7 @@ public static class ConvertEntity
       return conditions;
    }
 
-   private static IEnumerable<SysmonCondition> ParseInnerRule(object rule, int ruleId, string onMatch)
+   private static IEnumerable<SysmonCondition> ParseSubRule(object rule, int ruleId, string onMatch)
    {
       var conditions = new List<SysmonCondition>();
          
