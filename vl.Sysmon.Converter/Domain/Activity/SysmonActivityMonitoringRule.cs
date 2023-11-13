@@ -9,8 +9,6 @@ namespace vl.Sysmon.Converter.Domain.Activity;
 
 public class SysmonActivityMonitoringRule : ActivityMonitoringRule
 {
-   public static readonly ILogger Log = new LoggerConfiguration().WriteTo.Console().CreateLogger();
-
    public static ActivityMonitoringRule Create<T>(List<T> sysmonGroupActivities, string eventName, EventType eventType) where T : ISysmonEventFilteringRuleGroup
    {
       if (sysmonGroupActivities == null || sysmonGroupActivities.Count == 0)
@@ -24,7 +22,7 @@ public class SysmonActivityMonitoringRule : ActivityMonitoringRule
       {
          if (!Versioning.IsSupportedByCurrentVersion(Globals.Options.UAVersion, eventType))
          {
-            Log.Warning("{0} is not supported in uberAgent version: {1}", eventType, Globals.Options.UAVersion);
+            Log.Warning("{0} is not supported in uberAgent version: {1}", eventName, Globals.Options.UAVersion);
             return new ActivityMonitoringRule();
          }
 

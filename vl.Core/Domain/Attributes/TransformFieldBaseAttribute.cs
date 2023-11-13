@@ -55,6 +55,8 @@ namespace vl.Core.Domain.Attributes
          };
       }
 
+      public bool IsSupportedByCurrentUberAgentVersion(UAVersion uaVersion) => uaVersion >= UASupportedVersion;
+
       public abstract TransformDataType GetDataType();
       public abstract string GetTargetField(string value);
    }

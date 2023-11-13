@@ -2,7 +2,6 @@
 
 public static class Versioning
 {
-
    public static bool IsSupportedByCurrentVersion(UAVersion version, EventType eventType)
    {
       switch (eventType)
@@ -39,6 +38,4 @@ public static class Versioning
 
       return false;
    }
-
-
 }

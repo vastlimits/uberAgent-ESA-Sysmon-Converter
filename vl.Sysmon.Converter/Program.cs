@@ -20,11 +20,10 @@ class Program
    {
       EventType.RegKeyCreate, EventType.RegKeyDelete, EventType.RegValueWrite, EventType.RegKeyRename
    };
-   public static readonly ILogger Log = new LoggerConfiguration().WriteTo.Console().CreateLogger();
-
 
    private static void Main(string[] args)
    {
+      Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
       Log.Information("Sysmon Converter starting..");
          
       var configurations = new List<NamedConfig>();

@@ -201,7 +201,7 @@ public static class ConvertEntity
       var ruleProperties = rule.GetType().GetProperties();
       var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items"))?.GetValue(rule, null);
       var onMatchProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("onmatch"))?.GetValue(rule, null)?.ToString();
-      var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null)?.ToString()?.ToLower();
+      var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null)?.ToString()?.ToLower() ?? "or";
 
       if (itemsProperty == null)
          return conditions;
@@ -222,9 +222,21 @@ public static class ConvertEntity
 
             if (ruleItemName.EndsWith("Rule"))
             {
-               var innerRuleResult = ParseInnerRule(item, ++ruleId, onMatchProperty)?.ToArray();
-               if (innerRuleResult == null || innerRuleResult.Length == 0)
+               var innerRuleResult = ParseInnerRule(item, ++ruleId, onMatchProperty).ToList();
+               if (innerRuleResult.Count == 0)
                   continue;
+
+               var removedUnsupported = innerRuleResult.RemoveAll(c => !c.IsSupportedByCurrentUberAgentVersion);
+               if (removedUnsupported > 0 && groupRelationProperty.Contains("and"))
+               {
+                  Log.Warning("Found {0} unsupported rules in {1}, the entire rule is ignored due to logical concatenation <and>.", removedUnsupported, ruleItemName);
+                  continue;
+               }
+
+               if (removedUnsupported > 0 && groupRelationProperty.Contains("or"))
+               {
+                  Log.Warning("Found {0} unsupported rules in {1}, only the unsupported rules have been removed, due to logical concatenation <or>.", removedUnsupported, ruleItemName);
+               }
 
                conditions.AddRange(innerRuleResult);
                continue;
@@ -283,7 +295,7 @@ public static class ConvertEntity
       {
          var baseCondition = CreateSysmonBaseCondition(item);
          if (baseCondition == null)
-            return null;
+            return new List<SysmonCondition>();
 
          conditions.Add(new SysmonCondition
          {
@@ -294,6 +306,7 @@ public static class ConvertEntity
             Condition = baseCondition.Condition,
             OnMatch = onMatch,
             DataType = baseCondition.DataType,
+            IsSupportedByCurrentUberAgentVersion = baseCondition.IsSupportedByCurrentUberAgentVersion
          });
       }
 
@@ -390,7 +403,8 @@ public static class ConvertEntity
                Field = attribute.GetTargetField(itemValue),
                Condition = itemCondition ?? "is",
                Value = attribute.TransformValue(itemValue).Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
-               DataType = attribute.GetDataType()
+               DataType = attribute.GetDataType(),
+               IsSupportedByCurrentUberAgentVersion = attribute.IsSupportedByCurrentUberAgentVersion(Globals.Options.UAVersion),
             };
          }
       }
