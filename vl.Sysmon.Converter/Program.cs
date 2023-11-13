@@ -16,14 +16,12 @@ namespace vl.Sysmon.Converter;
 
 class Program
 {
-   private static readonly ILogger Log = new LoggerConfiguration()
-      .WriteTo.Console()
-      .CreateLogger();
-   private static Options _options = new();
    private static readonly List<EventType> RegistryEventTypes = new()
    {
       EventType.RegKeyCreate, EventType.RegKeyDelete, EventType.RegValueWrite, EventType.RegKeyRename
    };
+   public static readonly ILogger Log = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+
 
    private static void Main(string[] args)
    {

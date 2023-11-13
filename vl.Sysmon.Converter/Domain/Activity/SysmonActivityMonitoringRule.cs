@@ -9,6 +9,8 @@ namespace vl.Sysmon.Converter.Domain.Activity;
 
 public class SysmonActivityMonitoringRule : ActivityMonitoringRule
 {
+   public static readonly ILogger Log = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+
    public static ActivityMonitoringRule Create<T>(List<T> sysmonGroupActivities, string eventName, EventType eventType) where T : ISysmonEventFilteringRuleGroup
    {
       if (sysmonGroupActivities == null || sysmonGroupActivities.Count == 0)
