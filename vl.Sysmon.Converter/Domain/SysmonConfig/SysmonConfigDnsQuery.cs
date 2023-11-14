@@ -28,6 +28,7 @@ public partial class SysmonEventFilteringRuleGroupDnsQuery : BaseRule
 public partial class SysmonEventFilteringRuleGroupDnsQueryRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRuleGroupDnsQueryRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringRuleGroupDnsQueryRuleProcessId))]
@@ -40,6 +41,13 @@ public partial class SysmonEventFilteringRuleGroupDnsQueryRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -71,6 +79,7 @@ public partial class SysmonEventFilteringDnsQuery : BaseRule
 public partial class SysmonEventFilteringDnsQueryRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringDnsQueryRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringDnsQueryRuleProcessId))]
@@ -83,6 +92,13 @@ public partial class SysmonEventFilteringDnsQueryRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 

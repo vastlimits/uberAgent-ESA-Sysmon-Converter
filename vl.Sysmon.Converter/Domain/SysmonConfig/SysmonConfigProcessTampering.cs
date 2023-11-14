@@ -26,6 +26,7 @@ public partial class SysmonEventFilteringRuleGroupProcessTampering : BaseRule
 public partial class SysmonEventFilteringRuleGroupProcessTamperingRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRuleGroupProcessTamperingRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringRuleGroupProcessTamperingRuleProcessId))]
@@ -36,6 +37,13 @@ public partial class SysmonEventFilteringRuleGroupProcessTamperingRule : BaseRul
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -65,6 +73,7 @@ public partial class SysmonEventFilteringProcessTampering : BaseRule
 public partial class SysmonEventFilteringProcessTamperingRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringProcessTamperingRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringProcessTamperingRuleProcessId))]
@@ -75,6 +84,13 @@ public partial class SysmonEventFilteringProcessTamperingRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 

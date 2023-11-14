@@ -25,6 +25,7 @@ public partial class SysmonEventFilteringRuleGroupProcessTerminate : BaseRule
 public partial class SysmonEventFilteringRuleGroupProcessTerminateRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRuleGroupProcessTerminateRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringRuleGroupProcessTerminateRuleProcessId))]
@@ -34,6 +35,13 @@ public partial class SysmonEventFilteringRuleGroupProcessTerminateRule : BaseRul
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -62,6 +70,7 @@ public partial class SysmonEventFilteringProcessTerminate : BaseRule
 public partial class SysmonEventFilteringProcessTerminateRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringProcessTerminateRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringProcessTerminateRuleProcessId))]
@@ -71,6 +80,13 @@ public partial class SysmonEventFilteringProcessTerminateRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 

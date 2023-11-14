@@ -33,6 +33,7 @@ public partial class SysmonEventFilteringRuleGroupCreateRemoteThread : BaseRule
 public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("SourceProcessGuid",typeof(SysmonEventFilteringRuleGroupCreateRemoteThreadRuleSourceProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("SourceProcessId",typeof(SysmonEventFilteringRuleGroupCreateRemoteThreadRuleSourceProcessId))]
@@ -50,6 +51,13 @@ public partial class SysmonEventFilteringRuleGroupCreateRemoteThreadRule : BaseR
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -86,6 +94,7 @@ public partial class SysmonEventFilteringCreateRemoteThread : BaseRule
 public partial class SysmonEventFilteringCreateRemoteThreadRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("SourceProcessGuid",typeof(SysmonEventFilteringCreateRemoteThreadRuleSourceProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("SourceProcessId",typeof(SysmonEventFilteringCreateRemoteThreadRuleSourceProcessId))]
@@ -103,6 +112,13 @@ public partial class SysmonEventFilteringCreateRemoteThreadRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
