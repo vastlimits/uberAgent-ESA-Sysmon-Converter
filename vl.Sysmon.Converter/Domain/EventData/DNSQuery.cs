@@ -18,45 +18,14 @@ public class DNSQuery
          Log.Information("Convert exclude rules for DNS..");
 
          var result = new List<EventDataFilter>();
-         var action = EventDataFilterAction.Deny;
-         var sourcetypes = new List<string> {MetricNames.ProcessDnsQuery};
 
          foreach (var rule in dnsRules)
          {
             if (!rule.onmatch.Equals(Constants.SysmonExcludeOnMatchString))
                continue;
 
-            foreach (var item in rule.Items)
-            {
-               var uberAgentMetricField = string.Empty;
-               EventDataFilter filter = null;
+            result.AddRange(CreateEventFilterData(rule.Items));
 
-               switch (item)
-               {
-                  case SysmonEventFilteringRuleGroupDnsQueryImage c:
-                     // We cannot convert this rule because we are not able to access the full image path in this sourcetype.
-                     break;
-                  case SysmonEventFilteringRuleGroupDnsQueryQueryName c:
-                     uberAgentMetricField = MetricFields.DnsRequest;
-
-                     filter = ConvertEntity.Convert(new SysmonEventDataFilter
-                     {
-                        Action = action, Field = uberAgentMetricField, Condition = c.condition, Value = c.Value,
-                        Sourcetypes = sourcetypes
-                     });
-                     break;
-
-                  default:
-                     Log.Warning("DNS filter rule not implemented: {item}", item);
-                     break;
-               }
-
-               if (filter == null)
-                  continue;
-
-               Log.Verbose("Rule <{query}>", filter.Query);
-               result.Add(filter);
-            }
          }
 
          Log.Information("Converted {count} rules.", result.Count);
@@ -68,5 +37,62 @@ public class DNSQuery
       }
 
       return Enumerable.Empty<EventDataFilter>(); ;
+   }
+
+   private static IEnumerable<EventDataFilter> CreateEventFilterData(object[] items)
+   {
+      var uberAgentMetricField = string.Empty;
+      EventDataFilter filter = null;
+      var sourcetypes = new List<string> {MetricNames.ProcessDnsQuery};
+      var retn = new List<EventDataFilter>();
+      foreach (var item in items)
+      {
+         switch (item)
+         {
+            case SysmonEventFilteringRuleGroupDnsQueryRule c:
+               retn.AddRange(CreateEventFilterData(c.Items));
+               break;
+            case SysmonEventFilteringRuleGroupDnsQueryRuleImage:
+            case SysmonEventFilteringRuleGroupDnsQueryImage:
+               // We cannot convert this rule because we are not able to access the full image path in this sourcetype.
+               break;
+            case SysmonEventFilteringRuleGroupDnsQueryRuleQueryName c:
+               uberAgentMetricField = MetricFields.DnsRequest;
+
+               filter = ConvertEntity.Convert(new SysmonEventDataFilter
+               {
+                  Action = EventDataFilterAction.Deny, 
+                  Field = uberAgentMetricField, 
+                  Condition = c.condition, 
+                  Value = c.Value,
+                  Sourcetypes = sourcetypes
+               });
+               break;
+            case SysmonEventFilteringRuleGroupDnsQueryQueryName c:
+               uberAgentMetricField = MetricFields.DnsRequest;
+
+               filter = ConvertEntity.Convert(new SysmonEventDataFilter
+               {
+                  Action = EventDataFilterAction.Deny, 
+                  Field = uberAgentMetricField, 
+                  Condition = c.condition, 
+                  Value = c.Value,
+                  Sourcetypes = sourcetypes
+               });
+               break;
+            default:
+               Log.Warning("DNS filter rule not implemented: {item}", item);
+               break;
+         }
+
+         if (filter == null)
+            continue;
+
+         Log.Verbose("Rule <{query}>", filter.Query);
+         retn.Add(filter);
+      }
+      
+
+      return retn;
    }
 }
