@@ -33,6 +33,7 @@ public static class ConvertEntity
       if (conditions == null || conditions.Count == 0)
          return string.Empty;
 
+      var subRule = false;
       var queryBuilder = new StringBuilder();
       var exclude = conditions[0].OnMatch.Equals(Constants.SysmonExcludeOnMatchString);
          
@@ -48,10 +49,16 @@ public static class ConvertEntity
 
          // new start of rule converting
          if (groupIndex == 0)
+         {
+            subRule = false;
             queryBuilder.Append("((");
+         }
          else
-            // inner rule converting
-            queryBuilder.Append($") {mainGroupRelation} (");
+         {
+            subRule = true;
+            queryBuilder.Append($") {mainGroupRelation} ((");
+         }
+            // sub rule converting
 
          var sysmonConditionsGroupedByField = sysmonConditions.GroupBy(c => c.Field).ToArray();
 
@@ -160,9 +167,16 @@ public static class ConvertEntity
             if (!lastValueInGroupFields)
             {
                if (groupIndex == 0)
-                  queryBuilder.Append($" {mainGroupRelation} ");
+                  queryBuilder.Append($") {mainGroupRelation} (");
                else
-                  queryBuilder.Append($" {innerRuleRelation} ");
+                  queryBuilder.Append($") {innerRuleRelation} (");
+            }
+            else
+            {
+               if (subRule)
+               {
+                  queryBuilder.Append($")");
+               }
             }
 
          }
