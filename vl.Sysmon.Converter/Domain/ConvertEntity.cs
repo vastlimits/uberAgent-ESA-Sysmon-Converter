@@ -332,6 +332,7 @@ public static class ConvertEntity
    [TransformFieldPath("ParentImage", "Parent.Name", "Parent.Path", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_6_0)]
    [TransformFieldPath("Image", "Process.Name", "Process.Path", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_6_0)]
    [TransformField("User", "Process.User", UAVersion.UA_VERSION_6_0)]
+   [TransformField("Company", "Process.Company", UAVersion.UA_VERSION_6_0)]
    [TransformField("ParentProcessId", "Parent.Id", TransformDataType.Int, UAVersion.UA_VERSION_6_0)]
    [TransformField("ProcessId", "Process.Id", TransformDataType.Int, UAVersion.UA_VERSION_6_0)]
    [TransformField("ParentCommandLine", "Parent.CommandLine", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_6_0)]
@@ -364,6 +365,8 @@ public static class ConvertEntity
    [FieldNotSupported("Details", "uberAgent currently does not support written registry data.")]
    [FieldNotSupported("Contents", "uberAgent currently does not support Contents field.")]
    [FieldNotSupported("Archived", "uberAgent currently does not support Archived field.")]
+   [FieldNotSupported("SourcePort", "uberAgent currently does not support SourcePort field.")]
+   [FieldNotSupported("Product", "uberAgent currently does not support Product field.")]
    private static SysmonConditionBase CreateSysmonBaseCondition(object item)
    {
       if (item == null)
