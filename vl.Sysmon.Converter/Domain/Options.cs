@@ -16,7 +16,7 @@ public class Options
    [Option('r', "rule", Required = false, HelpText = "Specify the Sysmon rule IDs to be converted. If not set, all possible rules will be converted. E.g: -r 1 2")]
    public IEnumerable<SysmonEventId> RulesToConvert { get; set; }
 
-   [Option('v', "version", Required = false, HelpText = "Specify the uberAgent version IDs to get only supported rules converted. If not set, the latest version is used. E.g: -v 6.1")]
+   [Option('v', "version", Required = false, HelpText = "Specify the uberAgent version to get only supported rules converted. If not set, the latest version is used. E.g: -v 6.1")]
    public string Version
    {
       get => UAVersion.ToString();
