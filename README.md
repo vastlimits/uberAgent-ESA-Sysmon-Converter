@@ -5,20 +5,20 @@
 ## Table of Contents
 
 - [Platforms](#platforms)
-- [Getting Started](#gettingstarted)
-- [Syntax](#Syntax)
+- [Getting Started](#getting-started)
+- [Syntax](#syntax)
 - [Limitations](#limitations)
 - [License](#license)
 - [Third Party](#third-party)
 
 
 ## Platforms
-The uberAgent-ESA-Sysmon-Converter is developed in .NET 6 and, therefore, platform-independent.
+The uberAgent-ESA-Sysmon-Converter is developed in .NET 8 and, therefore, platform-independent.
 
 ## Getting Started
 ### Download
 
- 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.0.1).
+ 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.2.0).
  2. After unpacking, the converter can be controlled via the command line.
 
 ### Converting
@@ -50,13 +50,26 @@ vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2
 
 The RiskScore is set to 50 by default, but you can specify it:
 ```cmd
-vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12 -score 75
+vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12 --score 75
+```
+
+To convert rules for a specific uberAgent version
+- If not specified, the latest uberAgent version is always assumed.
+```cmd
+vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12 --score 75 -version 6.1
 ```
 
 Or a shorter notation
 ```cmd
-vl.Sysmon.Converter -i filePath1 -o outputFolder -r 1 2 12 -s 75
+vl.Sysmon.Converter -i filePath1 -o outputFolder -r 1 2 12 -s 75 -v 6.1
 ```
+
+### Selectable uberAgent versions
+- 6.0
+- 6.1
+- 6.2
+- 7.0
+- 7.1
 
 ## Example
 A **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](https://github.com/SwiftOnSecurity/sysmon-config):
@@ -125,19 +138,11 @@ Query = not ((Process.CommandLine == r"C:\Windows\System32\RuntimeBroker.exe -Em
 Currently, not all rules can be converted from Sysmon to uberAgent.
 The following rule IDs are currently not supported:
 
-- 2: FileCreateTime
-- 6: DriverLoad
-- 9: RawAccessRead
 - 10: ProcessAccess
-- 11: FileCreate
-- 15: FileCreateStreamHash
-- 17: NamedPipeCreated
-- 18: NamedPipeConnected
 - 19: WMI filter
 - 20: WMI consumer
 - 21: WMI consumer filter
-- 23: FileDelete
-- 26: FileDeleteDetected
+- 24: ClipboardChange
 
 The following Sysmon rule queries are currently not supported:
 

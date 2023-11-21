@@ -6,8 +6,8 @@
     <PublishSingleFile>true</PublishSingleFile>
     <PublishReadyToRun>true</PublishReadyToRun>
     <PublishTrimmed>true</PublishTrimmed>
-    <Version>1.0.1</Version>
-    <StartupObject>vl.Sysmon.Converter.Program</StartupObject>
+    <Version>1.2.0</Version>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

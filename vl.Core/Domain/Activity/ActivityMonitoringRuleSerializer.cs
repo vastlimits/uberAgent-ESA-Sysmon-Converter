@@ -12,6 +12,7 @@ namespace vl.Core.Domain.Activity
 
       /*
          [ActivityMonitoringRule]
+         Id = 00000000-0000-0000-0000-000000000000
          RuleName = Detect Backslash
          EventType = Process.Start
          Tag = Test1
@@ -26,6 +27,9 @@ namespace vl.Core.Domain.Activity
          {
             foreach (var rule in options.Rules)
             {
+               if (string.IsNullOrEmpty(rule.Query))
+                  continue;
+
                sw.WriteLine("[ActivityMonitoringRule]");
 
                if (string.IsNullOrEmpty(rule.Name))
@@ -34,6 +38,7 @@ namespace vl.Core.Domain.Activity
                if (string.IsNullOrEmpty(rule.Tag))
                   rule.Tag = $"{rule.EventType}-{GetEventCounter(rule.EventType)}-converted-rule";
 
+               sw.WriteLine($"RuleId = {rule.Id}");
                sw.WriteLine($"RuleName = {rule.Name}");
                sw.WriteLine($"EventType = {rule.EventType.ToActivityEventName()}");
                sw.WriteLine($"Tag = {rule.Tag.ToLower()}");

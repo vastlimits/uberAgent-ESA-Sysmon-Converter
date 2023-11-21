@@ -10,8 +10,8 @@ namespace vl.Core.Domain.Extensions
          return eventType switch
          {
             EventType.Unknown => string.Empty,
-            EventType.ProcessStart => "Process.Start",
-            EventType.ProcessStop => "Process.Stop",
+            EventType.ProcessCreate => "Process.Start",
+            EventType.ProcessTerminate => "Process.Stop",
             EventType.ImageLoad => "Image.Load",
             EventType.NetConnect => "Net.Connect",
             EventType.NetReceive => "Net.Receive",
@@ -33,8 +33,19 @@ namespace vl.Core.Domain.Extensions
             EventType.RegKeyReplace => "Reg.Key.Replace",
             EventType.RegAny => "Reg.Any",
             EventType.DnsQuery => "DNS.Event",
-            EventType.ProcessCreateRemoteThread => "Process.CreateRemoteThread",
-            EventType.ProcessTamperingEvent => "Process.TamperingEvent",
+            EventType.CreateRemoteThread => "Process.CreateRemoteThread",
+            EventType.ProcessTampering => "Process.TamperingEvent",
+            EventType.DriverLoad => "Driver.Load",
+            EventType.FileCreateTime => "File.ChangeCreationTime",
+            EventType.FileCreate => "File.Create",
+            EventType.FileCreateStreamHash => "File.CreateStream",
+            EventType.FileDelete => "File.Delete",
+            EventType.FilePipeCreate => "File.PipeCreate",
+            EventType.FilePipeConnected => "File.PipeConnected",
+            EventType.RawAccessRead => "File.RawAccessRead",
+            EventType.FileRename => "File.Rename",
+            EventType.FileWrite => "File.Write",
+            EventType.FileRead => "File.Read",
             _ => throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null)
          };
       }

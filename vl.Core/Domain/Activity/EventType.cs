@@ -3,8 +3,8 @@
    public enum EventType
    {
       Unknown,
-      ProcessStart,
-      ProcessStop,
+      ProcessCreate,
+      ProcessTerminate,
       ImageLoad, 
       NetConnect,
       NetReceive,
@@ -26,7 +26,18 @@
       RegKeyReplace,
       RegAny,
       DnsQuery,
-      ProcessCreateRemoteThread,
-      ProcessTamperingEvent,
+      CreateRemoteThread,
+      ProcessTampering,
+      DriverLoad,
+      FileCreateTime,
+      RawAccessRead,
+      FileCreate,
+      FileCreateStreamHash,
+      FilePipeCreate,
+      FilePipeConnected,
+      FileDelete,
+      FileRename,
+      FileWrite,
+      FileRead,
    }
 }
