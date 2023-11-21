@@ -28,6 +28,7 @@ public partial class SysmonEventFilteringRuleGroupFileBlockShredding : BaseRule
 public partial class SysmonEventFilteringRuleGroupFileBlockShreddingRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRuleGroupFileBlockShreddingRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringRuleGroupFileBlockShreddingRuleProcessId))]
@@ -40,6 +41,13 @@ public partial class SysmonEventFilteringRuleGroupFileBlockShreddingRule : BaseR
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -71,6 +79,7 @@ public partial class SysmonEventFilteringFileBlockShredding : BaseRule
 public partial class SysmonEventFilteringFileBlockShreddingRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringFileBlockShreddingRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringFileBlockShreddingRuleProcessId))]
@@ -83,6 +92,13 @@ public partial class SysmonEventFilteringFileBlockShreddingRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 

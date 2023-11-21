@@ -26,6 +26,7 @@ public partial class SysmonEventFilteringRuleGroupRawAccessRead : BaseRule
 public partial class SysmonEventFilteringRuleGroupRawAccessReadRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRuleGroupRawAccessReadRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringRuleGroupRawAccessReadRuleProcessId))]
@@ -36,6 +37,13 @@ public partial class SysmonEventFilteringRuleGroupRawAccessReadRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -65,6 +73,7 @@ public partial class SysmonEventFilteringRawAccessRead : BaseRule
 public partial class SysmonEventFilteringRawAccessReadRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRawAccessReadRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringRawAccessReadRuleProcessId))]
@@ -75,6 +84,13 @@ public partial class SysmonEventFilteringRawAccessReadRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 

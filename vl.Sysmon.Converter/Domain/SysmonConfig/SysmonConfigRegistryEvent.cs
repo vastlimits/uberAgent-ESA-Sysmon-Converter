@@ -29,6 +29,7 @@ public partial class SysmonEventFilteringRuleGroupRegistryEvent : BaseRule
 public partial class SysmonEventFilteringRuleGroupRegistryEventRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("EventType",typeof(SysmonEventFilteringRuleGroupRegistryEventRuleEventType))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRuleGroupRegistryEventRuleProcessGuid))]
@@ -42,6 +43,13 @@ public partial class SysmonEventFilteringRuleGroupRegistryEventRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -74,6 +82,7 @@ public partial class SysmonEventFilteringRegistryEvent : BaseRule
 public partial class SysmonEventFilteringRegistryEventRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("EventType",typeof(SysmonEventFilteringRegistryEventRuleEventType))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRegistryEventRuleProcessGuid))]
@@ -87,6 +96,13 @@ public partial class SysmonEventFilteringRegistryEventRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 

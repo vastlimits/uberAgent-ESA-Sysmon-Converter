@@ -29,6 +29,7 @@ public partial class SysmonEventFilteringRuleGroupClipboardChange : BaseRule
 public partial class SysmonEventFilteringRuleGroupClipboardChangeRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRuleGroupClipboardChangeRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringRuleGroupClipboardChangeRuleProcessId))]
@@ -42,6 +43,13 @@ public partial class SysmonEventFilteringRuleGroupClipboardChangeRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -74,6 +82,7 @@ public partial class SysmonEventFilteringClipboardChange : BaseRule
 public partial class SysmonEventFilteringClipboardChangeRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringClipboardChangeRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringClipboardChangeRuleProcessId))]
@@ -87,6 +96,13 @@ public partial class SysmonEventFilteringClipboardChangeRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 

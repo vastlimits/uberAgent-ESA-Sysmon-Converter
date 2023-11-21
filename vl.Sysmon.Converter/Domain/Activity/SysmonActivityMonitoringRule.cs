@@ -20,6 +20,12 @@ public class SysmonActivityMonitoringRule : ActivityMonitoringRule
 
       try
       {
+         if (!Versioning.IsSupportedByCurrentVersion(Globals.Options.UAVersion, eventType))
+         {
+            Log.Warning("{0} is not supported in uberAgent version: {1}", eventName, Globals.Options.UAVersion);
+            return new ActivityMonitoringRule();
+         }
+
          Log.Information("Converting rules for {0}..", eventName);
          var result = new List<string>();
          var activityName = sysmonGroupActivities[0].GetType().Name;

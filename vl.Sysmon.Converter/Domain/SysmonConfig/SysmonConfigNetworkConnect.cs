@@ -37,6 +37,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnect : BaseRule
 public partial class SysmonEventFilteringRuleGroupNetworkConnectRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRuleGroupNetworkConnectRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringRuleGroupNetworkConnectRuleProcessId))]
@@ -58,6 +59,13 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnectRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -98,6 +106,7 @@ public partial class SysmonEventFilteringNetworkConnect : BaseRule
 public partial class SysmonEventFilteringNetworkConnectRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringNetworkConnectRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringNetworkConnectRuleProcessId))]
@@ -119,6 +128,13 @@ public partial class SysmonEventFilteringNetworkConnectRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 

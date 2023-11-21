@@ -26,6 +26,7 @@ public partial class SysmonEventFilteringRuleGroupDriverLoad : BaseRule
 public partial class SysmonEventFilteringRuleGroupDriverLoadRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ImageLoaded",typeof(SysmonEventFilteringRuleGroupDriverLoadRuleImageLoaded))]
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringRuleGroupDriverLoadRuleHashes))]
@@ -36,6 +37,13 @@ public partial class SysmonEventFilteringRuleGroupDriverLoadRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -65,6 +73,7 @@ public partial class SysmonEventFilteringDriverLoad : BaseRule
 public partial class SysmonEventFilteringDriverLoadRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ImageLoaded",typeof(SysmonEventFilteringDriverLoadRuleImageLoaded))]
 [System.Xml.Serialization.XmlElementAttribute("Hashes",typeof(SysmonEventFilteringDriverLoadRuleHashes))]
@@ -75,6 +84,13 @@ public partial class SysmonEventFilteringDriverLoadRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 

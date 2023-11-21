@@ -9,6 +9,7 @@ public class SysmonConditionBase
    public string Value { get; set; }
    public string Condition { get; set; }
    public TransformDataType DataType { get; set; }
+   public bool IsSupportedByCurrentUberAgentVersion { get; set; }
 
    public string GetValueFormated()
    {

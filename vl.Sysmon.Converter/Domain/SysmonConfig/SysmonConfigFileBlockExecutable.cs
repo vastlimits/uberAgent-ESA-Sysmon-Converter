@@ -27,6 +27,7 @@ public partial class SysmonEventFilteringRuleGroupFileBlockExecutable : BaseRule
 public partial class SysmonEventFilteringRuleGroupFileBlockExecutableRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringRuleGroupFileBlockExecutableRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringRuleGroupFileBlockExecutableRuleProcessId))]
@@ -38,6 +39,13 @@ public partial class SysmonEventFilteringRuleGroupFileBlockExecutableRule : Base
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
@@ -68,6 +76,7 @@ public partial class SysmonEventFilteringFileBlockExecutable : BaseRule
 public partial class SysmonEventFilteringFileBlockExecutableRule : BaseRule
 {
    private object[] itemsField;
+   private string groupRelationField;
    
    [System.Xml.Serialization.XmlElementAttribute("ProcessGuid",typeof(SysmonEventFilteringFileBlockExecutableRuleProcessGuid))]
 [System.Xml.Serialization.XmlElementAttribute("ProcessId",typeof(SysmonEventFilteringFileBlockExecutableRuleProcessId))]
@@ -79,6 +88,13 @@ public partial class SysmonEventFilteringFileBlockExecutableRule : BaseRule
    {
       get { return this.itemsField; }
       set { this.itemsField = value; }
+   }
+
+   [System.Xml.Serialization.XmlAttributeAttribute()]
+   public string groupRelation
+   {
+      get { return this.groupRelationField; }
+      set { this.groupRelationField = value; }
    }
 }
 
