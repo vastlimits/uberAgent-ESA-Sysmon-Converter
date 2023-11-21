@@ -1,8 +1,7 @@
-﻿namespace vl.Sysmon.Converter.Domain
+﻿namespace vl.Sysmon.Converter.Domain;
+
+public class NamedConfig
 {
-   public class NamedConfig
-   {
-      public string Name { get; set; }
-      public Sysmon Config { get; set; }
-   }
+   public string Name { get; set; }
+   public Sysmon Config { get; set; }
 }
