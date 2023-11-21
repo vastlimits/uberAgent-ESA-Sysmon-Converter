@@ -6,7 +6,8 @@ namespace vl.Core.Domain.Attributes
    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
    public abstract class TransformFieldBaseAttribute : Attribute
    {
-      private readonly TransformMethod transformMethod;
+      private readonly TransformMethod TransformMethod;
+      private readonly UAVersion UASupportedVersion = UAVersion.UA_VERSION_CURRENT_RELEASE;
 
       protected TransformFieldBaseAttribute(string sourceField)
       {
@@ -16,7 +17,20 @@ namespace vl.Core.Domain.Attributes
       protected TransformFieldBaseAttribute(string sourceField, TransformMethod transformMethod)
       {
          SourceField = sourceField;
-         this.transformMethod = transformMethod;
+         TransformMethod = transformMethod;
+      }
+
+      protected TransformFieldBaseAttribute(string sourceField, UAVersion uASupportedVersion)
+      {
+         SourceField = sourceField;
+         UASupportedVersion = uASupportedVersion;
+      }
+
+      protected TransformFieldBaseAttribute(string sourceField, TransformMethod transformMethod, UAVersion uASupportedVersion)
+      {
+         SourceField = sourceField;
+         TransformMethod = transformMethod;
+         UASupportedVersion = uASupportedVersion;
       }
 
       public string SourceField { get; }
@@ -34,12 +48,14 @@ namespace vl.Core.Domain.Attributes
 
       public string TransformValue(string value)
       {
-         return transformMethod switch
+         return TransformMethod switch
          {
             TransformMethod.RemoveTrailingBackslashes => TransformTrailingBackslashes(value),
             _ => value
          };
       }
+
+      public bool IsSupportedByCurrentUberAgentVersion(UAVersion uaVersion) => uaVersion >= UASupportedVersion;
 
       public abstract TransformDataType GetDataType();
       public abstract string GetTargetField(string value);
