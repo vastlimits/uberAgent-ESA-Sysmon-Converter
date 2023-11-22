@@ -13,7 +13,7 @@
 
 
 ## Platforms
-The uberAgent-ESA-Sysmon-Converter is developed in .NET 8 and, therefore, platform-independent.
+uberAgent-ESA-Sysmon-Converter is developed in .NET 8 and, therefore, platform-independent.
 
 ## Getting Started
 ### Download
@@ -22,18 +22,17 @@ The uberAgent-ESA-Sysmon-Converter is developed in .NET 8 and, therefore, platfo
  2. After unpacking, the converter can be controlled via the command line.
 
 ### Converting
-Further information at [Syntax](#syntax)
+Further information at [Syntax](#syntax).
 
 ### After converting
-After the converter has run successfully, two files are created in the output directory, depending on the rules.
+After the converter has run successfully, two files are created in the output directory (depending on the rules).
 
  1. `uberAgent-eventdata-filter-converted.conf`
  2. `uberAgent-ESA-am-converted.conf`
 
-`uberAgent-eventdata-filter-converted.conf` contains excluded DNS queries. 
-All other rules are converted to `uberAgent-ESA-am-converted.conf` 
+`uberAgent-eventdata-filter-converted.conf` contains excluded DNS queries. All other rules are converted to `uberAgent-ESA-am-converted.conf`.
 
-For more information about the setup of uberAgent, see the documentation about [Event Data Filtering](https://uberagent.com/docs/uberagent/latest/uxm-features-configuration/event-data-filtering/) and [Activity Monitoring Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/activity-monitoring-engine/).
+For more information about the setup of uberAgent, see the documentation about [Event Data Filtering](https://uberagent.com/docs/uberagent/latest/uxm-features-configuration/event-data-filtering/) and [Threat Detection Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/threat-detection-engine/).
 
 
 ## Syntax
@@ -48,23 +47,25 @@ To convert one or more specific Sysmon rules:
 vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12
 ```
 
-The RiskScore is set to 50 by default, but you can specify it:
+The default risk score of the resulting uberAgent rules is 50. It can be overridden on the command line:
 ```cmd
 vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12 --score 75
 ```
 
-To convert rules for a specific uberAgent version
-- If not specified, the latest uberAgent version is always assumed.
+### Target uberAgent version
+
+If no uberAgent version is specified, the latest supported uberAgent version is assumed. To convert to an older uberAgent version, specify it on the command line:
+
 ```cmd
 vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12 --score 75 --version 6.1
 ```
 
-Or a shorter notation
+A shorter notation of the above:
 ```cmd
 vl.Sysmon.Converter -i filePath1 -o outputFolder -r 1 2 12 -s 75 -v 6.1
 ```
 
-### Selectable uberAgent versions
+#### Supported uberAgent versions
 - 6.0
 - 6.1
 - 6.2
@@ -73,7 +74,7 @@ vl.Sysmon.Converter -i filePath1 -o outputFolder -r 1 2 12 -s 75 -v 6.1
 
 ## Example
 A **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](https://github.com/SwiftOnSecurity/sysmon-config):
-```  
+```  xml
 <Sysmon schemaversion="4.50">
 	<EventFiltering>
         <RuleGroup name="" groupRelation="or">
@@ -121,22 +122,23 @@ A **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](h
 	</EventFiltering>
 </Sysmon>
 ```
-After executing the command
---- `vl.Sysmon.Converter -i C:\tmp\example.xml -o C:\tmp\exampleOutput\`
-you should see **uberAgent-ESA-am-converted.conf** in your output directory having the following content: 
-```  
+After executing the command `vl.Sysmon.Converter -i C:\tmp\example.xml -o C:\tmp\exampleOutput\`
+you should see **uberAgent-ESA-am-converted.conf** with the following content: 
+
+```  ini
 [ActivityMonitoringRule]
 RuleName = ProcessStart converted rule
 EventType = Process.Start
 Tag = processstart-1-converted-rule
 RiskScore = 50
 Query = not ((Process.CommandLine == r"C:\Windows\System32\RuntimeBroker.exe -Embedding" or Process.Path == r"C:\Program Files (x86)\Common Files\microsoft shared\ink\TabTip32.exe" or istartswith(Parent.CommandLine, r"%SystemRoot%\system32\csrss.exe ObjectDirectory=\Windows") or Parent.CommandLine == r"C:\windows\system32\wermgr.exe -queuereporting" or Parent.Path == r"C:\Windows\system32\SearchIndexer.exe" or Process.CommandLine == r"C:\Windows\system32\svchost.exe -k appmodel -s StateRepository" or Process.CommandLine == r"C:\Windows\system32\svchost.exe -k wsappx" or Parent.CommandLine == r"C:\Windows\system32\svchost.exe -k netsvcs" or Parent.CommandLine == r"C:\Windows\system32\svchost.exe -k localSystemNetworkRestricted" or Process.CommandLine == r"C:\Windows\system32\deviceenroller.exe /c /AutoEnrollMDM" or istartswith(Process.CommandLine, r"\"C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe\" --type=") or istartswith(Process.CommandLine, r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\ngen.exe") or istartswith(Process.CommandLine, r"C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319\Ngen.exe") or Process.Path == r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe" or Process.Path == r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe" or Process.Path == r"C:\Windows\Microsoft.Net\Framework64\v3.0\WPF\PresentationFontCache.exe" or icontains(Parent.CommandLine, r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ngentask.exe") or Parent.Path == r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe" or Parent.Path == r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ngentask.exe" or Parent.Path == r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe" or Parent.Path == r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\ngentask.exe" or Process.Path == r"C:\Program Files\Microsoft Office\Office16\MSOSYNC.EXE" or Process.Path == r"C:\Program Files (x86)\Microsoft Office\Office16\MSOSYNC.EXE" or Process.Path == r"C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe" or Parent.Path == r"C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeClickToRun.exe" or Parent.Path == r"C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe" or Process.Path == r"C:\Program Files\Windows Media Player\wmpnscfg.exe" or istartswith(Process.CommandLine, r"\"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe\" --type=") or istartswith(Process.CommandLine, r"\"C:\Program Files\Google\Chrome\Application\chrome.exe\" --type=")))
-```  
-
+```
 
 ## Limitations
-Currently, not all rules can be converted from Sysmon to uberAgent.
-The following rule IDs are currently not supported:
+
+### Sysmon event IDs
+
+The following Sysmon event IDs are not yet supported by uberAgent and are ignored during conversion:
 
 - 10: ProcessAccess
 - 19: WMI filter
@@ -144,7 +146,9 @@ The following rule IDs are currently not supported:
 - 21: WMI consumer filter
 - 24: ClipboardChange
 
-The following Sysmon rule queries are currently not supported:
+### Sysmon fields
+
+The following Sysmon fields are not yet supported by uberAgent and are ignored during conversion:
 
 - OriginalFileName
 - IntegrityLevel
@@ -155,27 +159,34 @@ The following Sysmon rule queries are currently not supported:
 - Details (Registry)
 - Network source details
 
-In addition, the individual names of the rules in groups are not transferred.
-So that the converter should give the rules specific names, a name can be defined for the group in the `<RuleGroup>` tag.
+### Rule names
 
-Which then looks like this:
+Sysmon rule group names are converted to uberAgent rule names. The names of Sysmon rules that are part of a rule group are not converted.
 
-     <RuleGroup name="ExampleRule" groupRelation="or">
+#### Example
 
-```  
+Sysmon rule fragement:
+
+```xml
+ <RuleGroup name="ExampleRule" groupRelation="or">
+```
+
+Converted uberAgent rule stanza:
+
+```  ini
 [ActivityMonitoringRule]
 RuleName = ExampleRule
 EventType = Process.Start
 Tag = examplerule
 RiskScore = 100
 Query = true
-```  
+```
 
 
 ## License
-Apache License 2.0
+Apache License 2.0.
 
-## Third Party
+### Third-party code
 This project uses the following third-party libraries:
 
 - [CommandLineParser](https://github.com/commandlineparser/commandline)
