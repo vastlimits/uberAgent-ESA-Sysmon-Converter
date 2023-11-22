@@ -7,9 +7,9 @@
 - [Platforms](#platforms)
 - [Getting Started](#getting-started)
 - [Syntax](#syntax)
+- [Example](#example)
 - [Limitations](#limitations)
 - [License](#license)
-- [Third Party](#third-party)
 
 
 ## Platforms
