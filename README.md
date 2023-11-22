@@ -56,7 +56,7 @@ vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2
 To convert rules for a specific uberAgent version
 - If not specified, the latest uberAgent version is always assumed.
 ```cmd
-vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12 --score 75 -version 6.1
+vl.Sysmon.Converter --input filePath1 filePath2 --output outputFolder --rule 1 2 12 --score 75 --version 6.1
 ```
 
 Or a shorter notation
