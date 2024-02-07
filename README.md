@@ -150,13 +150,25 @@ The following Sysmon event IDs are not yet supported by uberAgent and are ignore
 
 The following Sysmon fields are not yet supported by uberAgent and are ignored during conversion:
 
-- OriginalFileName
-- IntegrityLevel
+- Archived
+- Contents
 - CurrentDirectory
-- UtcTime
-- Guid
-- LogonId
+- Description
 - Details (Registry)
+- Device
+- Guid
+- Initiated
+- IntegrityLevel
+- LogonGuid
+- LogonId
+- OriginalFileName
+- Product
+- SourceImage
+- SourcePort
+- SourceProcessGuid
+- TargetProcessGuid
+- UtcTime
+- Details
 - Network source details
 
 ### Rule names
