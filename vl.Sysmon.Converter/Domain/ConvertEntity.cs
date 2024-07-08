@@ -74,6 +74,27 @@ public static class ConvertEntity
                   case "is":
                      query = $"{item.Field} == {item.GetValueFormated()}{innerRuleGroupRelation}";
                      break;
+                  case "is any":
+                     // Currently there is no uAQL function for contains 'all' or 'any'.
+                     var splittedIsItemCondition = item.Value.Split(';').Select(x => $"{x.Trim()}").ToArray();
+                     foreach (var s in splittedIsItemCondition)
+                     {
+                        if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
+                        {
+                           query += $"{item.Field} == \"{s.Replace(@"\", @"\\")}\") or ";
+                        }
+                        else
+                        {
+                           query += $"{item.Field} == \"{s}\") or ";
+                        }
+                     }
+
+                     query = query.Remove(query.Length - 4, 4);
+
+                     if (!lastValueInGroup)
+                        query += $" {mainGroupRelation} ";
+
+                     break;
                   case "begin with":
                      query = $"istartswith({item.Field}, {item.GetValueFormated()}){innerRuleGroupRelation}";
                      break;
