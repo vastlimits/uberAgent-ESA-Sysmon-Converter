@@ -33,7 +33,6 @@ public static class ConvertEntity
       if (conditions == null || conditions.Count == 0)
          return string.Empty;
 
-      var subRule = false;
       var queryBuilder = new StringBuilder();
       var exclude = conditions[0].OnMatch.Equals(Constants.SysmonExcludeOnMatchString);
          
@@ -45,23 +44,14 @@ public static class ConvertEntity
       for (var groupIndex = 0; groupIndex < conditionsGrouped.Count; groupIndex++)
       {
          var (_, sysmonConditions) = conditionsGrouped.ElementAt(groupIndex);
-         var innerRuleRelation = string.Empty;
 
-         // new start of rule converting
          if (groupIndex == 0)
-         {
-            subRule = false;
-            queryBuilder.Append("((");
-         }
+            queryBuilder.Append("(((");
          else
-         {
-            subRule = true;
             queryBuilder.Append($") {mainGroupRelation} ((");
-         }
-            // sub rule converting
 
-         var sysmonConditionsGroupedByField = sysmonConditions.GroupBy(c => c.Field).ToArray();
-
+         var groupRelation = string.Empty;
+         var sysmonConditionsGroupedByField = sysmonConditions.GroupBy(c => c.SysmonOriginalFieldName).ToArray();
          for (var i = 0; i < sysmonConditionsGroupedByField.Length; i++)
          {
             var lastValueInGroupFields = i + 1 == sysmonConditionsGroupedByField.Length;
@@ -71,10 +61,10 @@ public static class ConvertEntity
             {
                var item = group.ElementAt(d);
                var lastValueInGroup = d + 1 == groupArray.Length;
-               var groupRelation = lastValueInGroup ? string.Empty : " or ";
+               groupRelation = item.GroupRelation;
+               var innerRuleGroupRelation = lastValueInGroup ? string.Empty : $" {item.GroupRelation} ";
                var query = string.Empty;
                item.Value = item.Value.Replace("%%", "%");
-               innerRuleRelation = item.GroupRelation;
 
                if (item.Value.EndsWith(@"\") && !item.Value.EndsWith(@"\\"))
                   item.Value = item.Value.Replace(@"\", @"\\");
@@ -82,17 +72,17 @@ public static class ConvertEntity
                switch (item.Condition)
                {
                   case "is":
-                     query = $"{item.Field} == {item.GetValueFormated()}{groupRelation}";
+                     query = $"{item.Field} == {item.GetValueFormated()}{innerRuleGroupRelation}";
                      break;
                   case "begin with":
-                     query = $"istartswith({item.Field}, {item.GetValueFormated()}){groupRelation}";
+                     query = $"istartswith({item.Field}, {item.GetValueFormated()}){innerRuleGroupRelation}";
                      break;
                   case "end with":
-                     query = $"iendswith({item.Field}, {item.GetValueFormated()}){groupRelation}";
+                     query = $"iendswith({item.Field}, {item.GetValueFormated()}){innerRuleGroupRelation}";
                      break;
                   case "image":
                   case "contains":
-                     query = $"icontains({item.Field}, {item.GetValueFormated()}){groupRelation}";
+                     query = $"icontains({item.Field}, {item.GetValueFormated()}){innerRuleGroupRelation}";
                      break;
                   case "contains all":
                   case "contains any":
@@ -120,13 +110,13 @@ public static class ConvertEntity
 
                      break;
                   case "is not":
-                     query = $"{item.Field} != {item.GetValueFormated()}{groupRelation}";
+                     query = $"{item.Field} != {item.GetValueFormated()}{innerRuleGroupRelation}";
                      break;
                   case "not end with":
-                     query = $"iendswith({item.Field}, {item.GetValueFormated()}) == false{groupRelation}";
+                     query = $"iendswith({item.Field}, {item.GetValueFormated()}) == false{innerRuleGroupRelation}";
                      break;
                   case "excludes":
-                     query = $"icontains({item.Field}, {item.GetValueFormated()}) == false{groupRelation}";
+                     query = $"icontains({item.Field}, {item.GetValueFormated()}) == false{innerRuleGroupRelation}";
                      break;
                   case "excludes any":
                   case "excludes all":
@@ -166,19 +156,12 @@ public static class ConvertEntity
 
             if (!lastValueInGroupFields)
             {
-               if (groupIndex == 0)
-                  queryBuilder.Append($") {mainGroupRelation} (");
-               else
-                  queryBuilder.Append($") {innerRuleRelation} (");
+               queryBuilder.Append($") {groupRelation} (");
             }
             else
             {
-               if (subRule)
-               {
-                  queryBuilder.Append($")");
-               }
+               queryBuilder.Append(')');
             }
-
          }
       }
 
@@ -266,6 +249,7 @@ public static class ConvertEntity
             {
                GroupRelation = groupRelationProperty,
                Field = baseProperties.Field,
+               SysmonOriginalFieldName = baseProperties.SysmonOriginalFieldName,
                Value = baseProperties.Value.Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
                DataType = baseProperties.DataType,
                Condition = baseProperties.Condition,
@@ -317,6 +301,7 @@ public static class ConvertEntity
          {
             RuleId = ruleId,
             GroupRelation = groupRelationProperty,
+            SysmonOriginalFieldName = baseCondition.SysmonOriginalFieldName,
             Field = baseCondition.Field,
             Value = baseCondition.Value.Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
             Condition = baseCondition.Condition,
@@ -462,6 +447,7 @@ public static class ConvertEntity
             return new SysmonConditionBase
             {
                Field = selectedAttribute.GetTargetField(itemValue),
+               SysmonOriginalFieldName = selectedAttribute.SourceField,
                Condition = itemCondition ?? "is",
                Value = selectedAttribute.TransformValue(itemValue).Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
                DataType = selectedAttribute.GetDataType(),
