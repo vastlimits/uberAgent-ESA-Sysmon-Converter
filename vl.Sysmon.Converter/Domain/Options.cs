@@ -51,6 +51,12 @@ public class Options
             UAVersion = UAVersion.UA_VERSION_7_1;
             return;
          }
+
+         if (value.StartsWith("7.2"))
+         {
+            UAVersion = UAVersion.UA_VERSION_7_2;
+            return;
+         }
       }
    }
 
