@@ -166,6 +166,7 @@ The following Sysmon fields are not yet supported by uberAgent and are ignored d
 - SourcePort
 - SourceProcessGuid
 - TargetProcessGuid
+- SourceImage
 - UtcTime
 
 ### Rule names
