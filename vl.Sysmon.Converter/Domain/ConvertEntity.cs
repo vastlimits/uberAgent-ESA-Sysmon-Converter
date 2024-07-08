@@ -374,6 +374,7 @@ public static class ConvertEntity
    [TransformField("IsExecutable", "File.HasExecPermissions", UAVersion.UA_VERSION_7_1)]
    [TransformField("CreationUtcTime", "File.CreationDate", UAVersion.UA_VERSION_7_1)]
    [TransformField("PreviousCreationUtcTime", "File.PreviousCreationDate", UAVersion.UA_VERSION_7_1)]
+   [TransformField("TargetObject", "Reg.TargetObject", UAVersion.UA_VERSION_7_2)]
    [FieldNotSupported("IntegrityLevel", "uberAgent currently does not support reading the integrity level.")]
    [FieldNotSupported("CurrentDirectory", "uberAgent currently does not support reading the current directory (working directory).")]
    [FieldNotSupported("UtcTime", "uberAgent currently does not export utctime.")]
