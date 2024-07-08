@@ -16,10 +16,8 @@ namespace vl.Sysmon.Converter;
 
 class Program
 {
-   private static readonly List<EventType> RegistryEventTypes = new()
-   {
-      EventType.RegKeyCreate, EventType.RegKeyDelete, EventType.RegValueWrite, EventType.RegKeyRename
-   };
+   private static readonly List<EventType> RegistryEventTypes = 
+      [EventType.RegKeyCreate, EventType.RegKeyDelete, EventType.RegValueWrite, EventType.RegKeyRename];
 
    private static void Main(string[] args)
    {
