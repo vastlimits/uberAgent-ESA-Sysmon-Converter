@@ -71,6 +71,7 @@ vl.Sysmon.Converter -i filePath1 -o outputFolder -r 1 2 12 -s 75 -v 6.1
 - 6.2
 - 7.0
 - 7.1
+- 7.2
 
 ## Example
 A **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](https://github.com/SwiftOnSecurity/sysmon-config):
@@ -154,7 +155,6 @@ The following Sysmon fields are not yet supported by uberAgent and are ignored d
 - Contents
 - CurrentDirectory
 - Description
-- Details (Registry)
 - Device
 - Guid
 - Initiated
@@ -163,13 +163,10 @@ The following Sysmon fields are not yet supported by uberAgent and are ignored d
 - LogonId
 - OriginalFileName
 - Product
-- SourceImage
 - SourcePort
 - SourceProcessGuid
 - TargetProcessGuid
 - UtcTime
-- Details
-- Network source details
 
 ### Rule names
 
