@@ -55,6 +55,7 @@ namespace vl.Core.Domain.Attributes
          };
       }
 
+      public UAVersion SupporteduAVersion => UASupportedVersion;
       public bool IsSupportedByCurrentUberAgentVersion(UAVersion uaVersion) => uaVersion >= UASupportedVersion;
 
       public abstract TransformDataType GetDataType();

@@ -440,17 +440,32 @@ public static class ConvertEntity
 
       // Creating our SysmonCondition
       var attributes = methodInfo.GetCustomAttributes(typeof(TransformFieldBaseAttribute));
-      foreach (var attribute in (IEnumerable<TransformFieldBaseAttribute>)attributes)
+      var fieldAttributes = ((IEnumerable<TransformFieldBaseAttribute>)attributes).Where(c => itemName.EndsWith(c.SourceField)).ToArray();
+      if (fieldAttributes.Length > 0)
       {
-         if (itemName.EndsWith(attribute.SourceField))
+         TransformFieldBaseAttribute selectedAttribute = null;
+
+         foreach (var attribute in fieldAttributes.OrderByDescending(c => c.SupporteduAVersion))
+         {
+            if (attribute.IsSupportedByCurrentUberAgentVersion(Globals.Options.UAVersion))
+            {
+               selectedAttribute = attribute;
+               break;
+            }
+
+            // This will hold the last attribute in case none are supported.
+            selectedAttribute = attribute;
+         }
+
+         if (selectedAttribute != null)
          {
             return new SysmonConditionBase
             {
-               Field = attribute.GetTargetField(itemValue),
+               Field = selectedAttribute.GetTargetField(itemValue),
                Condition = itemCondition ?? "is",
-               Value = attribute.TransformValue(itemValue).Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
-               DataType = attribute.GetDataType(),
-               IsSupportedByCurrentUberAgentVersion = attribute.IsSupportedByCurrentUberAgentVersion(Globals.Options.UAVersion),
+               Value = selectedAttribute.TransformValue(itemValue).Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
+               DataType = selectedAttribute.GetDataType(),
+               IsSupportedByCurrentUberAgentVersion = selectedAttribute.IsSupportedByCurrentUberAgentVersion(Globals.Options.UAVersion),
             };
          }
       }
