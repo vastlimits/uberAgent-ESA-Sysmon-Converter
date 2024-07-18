@@ -36,7 +36,7 @@ public static class ConvertEntity
       var exclude = conditions[0].OnMatch.Equals(Constants.SysmonExcludeOnMatchString);
          
       if (exclude)
-         queryBuilder.Append("not ");
+         queryBuilder.Append("not (");
 
       var conditionsGrouped = conditions.GroupBy(c => c.RuleId).ToDictionary(c => c.Key, c=> c.ToList());
 
@@ -205,6 +205,10 @@ public static class ConvertEntity
 
       // close rule
       queryBuilder.Append(")");
+
+      // If exclude we need to clode bracket
+      if (exclude)
+         queryBuilder.Append(")");
 
       return queryBuilder.ToString();
    }
