@@ -16,14 +16,14 @@ namespace vl.Sysmon.Converter;
 
 class Program
 {
-   private static readonly List<EventType> RegistryEventTypes = 
+   private static readonly List<EventType> RegistryEventTypes =
       [EventType.RegKeyCreate, EventType.RegKeyDelete, EventType.RegValueWrite, EventType.RegKeyRename];
 
    private static void Main(string[] args)
    {
       Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
       Log.Information("Sysmon Converter starting..");
-         
+
       var configurations = new List<NamedConfig>();
 
       Parser.Default.ParseArguments<Options>(args)
@@ -48,7 +48,7 @@ class Program
       {
          Log.Error("Failed to create directory: {innerException}", e.InnerException);
       }
-         
+
 
       foreach (var file in Globals.Options.InputFiles)
       {
@@ -62,7 +62,7 @@ class Program
             Config = config
          });
       }
-         
+
       var result = ConvertConfiguration(configurations);
       if (!result)
          Environment.Exit(-1);
@@ -191,7 +191,7 @@ class Program
 
          Log.Information("---- Finished converting file: {0} ----", namedConfig.Name);
       }
-         
+
       Console.WriteLine();
 
       return Serialize(Globals.Options, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
@@ -201,11 +201,11 @@ class Program
    {
       var retn = false;
       var excludes = (from ruleGroup in sysmonGroupActivities
-         where ruleGroup.onmatch.Equals(Constants.SysmonExcludeOnMatchString) && ruleGroup.Items != null
-         select ruleGroup.Items.Where(c => c.GetType() == typeof(SysmonEventFilteringRuleGroupRegistryEventEventType))
+                      where ruleGroup.onmatch.Equals(Constants.SysmonExcludeOnMatchString) && ruleGroup.Items != null
+                      select ruleGroup.Items.Where(c => c.GetType() == typeof(SysmonEventFilteringRuleGroupRegistryEventEventType))
          into toExcludeEventTypes
-         from SysmonEventFilteringRuleGroupRegistryEventEventType item in toExcludeEventTypes
-         select item).ToArray();
+                      from SysmonEventFilteringRuleGroupRegistryEventEventType item in toExcludeEventTypes
+                      select item).ToArray();
 
       foreach (var item in excludes)
       {
@@ -256,7 +256,7 @@ class Program
             }
          }
 
-         if (rules.Length == 0) 
+         if (rules.Length == 0)
             return true;
 
          using (var fs = new FileStream(activityPath, FileMode.Create))

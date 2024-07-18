@@ -27,7 +27,6 @@ public static class ConvertEntity
          _ => throw new NotImplementedException()
       };
    }
-
    private static string ConvertQuery(IReadOnlyList<SysmonCondition> conditions, string mainGroupRelation)
    {
       if (conditions == null || conditions.Count == 0)
@@ -46,21 +45,24 @@ public static class ConvertEntity
          var (_, sysmonConditions) = conditionsGrouped.ElementAt(groupIndex);
 
          if (groupIndex == 0)
-            queryBuilder.Append("(((");
+            queryBuilder.Append("(");
          else
-            queryBuilder.Append($") {mainGroupRelation} ((");
+            queryBuilder.Append($") {mainGroupRelation} (");
 
          var groupRelation = string.Empty;
          var sysmonConditionsGroupedByField = sysmonConditions.GroupBy(c => c.SysmonOriginalFieldName).ToArray();
+
          for (var i = 0; i < sysmonConditionsGroupedByField.Length; i++)
          {
             var lastValueInGroupFields = i + 1 == sysmonConditionsGroupedByField.Length;
+
             var group = sysmonConditionsGroupedByField[i];
             var groupArray = group.ToArray();
             for (var d = 0; d < groupArray.Length; d++)
             {
                var item = group.ElementAt(d);
                var lastValueInGroup = d + 1 == groupArray.Length;
+
                groupRelation = item.GroupRelation;
                var innerRuleGroupRelation = lastValueInGroup ? string.Empty : $" {item.GroupRelation} ";
                var query = string.Empty;
@@ -77,19 +79,26 @@ public static class ConvertEntity
                   case "is any":
                      // Currently there is no uAQL function for contains 'all' or 'any'.
                      var splittedIsItemCondition = item.Value.Split(';').Select(x => $"{x.Trim()}").ToArray();
+
+                     // Start the group with an opening parenthesis
+                     query += "(";
+
                      foreach (var s in splittedIsItemCondition)
                      {
                         if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
                         {
-                           query += $"{item.Field} == \"{s.Replace(@"\", @"\\")}\") or ";
+                           query += $"{item.Field} == \"{s.Replace(@"\", @"\\")}\" or ";
                         }
                         else
                         {
-                           query += $"{item.Field} == \"{s}\") or ";
+                           query += $"{item.Field} == \"{s}\" or ";
                         }
                      }
 
                      query = query.Remove(query.Length - 4, 4);
+
+                     // Close the group with a closing parenthesis
+                     query += ")";
 
                      if (!lastValueInGroup)
                         query += $" {mainGroupRelation} ";
@@ -112,6 +121,9 @@ public static class ConvertEntity
                      var splittedItemCondition = item.Value.Split(';').Select(x => $"{x.Trim()}").ToArray();
                      var relation = containsAll ? " and " : " or ";
 
+                     // Start the group with an opening parenthesis
+                     query += "(";
+
                      foreach (var s in splittedItemCondition)
                      {
                         if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
@@ -125,6 +137,9 @@ public static class ConvertEntity
                      }
 
                      query = query.Remove(query.Length - relation.Length, relation.Length);
+
+                     // Close the group with a closing parenthesis
+                     query += ")";
 
                      if (!lastValueInGroup)
                         query += $" {mainGroupRelation} ";
@@ -146,6 +161,9 @@ public static class ConvertEntity
                      splittedItemCondition = item.Value.Split(';').Select(x => $"{x.Trim()}").ToArray();
                      relation = excludesAll ? " and " : " or ";
 
+                     // Start the group with an opening parenthesis
+                     query += "(";
+
                      foreach (var s in splittedItemCondition)
                      {
                         if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
@@ -159,6 +177,9 @@ public static class ConvertEntity
                      }
 
                      query = query.Remove(query.Length - relation.Length, relation.Length);
+
+                     // Close the group with a closing parenthesis
+                     query += ")";
 
                      if (!lastValueInGroup)
                         query += $" {mainGroupRelation} ";
@@ -177,17 +198,13 @@ public static class ConvertEntity
 
             if (!lastValueInGroupFields)
             {
-               queryBuilder.Append($") {groupRelation} (");
-            }
-            else
-            {
-               queryBuilder.Append(')');
+               queryBuilder.Append($" {groupRelation} ");
             }
          }
       }
 
       // close rule
-      queryBuilder.Append("))");
+      queryBuilder.Append(")");
 
       return queryBuilder.ToString();
    }
