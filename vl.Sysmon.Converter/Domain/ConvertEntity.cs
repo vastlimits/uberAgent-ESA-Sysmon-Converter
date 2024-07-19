@@ -64,7 +64,7 @@ public static class ConvertEntity
                var lastValueInGroup = d + 1 == groupArray.Length;
 
                groupRelation = item.GroupRelation;
-               var innerRuleGroupRelation = lastValueInGroup ? string.Empty : $" {item.GroupRelation} ";
+               var innerRuleGroupRelation = lastValueInGroup ? string.Empty : $" or ";
                var query = string.Empty;
                item.Value = item.Value.Replace("%%", "%");
 
@@ -162,17 +162,17 @@ public static class ConvertEntity
                      relation = excludesAll ? " and " : " or ";
 
                      // Start the group with an opening parenthesis
-                     query += "(";
+                     query += "not (";
 
                      foreach (var s in splittedItemCondition)
                      {
                         if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
                         {
-                           query += $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\") == false{relation}";
+                           query += $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\") {relation}";
                         }
                         else
                         {
-                           query += $"icontains({item.Field}, \"{s}\") == false{relation}";
+                           query += $"icontains({item.Field}, \"{s}\") {relation}";
                         }
                      }
 
