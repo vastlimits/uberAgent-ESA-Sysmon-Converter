@@ -13,7 +13,7 @@ namespace vl.Sysmon.Converter.Domain;
 
 public static class ConvertEntity
 {
-   private static readonly List<string> NotSupportedItemCache = new (); 
+   private static readonly List<string> NotSupportedItemCache = new();
 
    private static string ConvertQuery(string field, string condition, string value)
    {
@@ -34,20 +34,27 @@ public static class ConvertEntity
 
       var queryBuilder = new StringBuilder();
       var exclude = conditions[0].OnMatch.Equals(Constants.SysmonExcludeOnMatchString);
-         
+
       if (exclude)
          queryBuilder.Append("not (");
 
-      var conditionsGrouped = conditions.GroupBy(c => c.RuleId).ToDictionary(c => c.Key, c=> c.ToList());
+      var conditionsGrouped = conditions.GroupBy(c => c.RuleId).ToDictionary(c => c.Key, c => c.ToList());
 
       for (var groupIndex = 0; groupIndex < conditionsGrouped.Count; groupIndex++)
       {
          var (_, sysmonConditions) = conditionsGrouped.ElementAt(groupIndex);
 
          if (groupIndex == 0)
-            queryBuilder.Append("(");
+         {
+            if (conditionsGrouped.Count > 1)
+            {
+               queryBuilder.Append("(");
+            }
+         }
          else
+         {
             queryBuilder.Append($") {mainGroupRelation} (");
+         }
 
          var groupRelation = string.Empty;
          var sysmonConditionsGroupedByField = sysmonConditions.GroupBy(c => c.SysmonOriginalFieldName).ToArray();
@@ -64,7 +71,7 @@ public static class ConvertEntity
                var lastValueInGroup = d + 1 == groupArray.Length;
 
                groupRelation = item.GroupRelation;
-               var innerRuleGroupRelation = lastValueInGroup ? string.Empty : $" or ";
+               var innerRuleGroupRelation = lastValueInGroup ? string.Empty : $" {item.GroupRelation} ";
                var query = string.Empty;
                item.Value = item.Value.Replace("%%", "%");
 
@@ -192,7 +199,7 @@ public static class ConvertEntity
 
                if (string.IsNullOrEmpty(query))
                   continue;
-                  
+
                queryBuilder.Append($"{query}");
             }
 
@@ -204,9 +211,12 @@ public static class ConvertEntity
       }
 
       // close rule
-      queryBuilder.Append(")");
+      if (conditionsGrouped.Count > 1)
+      {
+         queryBuilder.Append(")");
+      }
 
-      // If exclude we need to clode bracket
+      // If exclude we need to close bracket
       if (exclude)
          queryBuilder.Append(")");
 
@@ -244,7 +254,7 @@ public static class ConvertEntity
 
       if (itemsProperty == null)
          return conditions;
-         
+
       if (itemsProperty is not IList<object> ruleItems || ruleItems.Count == 0)
          return conditions;
 
@@ -307,7 +317,7 @@ public static class ConvertEntity
    private static IEnumerable<SysmonCondition> ParseSubRule(object rule, int ruleId, string onMatch)
    {
       var conditions = new List<SysmonCondition>();
-         
+
       if (rule == null)
       {
          Log.Error("Item can't be null!");
@@ -429,14 +439,14 @@ public static class ConvertEntity
          Log.Error("Item can't be null!");
          throw new ArgumentNullException(nameof(item));
       }
-         
+
       var itemName = item.ToString();
       if (string.IsNullOrEmpty(itemName))
       {
          Log.Error("ItemName is empty.");
          return new SysmonConditionBase();
       }
-         
+
       var itemProperties = item.GetType().GetProperties();
       var itemValue = itemProperties.FirstOrDefault(c => c.Name.Equals("Value"))?.GetValue(item, null)?.ToString();
       var itemCondition = itemProperties.FirstOrDefault(c => c.Name.Equals("condition"))?.GetValue(item, null)?.ToString();
