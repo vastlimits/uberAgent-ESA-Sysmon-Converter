@@ -12,7 +12,7 @@ public partial class SysmonEventFilteringRuleGroupDnsQuery : ISysmonEventFilteri
    public static implicit operator SysmonEventFilteringRuleGroupDnsQuery(SysmonEventFilteringDnsQuery pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -38,7 +38,7 @@ public partial class SysmonEventFilteringRuleGroupPipeEvent : ISysmonEventFilter
    public static implicit operator SysmonEventFilteringRuleGroupPipeEvent(SysmonEventFilteringPipeEvent pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -51,7 +51,7 @@ public partial class SysmonEventFilteringRuleGroupFileCreateStreamHash : ISysmon
    public static implicit operator SysmonEventFilteringRuleGroupFileCreateStreamHash(SysmonEventFilteringFileCreateStreamHash pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -64,7 +64,7 @@ public partial class SysmonEventFilteringRuleGroupRegistryEvent : ISysmonEventFi
    public static implicit operator SysmonEventFilteringRuleGroupRegistryEvent(SysmonEventFilteringRegistryEvent pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -77,7 +77,7 @@ public partial class SysmonEventFilteringRuleGroupFileCreate : ISysmonEventFilte
    public static implicit operator SysmonEventFilteringRuleGroupFileCreate(SysmonEventFilteringFileCreate pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -90,7 +90,7 @@ public partial class SysmonEventFilteringRuleGroupProcessAccess : ISysmonEventFi
    public static implicit operator SysmonEventFilteringRuleGroupProcessAccess(SysmonEventFilteringProcessAccess pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -103,7 +103,7 @@ public partial class SysmonEventFilteringRuleGroupRawAccessRead : ISysmonEventFi
    public static implicit operator SysmonEventFilteringRuleGroupRawAccessRead(SysmonEventFilteringRawAccessRead pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -116,7 +116,7 @@ public partial class SysmonEventFilteringRuleGroupCreateRemoteThread : ISysmonEv
    public static implicit operator SysmonEventFilteringRuleGroupCreateRemoteThread(SysmonEventFilteringCreateRemoteThread pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -129,7 +129,7 @@ public partial class SysmonEventFilteringRuleGroupImageLoad : ISysmonEventFilter
    public static implicit operator SysmonEventFilteringRuleGroupImageLoad(SysmonEventFilteringImageLoad pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -142,7 +142,7 @@ public partial class SysmonEventFilteringRuleGroupDriverLoad : ISysmonEventFilte
    public static implicit operator SysmonEventFilteringRuleGroupDriverLoad(SysmonEventFilteringDriverLoad pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -155,7 +155,7 @@ public partial class SysmonEventFilteringRuleGroupProcessTerminate : ISysmonEven
    public static implicit operator SysmonEventFilteringRuleGroupProcessTerminate(SysmonEventFilteringProcessTerminate pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -168,7 +168,7 @@ public partial class SysmonEventFilteringRuleGroupNetworkConnect : ISysmonEventF
    public static implicit operator SysmonEventFilteringRuleGroupNetworkConnect(SysmonEventFilteringNetworkConnect pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -181,7 +181,7 @@ public partial class SysmonEventFilteringRuleGroupFileCreateTime : ISysmonEventF
    public static implicit operator SysmonEventFilteringRuleGroupFileCreateTime(SysmonEventFilteringFileCreateTime pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -194,7 +194,7 @@ public partial class SysmonEventFilteringRuleGroupProcessCreate : ISysmonEventFi
    public static implicit operator SysmonEventFilteringRuleGroupProcessCreate(SysmonEventFilteringProcessCreate pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -207,7 +207,7 @@ public partial class SysmonEventFilteringRuleGroupProcessTampering : ISysmonEven
    public static implicit operator SysmonEventFilteringRuleGroupProcessTampering(SysmonEventFilteringProcessTampering pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
@@ -220,7 +220,7 @@ public partial class SysmonEventFilteringRuleGroupFileDelete : ISysmonEventFilte
    public static implicit operator SysmonEventFilteringRuleGroupFileDelete(SysmonEventFilteringFileDelete pc) => new()
    {
       onmatch = pc.onmatch,
-      groupRelation = "and",
+      groupRelation = "or",
       Items = pc.Items,
    };
 }
