@@ -149,7 +149,12 @@ public static class ConvertEntity
                      query += ")";
 
                      if (!lastValueInGroup)
-                        query += $" {mainGroupRelation} ";
+                     {
+                        if (groupIndex == 0)
+                           query += $" {mainGroupRelation} ";
+                        else
+                           query += $" {innerRuleGroupRelation} ";
+                     }
 
                      break;
                   case "is not":
