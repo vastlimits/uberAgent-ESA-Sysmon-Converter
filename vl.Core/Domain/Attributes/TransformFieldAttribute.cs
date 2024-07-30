@@ -30,5 +30,6 @@ namespace vl.Core.Domain.Attributes
       public override TransformDataType GetDataType() => DataType;
 
       public override string GetTargetField(string value) => TargetField;
+      public override string[] GetTargetFields() => [TargetField];
    }
 }

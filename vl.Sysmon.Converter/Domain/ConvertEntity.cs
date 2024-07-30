@@ -81,7 +81,7 @@ public static class ConvertEntity
                switch (item.Condition)
                {
                   case "is":
-                     query = $"{item.Field} == {item.GetValueFormated()}{innerRuleGroupRelation}";
+                     query = $"{item.MainField} == {item.GetValueFormated()}{innerRuleGroupRelation}";
                      break;
                   case "is any":
                      // Currently there is no uAQL function for contains 'all' or 'any'.
@@ -94,11 +94,11 @@ public static class ConvertEntity
                      {
                         if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
                         {
-                           query += $"{item.Field} == \"{s.Replace(@"\", @"\\")}\" or ";
+                           query += $"{item.MainField} == \"{s.Replace(@"\", @"\\")}\" or ";
                         }
                         else
                         {
-                           query += $"{item.Field} == \"{s}\" or ";
+                           query += $"{item.MainField} == \"{s}\" or ";
                         }
                      }
 
@@ -112,14 +112,19 @@ public static class ConvertEntity
 
                      break;
                   case "begin with":
-                     query = $"istartswith({item.Field}, {item.GetValueFormated()}){innerRuleGroupRelation}";
+                     query = $"istartswith({item.MainField}, {item.GetValueFormated()}){innerRuleGroupRelation}";
                      break;
                   case "end with":
-                     query = $"iendswith({item.Field}, {item.GetValueFormated()}){innerRuleGroupRelation}";
+                     query = $"iendswith({item.MainField}, {item.GetValueFormated()}){innerRuleGroupRelation}";
                      break;
                   case "image":
+                     if (item.Fields.Length == 2)
+                        query = $"({item.Fields[0]} == {item.GetValueFormated()} or {item.Fields[1]} == {item.GetValueFormated()}){innerRuleGroupRelation}";
+                     else
+                        query = $"{item.MainField} == {item.GetValueFormated()}{innerRuleGroupRelation}";
+                     break;
                   case "contains":
-                     query = $"icontains({item.Field}, {item.GetValueFormated()}){innerRuleGroupRelation}";
+                     query = $"icontains({item.MainField}, {item.GetValueFormated()}){innerRuleGroupRelation}";
                      break;
                   case "contains all":
                   case "contains any":
@@ -135,11 +140,11 @@ public static class ConvertEntity
                      {
                         if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
                         {
-                           query += $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\"){relation}";
+                           query += $"icontains({item.MainField}, \"{s.Replace(@"\", @"\\")}\"){relation}";
                         }
                         else
                         {
-                           query += $"icontains({item.Field}, \"{s}\"){relation}";
+                           query += $"icontains({item.MainField}, \"{s}\"){relation}";
                         }
                      }
 
@@ -158,13 +163,13 @@ public static class ConvertEntity
 
                      break;
                   case "is not":
-                     query = $"{item.Field} != {item.GetValueFormated()}{innerRuleGroupRelation}";
+                     query = $"{item.MainField} != {item.GetValueFormated()}{innerRuleGroupRelation}";
                      break;
                   case "not end with":
-                     query = $"iendswith({item.Field}, {item.GetValueFormated()}) == false{innerRuleGroupRelation}";
+                     query = $"iendswith({item.MainField}, {item.GetValueFormated()}) == false{innerRuleGroupRelation}";
                      break;
                   case "excludes":
-                     query = $"icontains({item.Field}, {item.GetValueFormated()}) == false{innerRuleGroupRelation}";
+                     query = $"icontains({item.MainField}, {item.GetValueFormated()}) == false{innerRuleGroupRelation}";
                      break;
                   case "excludes any":
                   case "excludes all":
@@ -180,11 +185,11 @@ public static class ConvertEntity
                      {
                         if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
                         {
-                           query += $"icontains({item.Field}, \"{s.Replace(@"\", @"\\")}\") {relation}";
+                           query += $"icontains({item.MainField}, \"{s.Replace(@"\", @"\\")}\") {relation}";
                         }
                         else
                         {
-                           query += $"icontains({item.Field}, \"{s}\") {relation}";
+                           query += $"icontains({item.MainField}, \"{s}\") {relation}";
                         }
                      }
 
@@ -305,7 +310,8 @@ public static class ConvertEntity
             conditions.Add(new SysmonCondition
             {
                GroupRelation = groupRelationProperty,
-               Field = baseProperties.Field,
+               MainField = baseProperties.MainField,
+               Fields = baseProperties.Fields,
                SysmonOriginalFieldName = baseProperties.SysmonOriginalFieldName,
                Value = baseProperties.Value.Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
                DataType = baseProperties.DataType,
@@ -359,7 +365,8 @@ public static class ConvertEntity
             RuleId = ruleId,
             GroupRelation = groupRelationProperty,
             SysmonOriginalFieldName = baseCondition.SysmonOriginalFieldName,
-            Field = baseCondition.Field,
+            MainField = baseCondition.MainField,
+            Fields = baseCondition.Fields,
             Value = baseCondition.Value.Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),
             Condition = baseCondition.Condition,
             OnMatch = onMatch,
@@ -503,7 +510,8 @@ public static class ConvertEntity
          {
             return new SysmonConditionBase
             {
-               Field = selectedAttribute.GetTargetField(itemValue),
+               MainField = selectedAttribute.GetTargetField(itemValue),
+               Fields = selectedAttribute.GetTargetFields(),
                SysmonOriginalFieldName = selectedAttribute.SourceField,
                Condition = itemCondition ?? "is",
                Value = selectedAttribute.TransformValue(itemValue).Replace("\r", string.Empty).Replace("\n", string.Empty).Trim(),

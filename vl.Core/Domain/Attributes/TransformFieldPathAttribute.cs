@@ -28,5 +28,7 @@
       {
          return value.IndexOf('\\') > -1 ? TargetFieldPath : TargetField;
       }
+
+      public override string[] GetTargetFields() => [TargetField, TargetFieldPath];
    }
 }
