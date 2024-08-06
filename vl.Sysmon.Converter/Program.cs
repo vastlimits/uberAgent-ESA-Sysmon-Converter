@@ -201,7 +201,7 @@ class Program
    {
       var retn = false;
       var excludes = (from ruleGroup in sysmonGroupActivities
-                      where ruleGroup.onmatch.Equals(Constants.SysmonExcludeOnMatchString) && ruleGroup.Items != null
+                      where (ruleGroup?.onmatch?.Equals(Constants.SysmonExcludeOnMatchString) ?? false) && ruleGroup.Items != null
                       select ruleGroup.Items.Where(c => c.GetType() == typeof(SysmonEventFilteringRuleGroupRegistryEventEventType))
          into toExcludeEventTypes
                       from SysmonEventFilteringRuleGroupRegistryEventEventType item in toExcludeEventTypes
