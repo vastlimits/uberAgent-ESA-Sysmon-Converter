@@ -418,7 +418,7 @@ public static class ConvertEntity
    [TransformField("SourcePortName", "Net.Source.PortName", UAVersion.UA_VERSION_6_2)]
    [TransformField("DestinationIsIpv6", "Net.Target.IpIsV6", UAVersion.UA_VERSION_6_2)]
    [TransformField("DestinationPortName", "Net.Target.PortName", UAVersion.UA_VERSION_6_2)]
-   [TransformFieldPath("TargetFilename", "File.Name", "File.Path", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_7_1)]
+   [TransformField("TargetFilename", "File.Path", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_7_1)]
    [TransformFieldPath("PipeName", "File.Name", "File.Path", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_7_1)]
    [TransformField("IsExecutable", "File.HasExecPermissions", UAVersion.UA_VERSION_7_1)]
    [TransformField("CreationUtcTime", "File.CreationDate", UAVersion.UA_VERSION_7_1)]
