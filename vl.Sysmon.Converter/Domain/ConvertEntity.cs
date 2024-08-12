@@ -37,6 +37,8 @@ public static class ConvertEntity
 
       if (exclude)
          queryBuilder.Append("not (");
+      else
+         queryBuilder.Append("(");
 
       var conditionsGrouped = conditions.GroupBy(c => c.RuleId).ToDictionary(c => c.Key, c => c.ToList());
 
@@ -226,9 +228,7 @@ public static class ConvertEntity
          queryBuilder.Append(")");
       }
 
-      // If exclude we need to close bracket
-      if (exclude)
-         queryBuilder.Append(")");
+      queryBuilder.Append(")");
 
       return queryBuilder.ToString();
    }
