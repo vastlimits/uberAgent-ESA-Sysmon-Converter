@@ -167,7 +167,7 @@ The following Sysmon fields are not yet supported by uberAgent and are ignored d
 - LogonGuid
 - LogonId
 - OriginalFileName
-    - Not fully supported, currently the given name is simply taken and not read from the PE.
+    - Stage 1 of support: OriginalFileName works differently to Process.Name, this will be updated in the next uberAgent versions, until then we have decided to use OriginalFileName with Process.Name.
 - Product
 - SourceProcessGuid
 - TargetProcessGuid
