@@ -436,7 +436,6 @@ public static class ConvertEntity
    [FieldNotSupported("Product", "uberAgent currently does not support Product field.")]
    [FieldNotSupported("Description", "uberAgent currently does not support Description field.")]
    [FieldNotSupported("LogonGuid", "uberAgent currently does not support LogonGuid field.")]
-   [FieldNotSupported("LogonId", "uberAgent currently does not support LogonId field.")]
    [FieldNotSupported("Initiated", "uberAgent currently does not support Initiated field.")]
    [FieldNotSupported("SourceProcessGuid", "uberAgent currently does not support SourceProcessGuid field.")]
    [FieldNotSupported("SourceImage", "uberAgent currently does not support SourceImage field.")]

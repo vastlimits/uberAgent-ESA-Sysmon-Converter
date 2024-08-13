@@ -145,7 +145,12 @@ The following Sysmon event IDs are not yet supported by uberAgent and are ignore
 - 19: WMI filter
 - 20: WMI consumer
 - 21: WMI consumer filter
+- 23: FileDelete
+    - Not fully supported and treated as `ID: 26 - File Delete Logged`.
 - 24: ClipboardChange
+- 27: File Block Executable
+- 28: File Block Shredding
+- 29: File Executable Detected
 
 ### Sysmon fields
 
@@ -162,8 +167,8 @@ The following Sysmon fields are not yet supported by uberAgent and are ignored d
 - LogonGuid
 - LogonId
 - OriginalFileName
+    - Not fully supported, currently the given name is simply taken and not read from the PE.
 - Product
-- SourcePort
 - SourceProcessGuid
 - TargetProcessGuid
 - SourceImage
