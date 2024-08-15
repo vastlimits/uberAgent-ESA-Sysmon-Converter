@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using Serilog;
 using vl.Core.Domain;
+using vl.Core.Domain.Activity;
 using vl.Core.Domain.Attributes;
 using vl.Core.Domain.EventData;
 using vl.Sysmon.Converter.Domain.EventData;
@@ -247,7 +248,7 @@ public static class ConvertEntity
       };
    }
 
-   public static IEnumerable<SysmonCondition> ParseRule(object rule)
+   public static IEnumerable<SysmonCondition> ParseRule(EventType eventType, object rule)
    {
       var conditions = new List<SysmonCondition>();
       var ruleId = 0;
@@ -281,7 +282,7 @@ public static class ConvertEntity
 
             if (ruleItemName.EndsWith("Rule"))
             {
-               var subRuleset = ParseSubRule(item, ++ruleId, onMatchProperty).ToList();
+               var subRuleset = ParseSubRule(eventType, item, ++ruleId, onMatchProperty).ToList();
                if (subRuleset.Count == 0)
                   continue;
 
@@ -303,7 +304,7 @@ public static class ConvertEntity
                continue;
             }
 
-            var baseProperties = CreateSysmonBaseCondition(item);
+            var baseProperties = CreateSysmonBaseCondition(eventType, item);
             if (baseProperties == null)
                continue;
 
@@ -325,7 +326,7 @@ public static class ConvertEntity
       return conditions;
    }
 
-   private static IEnumerable<SysmonCondition> ParseSubRule(object rule, int ruleId, string onMatch)
+   private static IEnumerable<SysmonCondition> ParseSubRule(EventType eventType, object rule, int ruleId, string onMatch)
    {
       var conditions = new List<SysmonCondition>();
 
@@ -356,7 +357,7 @@ public static class ConvertEntity
 
       foreach (var item in ruleItems)
       {
-         var baseCondition = CreateSysmonBaseCondition(item);
+         var baseCondition = CreateSysmonBaseCondition(eventType, item);
          if (baseCondition == null)
             return new List<SysmonCondition>();
 
@@ -381,7 +382,7 @@ public static class ConvertEntity
    [TransformFieldPath("ParentImage", "Parent.Name", "Parent.Path", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_6_0)]
    [TransformFieldPath("Image", "Process.Name", "Process.Path", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_6_0)]
    [TransformFieldPath("ImageLoaded", "Image.Name", "Image.Path", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_6_0)]
-   [TransformFieldPath("OriginalFileName", "Process.Name", "Process.Name", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_6_0)]
+   [TransformFieldPath("OriginalFileName", ".Name", ".Name", TransformMethod.RemoveTrailingBackslashes, UAVersion.UA_VERSION_6_0)]
    [TransformField("FileVersion", "Process.AppVersion", UAVersion.UA_VERSION_6_0)]
    [TransformField("User", "Process.User", UAVersion.UA_VERSION_6_0)]
    [TransformField("Company", "Process.Company", UAVersion.UA_VERSION_6_0)]
@@ -442,7 +443,7 @@ public static class ConvertEntity
    [FieldNotSupported("TargetProcessGuid", "uberAgent currently does not support TargetProcessGuid field.")]
    [FieldNotSupported("Device", "uberAgent currently does not support Device field.")]
 
-   private static SysmonConditionBase CreateSysmonBaseCondition(object item)
+   private static SysmonConditionBase CreateSysmonBaseCondition(EventType eventType, object item)
    {
       if (item == null)
       {
@@ -468,7 +469,7 @@ public static class ConvertEntity
       if (itemName.EndsWith("EventType"))
          return null;
 
-      Func<object, SysmonConditionBase> methodAction = CreateSysmonBaseCondition;
+      Func<EventType, object, SysmonConditionBase> methodAction = CreateSysmonBaseCondition;
       var methodInfo = methodAction.Method;
 
       // Check not supported fields first
@@ -509,7 +510,7 @@ public static class ConvertEntity
          {
             return new SysmonConditionBase
             {
-               MainField = selectedAttribute.GetTargetField(itemValue),
+               MainField = selectedAttribute.GetTargetFieldByContext(eventType, itemValue),
                Fields = selectedAttribute.GetTargetFields(),
                SysmonOriginalFieldName = selectedAttribute.SourceField,
                Condition = itemCondition ?? "is",

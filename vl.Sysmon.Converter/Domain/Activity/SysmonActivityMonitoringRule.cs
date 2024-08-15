@@ -55,7 +55,7 @@ public class SysmonActivityMonitoringRule : ActivityMonitoringRule
             activityConverterSettings.Name = rule.name;
             activityConverterSettings.Tag = rule.name;
 
-            var conditions = ConvertEntity.ParseRule(rule).ToArray();
+            var conditions = ConvertEntity.ParseRule(eventType, rule).ToArray();
             var mainGroupRelation = rule.groupRelation;
 
             if (conditions.Length == 0)
