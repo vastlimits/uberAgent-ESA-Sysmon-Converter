@@ -5,10 +5,8 @@ using System.Linq;
 using CommandLine;
 using Serilog;
 using vl.Core.Domain.Activity;
-using vl.Core.Domain.EventData;
 using vl.Sysmon.Converter.Domain;
 using vl.Sysmon.Converter.Domain.Activity;
-using vl.Sysmon.Converter.Domain.EventData;
 using vl.Sysmon.Converter.Domain.Extensions;
 using Constants = vl.Sysmon.Converter.Domain.Constants;
 
@@ -72,7 +70,6 @@ class Program
 
    private static bool ConvertConfiguration(IEnumerable<NamedConfig> configurations)
    {
-      var eventDataFilters = new List<EventDataFilter>();
       var activityMonitoringRules = new List<ActivityMonitoringRule>();
 
       foreach (var namedConfig in configurations)
@@ -90,7 +87,7 @@ class Program
 
          if (!Globals.Options.RulesToConvert.Any())
          {
-            eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
+            activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.DnsQuery, "DnsQuery", EventType.DnsQuery));
             activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessCreate, "ProcessCreate", EventType.ProcessCreate));
             activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessTerminate, "ProcessTerminate", EventType.ProcessTerminate));
             activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.NetworkConnect, "NetworkConnect", EventType.NetConnect));
@@ -124,7 +121,7 @@ class Program
                switch (ruleId)
                {
                   case SysmonEventId.DNSQuery:
-                     eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
+                     activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.DnsQuery, "DnsQuery", EventType.DnsQuery));
                      break;
                   case SysmonEventId.ProcessCreate:
                      activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessCreate, "ProcessCreate", EventType.ProcessCreate));

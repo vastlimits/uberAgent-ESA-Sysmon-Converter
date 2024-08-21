@@ -7,8 +7,6 @@ using Serilog;
 using vl.Core.Domain;
 using vl.Core.Domain.Activity;
 using vl.Core.Domain.Attributes;
-using vl.Core.Domain.EventData;
-using vl.Sysmon.Converter.Domain.EventData;
 
 namespace vl.Sysmon.Converter.Domain;
 
@@ -236,18 +234,6 @@ public static class ConvertEntity
 
    public static string Convert(SysmonCondition[] conditions, string mainGroupRelation) => ConvertQuery(conditions, mainGroupRelation);
 
-   public static EventDataFilter Convert(SysmonEventDataFilter filter)
-   {
-      return new()
-      {
-         Action = filter.Action,
-         Fields = new List<string>(),
-         Sourcetypes = filter.Sourcetypes,
-         Query = ConvertQuery(filter.Field, filter.Condition, filter.Value),
-         Comment = filter.Comment
-      };
-   }
-
    public static IEnumerable<SysmonCondition> ParseRule(EventType eventType, object rule)
    {
       var conditions = new List<SysmonCondition>();
@@ -426,7 +412,10 @@ public static class ConvertEntity
    [TransformField("PreviousCreationUtcTime", "File.PreviousCreationDate", UAVersion.UA_VERSION_7_1)]
    [TransformField("TargetObject", "Reg.TargetObject", UAVersion.UA_VERSION_7_2)]
    [TransformField("Details", "Reg.Value.Data", UAVersion.UA_VERSION_7_2)]
+   [TransformField("QueryName", "Dns.QueryRequest", UAVersion.UA_VERSION_6_1)]
+   [TransformField("QueryResults", "Dns.QueryResponse", UAVersion.UA_VERSION_6_1)]
 
+   [FieldNotSupported("QueryStatus", "uberAgent currently does not support QueryStatus field.")]
    [FieldNotSupported("IntegrityLevel", "uberAgent currently does not support reading the integrity level.")]
    [FieldNotSupported("CurrentDirectory", "uberAgent currently does not support reading the current directory (working directory).")]
    [FieldNotSupported("UtcTime", "uberAgent currently does not export utctime.")]
