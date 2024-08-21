@@ -39,6 +39,11 @@ public class SysmonActivityMonitoringRule : ActivityMonitoringRule
          // Start always with include first then exclude
          foreach (var rule in sysmonGroupActivities.OrderByDescending(c => c.onmatch))
          {
+            if (rule.onmatch == null)
+            {
+               Log.Error("Failure to convert rules for {0} - \"onmatch\" not set.", eventName);
+               continue;
+            }
             var onMatch = rule.onmatch.ToLower();
             if (!onMatch.Equals(Constants.SysmonExcludeOnMatchString) &&
                 !onMatch.Equals(Constants.SysmonIncludeOnMatchString))
@@ -50,7 +55,7 @@ public class SysmonActivityMonitoringRule : ActivityMonitoringRule
             activityConverterSettings.Name = rule.name;
             activityConverterSettings.Tag = rule.name;
 
-            var conditions = ConvertEntity.ParseRule(rule).ToArray();
+            var conditions = ConvertEntity.ParseRule(eventType, rule).ToArray();
             var mainGroupRelation = rule.groupRelation;
 
             if (conditions.Length == 0)
@@ -90,7 +95,7 @@ public class SysmonActivityMonitoringRule : ActivityMonitoringRule
       }
       catch (Exception ex)
       {
-         Log.Error(ex, $"Failure to convert rules for {eventName}.");
+         Log.Error(ex, "Failure to convert rules for {0}.", eventName);
       }
 
       return new ActivityMonitoringRule();

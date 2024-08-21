@@ -5,10 +5,8 @@ using System.Linq;
 using CommandLine;
 using Serilog;
 using vl.Core.Domain.Activity;
-using vl.Core.Domain.EventData;
 using vl.Sysmon.Converter.Domain;
 using vl.Sysmon.Converter.Domain.Activity;
-using vl.Sysmon.Converter.Domain.EventData;
 using vl.Sysmon.Converter.Domain.Extensions;
 using Constants = vl.Sysmon.Converter.Domain.Constants;
 
@@ -16,16 +14,14 @@ namespace vl.Sysmon.Converter;
 
 class Program
 {
-   private static readonly List<EventType> RegistryEventTypes = new()
-   {
-      EventType.RegKeyCreate, EventType.RegKeyDelete, EventType.RegValueWrite, EventType.RegKeyRename
-   };
+   private static readonly List<EventType> RegistryEventTypes =
+      [EventType.RegKeyCreate, EventType.RegKeyDelete, EventType.RegValueWrite, EventType.RegKeyRename];
 
    private static void Main(string[] args)
    {
       Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
       Log.Information("Sysmon Converter starting..");
-         
+
       var configurations = new List<NamedConfig>();
 
       Parser.Default.ParseArguments<Options>(args)
@@ -50,7 +46,7 @@ class Program
       {
          Log.Error("Failed to create directory: {innerException}", e.InnerException);
       }
-         
+
 
       foreach (var file in Globals.Options.InputFiles)
       {
@@ -64,7 +60,7 @@ class Program
             Config = config
          });
       }
-         
+
       var result = ConvertConfiguration(configurations);
       if (!result)
          Environment.Exit(-1);
@@ -74,7 +70,6 @@ class Program
 
    private static bool ConvertConfiguration(IEnumerable<NamedConfig> configurations)
    {
-      var eventDataFilters = new List<EventDataFilter>();
       var activityMonitoringRules = new List<ActivityMonitoringRule>();
 
       foreach (var namedConfig in configurations)
@@ -92,7 +87,7 @@ class Program
 
          if (!Globals.Options.RulesToConvert.Any())
          {
-            eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
+            activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.DnsQuery, "DnsQuery", EventType.DnsQuery));
             activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessCreate, "ProcessCreate", EventType.ProcessCreate));
             activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessTerminate, "ProcessTerminate", EventType.ProcessTerminate));
             activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.NetworkConnect, "NetworkConnect", EventType.NetConnect));
@@ -126,7 +121,7 @@ class Program
                switch (ruleId)
                {
                   case SysmonEventId.DNSQuery:
-                     eventDataFilters.AddRange(DNSQuery.ConvertExcludeRules(configGroupedListedRules.DnsQuery));
+                     activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.DnsQuery, "DnsQuery", EventType.DnsQuery));
                      break;
                   case SysmonEventId.ProcessCreate:
                      activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessCreate, "ProcessCreate", EventType.ProcessCreate));
@@ -193,21 +188,21 @@ class Program
 
          Log.Information("---- Finished converting file: {0} ----", namedConfig.Name);
       }
-         
+
       Console.WriteLine();
 
-      return Serialize(Globals.Options, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
+      return Serialize(Globals.Options, activityMonitoringRules.ToArray());
    }
 
    private static bool HandlePreConvertingRegistry(List<SysmonEventFilteringRuleGroupRegistryEvent> sysmonGroupActivities)
    {
       var retn = false;
       var excludes = (from ruleGroup in sysmonGroupActivities
-         where ruleGroup.onmatch.Equals(Constants.SysmonExcludeOnMatchString) && ruleGroup.Items != null
-         select ruleGroup.Items.Where(c => c.GetType() == typeof(SysmonEventFilteringRuleGroupRegistryEventEventType))
+                      where (ruleGroup?.onmatch?.Equals(Constants.SysmonExcludeOnMatchString) ?? false) && ruleGroup.Items != null
+                      select ruleGroup.Items.Where(c => c.GetType() == typeof(SysmonEventFilteringRuleGroupRegistryEventEventType))
          into toExcludeEventTypes
-         from SysmonEventFilteringRuleGroupRegistryEventEventType item in toExcludeEventTypes
-         select item).ToArray();
+                      from SysmonEventFilteringRuleGroupRegistryEventEventType item in toExcludeEventTypes
+                      select item).ToArray();
 
       foreach (var item in excludes)
       {
@@ -235,11 +230,11 @@ class Program
       return retn;
    }
 
-   private static bool Serialize(Options options, EventDataFilter[] filters, ActivityMonitoringRule[] rules)
+   private static bool Serialize(Options options, ActivityMonitoringRule[] rules)
    {
       try
       {
-         if (filters.Length == 0 && rules.Length == 0)
+         if (rules.Length == 0)
          {
             Log.Information("Nothing to convert.");
             return true;
@@ -247,18 +242,9 @@ class Program
 
          Log.Information("Serialize rules to {directory}", options.OutputDirectory);
 
-         var eventDataPath = Path.Combine(options.OutputDirectory, Constants.EventDataFilterOutputFileName);
          var activityPath = Path.Combine(options.OutputDirectory, Constants.ActivityMonitoringOutputFileName);
 
-         if (filters.Length > 0)
-         {
-            using (var fs = new FileStream(eventDataPath, FileMode.Create))
-            {
-               EventDataFilterSerializer.Serialize(fs, filters);
-            }
-         }
-
-         if (rules.Length == 0) 
+         if (rules.Length == 0)
             return true;
 
          using (var fs = new FileStream(activityPath, FileMode.Create))

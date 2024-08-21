@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CommandLine;
+using Serilog;
 using vl.Core.Domain;
 using vl.Core.Domain.Activity;
 
@@ -16,47 +17,25 @@ public class Options
    [Option('r', "rule", Required = false, HelpText = "Specify the Sysmon rule IDs to be converted. If not set, all possible rules will be converted. E.g: -r 1 2")]
    public IEnumerable<SysmonEventId> RulesToConvert { get; set; }
 
-   [Option('v', "version", Required = false, HelpText = "Specify the uberAgent version to get only supported rules converted. If not set, the latest version is used. E.g: -v 6.1")]
+   [Option('v', "version", Required = false, HelpText = "Specify the uberAgent version to get only supported rules converted. If not set or invalid, the latest version is used. E.g: -v 7.2")]
    public string Version
    {
       get => UAVersion.ToString();
       set
       {
-         if (value.StartsWith("6.0"))
+         UAVersion = UAVersionExtensions.ParseVersion(value);
+         if (UAVersion == UAVersion.UA_VERSION_CURRENT_RELEASE && !string.IsNullOrEmpty(value))
          {
-            UAVersion = UAVersion.UA_VERSION_6_0;
-            return;
+            Log.Warning($"Invalid version '{value}' specified. Using the latest version {UAVersion.ToVersionString()}.");
          }
-
-         if (value.StartsWith("6.1"))
+         else
          {
-            UAVersion = UAVersion.UA_VERSION_6_1;
-            return;
-         }
-
-         if (value.StartsWith("6.2"))
-         {
-            UAVersion = UAVersion.UA_VERSION_6_2;
-            return;
-         }
-
-         if (value.StartsWith("7.0"))
-         {
-            UAVersion = UAVersion.UA_VERSION_7_0;
-            return;
-         }
-
-         if (value.StartsWith("7.1"))
-         {
-            UAVersion = UAVersion.UA_VERSION_7_1;
-            return;
+            Log.Information($"Using uberAgent {UAVersion.ToVersionString()} as target version for conversion.");
          }
       }
    }
 
-   [Option('s', "score", Required = false,
-      HelpText =
-         "Specify the risk score for all rules that will be converted. If not set, the Risk Score of 50 is used for all rules. E.g: -s 75")]
+   [Option('s', "score", Required = false, HelpText = "Specify the risk score for all rules that will be converted. If not set, the Risk Score of 50 is used for all rules. E.g: -s 75")]
    public int RiskScore { get; set; } = 50;
 
    public UAVersion UAVersion { get; set; } = UAVersion.UA_VERSION_CURRENT_RELEASE;

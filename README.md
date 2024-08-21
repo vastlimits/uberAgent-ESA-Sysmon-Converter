@@ -18,22 +18,18 @@ uberAgent-ESA-Sysmon-Converter is developed in .NET 8 and, therefore, platform-i
 ## Getting Started
 ### Download
 
- 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.2.0).
+ 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.3.0).
  2. After unpacking, the converter can be controlled via the command line.
 
 ### Converting
 Further information at [Syntax](#syntax).
 
 ### After converting
-After the converter has run successfully, two files are created in the output directory (depending on the rules).
+After the converter has run successfully, the following file is created in the output directory.
 
- 1. `uberAgent-eventdata-filter-converted.conf`
- 2. `uberAgent-ESA-am-converted.conf`
+ 1. `uberAgent-ESA-am-converted.conf`
 
-`uberAgent-eventdata-filter-converted.conf` contains excluded DNS queries. All other rules are converted to `uberAgent-ESA-am-converted.conf`.
-
-For more information about the setup of uberAgent, see the documentation about [Event Data Filtering](https://uberagent.com/docs/uberagent/latest/uxm-features-configuration/event-data-filtering/) and [Threat Detection Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/threat-detection-engine/).
-
+For more information about the setup of uberAgent, see the documentation about [Threat Detection Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/threat-detection-engine/).
 
 ## Syntax
 
@@ -71,6 +67,7 @@ vl.Sysmon.Converter -i filePath1 -o outputFolder -r 1 2 12 -s 75 -v 6.1
 - 6.2
 - 7.0
 - 7.1
+- 7.2
 
 ## Example
 A **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](https://github.com/SwiftOnSecurity/sysmon-config):
@@ -144,7 +141,12 @@ The following Sysmon event IDs are not yet supported by uberAgent and are ignore
 - 19: WMI filter
 - 20: WMI consumer
 - 21: WMI consumer filter
+- 23: FileDelete
+    - Not fully supported and treated as `ID: 26 - File Delete Logged`.
 - 24: ClipboardChange
+- 27: File Block Executable
+- 28: File Block Shredding
+- 29: File Executable Detected
 
 ### Sysmon fields
 
@@ -154,7 +156,6 @@ The following Sysmon fields are not yet supported by uberAgent and are ignored d
 - Contents
 - CurrentDirectory
 - Description
-- Details (Registry)
 - Device
 - Guid
 - Initiated
@@ -162,14 +163,13 @@ The following Sysmon fields are not yet supported by uberAgent and are ignored d
 - LogonGuid
 - LogonId
 - OriginalFileName
+    - Stage 1 of support: `OriginalFileName` works differently to `Process.Name`, this will be updated in the next uberAgent versions, until then we have decided to use `OriginalFileName` with `Process.Name`.
 - Product
-- SourceImage
-- SourcePort
 - SourceProcessGuid
 - TargetProcessGuid
+- SourceImage
 - UtcTime
-- Details
-- Network source details
+- QueryStatus
 
 ### Rule names
 

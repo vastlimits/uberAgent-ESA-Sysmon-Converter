@@ -363,3 +363,4 @@ FodyWeavers.xsd
 vl.Sysmon.Converter/windows-64
 vl.Sysmon.Converter/win-x86
 win-x86
+vl.Sysmon.Converter/Properties/launchSettings.json

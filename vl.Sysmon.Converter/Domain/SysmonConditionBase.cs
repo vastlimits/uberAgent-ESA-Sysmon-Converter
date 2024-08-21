@@ -5,7 +5,9 @@ namespace vl.Sysmon.Converter.Domain;
 
 public class SysmonConditionBase
 {
-   public string Field { get; set; }
+   public string MainField { get; set; }
+   public string[] Fields { get; set; }
+   public string SysmonOriginalFieldName { get; set; }
    public string Value { get; set; }
    public string Condition { get; set; }
    public TransformDataType DataType { get; set; }
