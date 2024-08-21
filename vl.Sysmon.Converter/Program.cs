@@ -194,7 +194,7 @@ class Program
 
       Console.WriteLine();
 
-      return Serialize(Globals.Options, eventDataFilters.ToArray(), activityMonitoringRules.ToArray());
+      return Serialize(Globals.Options, activityMonitoringRules.ToArray());
    }
 
    private static bool HandlePreConvertingRegistry(List<SysmonEventFilteringRuleGroupRegistryEvent> sysmonGroupActivities)
@@ -233,11 +233,11 @@ class Program
       return retn;
    }
 
-   private static bool Serialize(Options options, EventDataFilter[] filters, ActivityMonitoringRule[] rules)
+   private static bool Serialize(Options options, ActivityMonitoringRule[] rules)
    {
       try
       {
-         if (filters.Length == 0 && rules.Length == 0)
+         if (rules.Length == 0)
          {
             Log.Information("Nothing to convert.");
             return true;
@@ -245,16 +245,7 @@ class Program
 
          Log.Information("Serialize rules to {directory}", options.OutputDirectory);
 
-         var eventDataPath = Path.Combine(options.OutputDirectory, Constants.EventDataFilterOutputFileName);
          var activityPath = Path.Combine(options.OutputDirectory, Constants.ActivityMonitoringOutputFileName);
-
-         if (filters.Length > 0)
-         {
-            using (var fs = new FileStream(eventDataPath, FileMode.Create))
-            {
-               EventDataFilterSerializer.Serialize(fs, filters);
-            }
-         }
 
          if (rules.Length == 0)
             return true;
