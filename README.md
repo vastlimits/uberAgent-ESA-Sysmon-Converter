@@ -25,15 +25,11 @@ uberAgent-ESA-Sysmon-Converter is developed in .NET 8 and, therefore, platform-i
 Further information at [Syntax](#syntax).
 
 ### After converting
-After the converter has run successfully, two files are created in the output directory (depending on the rules).
+After the converter has run successfully, the following file is created in the output directory.
 
- 1. `uberAgent-eventdata-filter-converted.conf`
- 2. `uberAgent-ESA-am-converted.conf`
+ 1. `uberAgent-ESA-am-converted.conf`
 
-`uberAgent-eventdata-filter-converted.conf` contains excluded DNS queries. All other rules are converted to `uberAgent-ESA-am-converted.conf`.
-
-For more information about the setup of uberAgent, see the documentation about [Event Data Filtering](https://uberagent.com/docs/uberagent/latest/uxm-features-configuration/event-data-filtering/) and [Threat Detection Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/threat-detection-engine/).
-
+For more information about the setup of uberAgent, see the documentation about [Threat Detection Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/threat-detection-engine/).
 
 ## Syntax
 
@@ -173,6 +169,7 @@ The following Sysmon fields are not yet supported by uberAgent and are ignored d
 - TargetProcessGuid
 - SourceImage
 - UtcTime
+- QueryStatus
 
 ### Rule names
 
