@@ -1,6 +1,6 @@
 
 # uberAgent-ESA-Sysmon-Converter
-> A Sysmon rule converter for uberAgent ESA
+> A [Sysmon rule converter](https://docs.citrix.com/en-us/uberagent/current-release/esa-features-configuration/threat-detection-engine/sysmon-rule-converter) for uberAgent ESA
 
 ## Table of Contents
 
@@ -32,7 +32,7 @@ After the converter has run successfully, two files are created in the output di
 
 `uberAgent-eventdata-filter-converted.conf` contains excluded DNS queries. All other rules are converted to `uberAgent-ESA-am-converted.conf`.
 
-For more information about the setup of uberAgent, see the documentation about [Event Data Filtering](https://uberagent.com/docs/uberagent/latest/uxm-features-configuration/event-data-filtering/) and [Threat Detection Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/threat-detection-engine/).
+For more information about the setup of uberAgent, see the documentation about [Event Data Filtering](https://docs.citrix.com/en-us/uberagent/current-release/uxm-features-configuration/event-data-filtering) and [Threat Detection Engine](https://docs.citrix.com/en-us/uberagent/current-release/esa-features-configuration/threat-detection-engine).
 
 
 ## Syntax
