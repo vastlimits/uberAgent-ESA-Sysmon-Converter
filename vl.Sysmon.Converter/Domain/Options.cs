@@ -23,13 +23,14 @@ public class Options
       get => UAVersion.ToString();
       set
       {
-         UAVersion = UAVersionExtensions.ParseVersion(value);
-         if (UAVersion == UAVersion.UA_VERSION_CURRENT_RELEASE && !string.IsNullOrEmpty(value))
+         if (!UAVersionExtensions.TryParseVersion(value, out var parsedVersion))
          {
+            UAVersion = UAVersion.UA_VERSION_CURRENT_RELEASE;
             Log.Warning($"Invalid version '{value}' specified. Using the latest version {UAVersion.ToVersionString()}.");
          }
          else
          {
+            UAVersion = parsedVersion;
             Log.Information($"Using uberAgent {UAVersion.ToVersionString()} as target version for conversion.");
          }
       }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using vl.Core.Domain.Activity;
 
 namespace vl.Core.Domain.Attributes
@@ -38,12 +37,6 @@ namespace vl.Core.Domain.Attributes
 
       public static string TransformTrailingBackslashes(string itemValue)
       {
-         var quotes = itemValue.Count(c => c == '"');
-
-         itemValue = itemValue.Replace(@"\", @"\\");
-         if (quotes >= 2)
-            itemValue = itemValue.Trim().Replace("\"", "\\\"");
-
          return itemValue;
       }
 

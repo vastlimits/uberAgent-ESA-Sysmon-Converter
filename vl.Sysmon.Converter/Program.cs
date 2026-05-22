@@ -14,7 +14,7 @@ namespace vl.Sysmon.Converter;
 
 class Program
 {
-   private static readonly List<EventType> RegistryEventTypes =
+   private static readonly EventType[] RegistryEventTypes =
       [EventType.RegKeyCreate, EventType.RegKeyDelete, EventType.RegValueWrite, EventType.RegKeyRename];
 
    private static void Main(string[] args)
@@ -92,10 +92,10 @@ class Program
             activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.ProcessTerminate, "ProcessTerminate", EventType.ProcessTerminate));
             activityMonitoringRules.Add(SysmonActivityMonitoringRule.Create(configGroupedListedRules.NetworkConnect, "NetworkConnect", EventType.NetConnect));
 
-            var removedAnyEventType = HandlePreConvertingRegistry(configGroupedListedRules.RegistryEvent);
-            if (removedAnyEventType)
+            var registryEventTypes = GetRegistryEventTypes(configGroupedListedRules.RegistryEvent);
+            if (registryEventTypes.Length != RegistryEventTypes.Length)
             {
-               activityMonitoringRules.AddRange(RegistryEventTypes.Select(eventType => SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", eventType)));
+               activityMonitoringRules.AddRange(registryEventTypes.Select(eventType => SysmonActivityMonitoringRule.Create(configGroupedListedRules.RegistryEvent, "RegistryEvent", eventType)));
             }
             else
             {
@@ -194,9 +194,9 @@ class Program
       return Serialize(Globals.Options, activityMonitoringRules.ToArray());
    }
 
-   private static bool HandlePreConvertingRegistry(List<SysmonEventFilteringRuleGroupRegistryEvent> sysmonGroupActivities)
+   private static EventType[] GetRegistryEventTypes(List<SysmonEventFilteringRuleGroupRegistryEvent> sysmonGroupActivities)
    {
-      var retn = false;
+      var registryEventTypes = RegistryEventTypes.ToList();
       var excludes = (from ruleGroup in sysmonGroupActivities
                       where (ruleGroup?.onmatch?.Equals(Constants.SysmonExcludeOnMatchString) ?? false) && ruleGroup.Items != null
                       select ruleGroup.Items.Where(c => c.GetType() == typeof(SysmonEventFilteringRuleGroupRegistryEventEventType))
@@ -209,25 +209,21 @@ class Program
          switch (item.Value)
          {
             case "SetValue":
-               RegistryEventTypes.Remove(EventType.RegValueWrite);
-               retn = true;
+               registryEventTypes.Remove(EventType.RegValueWrite);
                break;
             case "CreateKey":
-               RegistryEventTypes.Remove(EventType.RegKeyCreate);
-               retn = true;
+               registryEventTypes.Remove(EventType.RegKeyCreate);
                break;
             case "DeleteKey":
-               RegistryEventTypes.Remove(EventType.RegKeyDelete);
-               retn = true;
+               registryEventTypes.Remove(EventType.RegKeyDelete);
                break;
             case "RenameKey":
-               RegistryEventTypes.Remove(EventType.RegKeyRename);
-               retn = true;
+               registryEventTypes.Remove(EventType.RegKeyRename);
                break;
          }
       }
 
-      return retn;
+      return registryEventTypes.ToArray();
    }
 
    private static bool Serialize(Options options, ActivityMonitoringRule[] rules)

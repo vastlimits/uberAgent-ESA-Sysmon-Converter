@@ -68,6 +68,28 @@ vl.Sysmon.Converter -i filePath1 -o outputFolder -r 1 2 12 -s 75 -v 6.1
 - 7.0
 - 7.1
 - 7.2
+- 7.4.x
+- 7.5.x
+- 8.0
+
+Unknown version values are logged as warnings and fall back to the latest supported release.
+
+### Validation
+
+The solution contains an xUnit test project that covers the converter semantics that are easiest to regress:
+
+- Sysmon include/exclude precedence.
+- Default Sysmon field semantics (`or` for repeated fields, `and` across different fields).
+- Nested `<Rule>` / `<RuleGroup>` parentheses.
+- Repeated event elements inside one `<RuleGroup>` and sysmon-modular event wrapper files.
+- `OriginalFileName` stage-one mapping.
+- Version parsing for current uberAgent releases.
+
+Run the validation suite with:
+
+```cmd
+dotnet test vl.Sysmon.Converter.sln
+```
 
 ## Example
 A **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](https://github.com/SwiftOnSecurity/sysmon-config):
@@ -120,7 +142,7 @@ A **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](h
 </Sysmon>
 ```
 After executing the command `vl.Sysmon.Converter -i C:\tmp\example.xml -o C:\tmp\exampleOutput\`
-you should see **uberAgent-ESA-am-converted.conf** with the following content: 
+you should see **uberAgent-ESA-am-converted.conf** containing an `[ActivityMonitoringRule]` stanza. The converter preserves Sysmon's include/exclude and group-relation semantics and emits escaped uAQL string literals.
 
 ```  ini
 [ActivityMonitoringRule]
@@ -128,7 +150,7 @@ RuleName = ProcessStart converted rule
 EventType = Process.Start
 Tag = processstart-1-converted-rule
 RiskScore = 50
-Query = not ((Process.CommandLine == r"C:\Windows\System32\RuntimeBroker.exe -Embedding" or Process.Path == r"C:\Program Files (x86)\Common Files\microsoft shared\ink\TabTip32.exe" or istartswith(Parent.CommandLine, r"%SystemRoot%\system32\csrss.exe ObjectDirectory=\Windows") or Parent.CommandLine == r"C:\windows\system32\wermgr.exe -queuereporting" or Parent.Path == r"C:\Windows\system32\SearchIndexer.exe" or Process.CommandLine == r"C:\Windows\system32\svchost.exe -k appmodel -s StateRepository" or Process.CommandLine == r"C:\Windows\system32\svchost.exe -k wsappx" or Parent.CommandLine == r"C:\Windows\system32\svchost.exe -k netsvcs" or Parent.CommandLine == r"C:\Windows\system32\svchost.exe -k localSystemNetworkRestricted" or Process.CommandLine == r"C:\Windows\system32\deviceenroller.exe /c /AutoEnrollMDM" or istartswith(Process.CommandLine, r"\"C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe\" --type=") or istartswith(Process.CommandLine, r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\ngen.exe") or istartswith(Process.CommandLine, r"C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319\Ngen.exe") or Process.Path == r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe" or Process.Path == r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe" or Process.Path == r"C:\Windows\Microsoft.Net\Framework64\v3.0\WPF\PresentationFontCache.exe" or icontains(Parent.CommandLine, r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ngentask.exe") or Parent.Path == r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe" or Parent.Path == r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ngentask.exe" or Parent.Path == r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe" or Parent.Path == r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\ngentask.exe" or Process.Path == r"C:\Program Files\Microsoft Office\Office16\MSOSYNC.EXE" or Process.Path == r"C:\Program Files (x86)\Microsoft Office\Office16\MSOSYNC.EXE" or Process.Path == r"C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe" or Parent.Path == r"C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeClickToRun.exe" or Parent.Path == r"C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe" or Process.Path == r"C:\Program Files\Windows Media Player\wmpnscfg.exe" or istartswith(Process.CommandLine, r"\"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe\" --type=") or istartswith(Process.CommandLine, r"\"C:\Program Files\Google\Chrome\Application\chrome.exe\" --type=")))
+Query = not (Process.CommandLine == "C:\\Windows\\System32\\RuntimeBroker.exe -Embedding" or ...)
 ```
 
 ## Limitations
@@ -162,14 +184,14 @@ The following Sysmon fields are not yet supported by uberAgent and are ignored d
 - IntegrityLevel
 - LogonGuid
 - LogonId
-- OriginalFileName
-    - Stage 1 of support: `OriginalFileName` works differently to `Process.Name`, this will be updated in the next uberAgent versions, until then we have decided to use `OriginalFileName` with `Process.Name`.
 - Product
 - SourceProcessGuid
 - TargetProcessGuid
 - SourceImage
 - UtcTime
 - QueryStatus
+
+`OriginalFileName` is supported as stage-one mapping. Until uberAgent exposes a dedicated `OriginalFileName` property, the converter maps it to the corresponding process or image name field.
 
 ### Rule names
 
@@ -203,3 +225,4 @@ This project uses the following third-party libraries:
 
 - [CommandLineParser](https://github.com/commandlineparser/commandline)
 - [Serilog](https://serilog.net/)
+- [xUnit](https://xunit.net/) for tests
