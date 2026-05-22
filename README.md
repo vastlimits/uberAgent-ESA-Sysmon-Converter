@@ -1,6 +1,6 @@
 
 # uberAgent-ESA-Sysmon-Converter
-> A Sysmon rule converter for uberAgent ESA
+> A [Sysmon rule converter](https://docs.citrix.com/en-us/uberagent/current-release/esa-features-configuration/threat-detection-engine/sysmon-rule-converter) for uberAgent ESA
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@ uberAgent-ESA-Sysmon-Converter is developed in .NET 8 and, therefore, platform-i
 ## Getting Started
 ### Download
 
- 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.3.0).
+ 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.2.1).
  2. After unpacking, the converter can be controlled via the command line.
 
 ### Converting
@@ -28,6 +28,8 @@ Further information at [Syntax](#syntax).
 After the converter has run successfully, the following file is created in the output directory.
 
  1. `uberAgent-ESA-am-converted.conf`
+
+All supported rules are serialized to `uberAgent-ESA-am-converted.conf`.
 
 For more information about the setup of uberAgent, see the documentation about [Threat Detection Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/threat-detection-engine/).
 
@@ -68,8 +70,9 @@ vl.Sysmon.Converter -i filePath1 -o outputFolder -r 1 2 12 -s 75 -v 6.1
 - 7.0
 - 7.1
 - 7.2
-- 7.4.x
-- 7.5.x
+- 7.3
+- 7.4
+- 7.5
 - 8.0
 
 Unknown version values are logged as warnings and fall back to the latest supported release.
