@@ -18,22 +18,20 @@ uberAgent-ESA-Sysmon-Converter is developed in .NET 8 and, therefore, platform-i
 ## Getting Started
 ### Download
 
- 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.2.0).
+ 1. The latest binary archive can be found [here](https://github.com/vastlimits/uberAgent-ESA-Sysmon-Converter/releases/tag/v1.2.1).
  2. After unpacking, the converter can be controlled via the command line.
 
 ### Converting
 Further information at [Syntax](#syntax).
 
 ### After converting
-After the converter has run successfully, two files are created in the output directory (depending on the rules).
+After the converter has run successfully, the following file is created in the output directory.
 
- 1. `uberAgent-eventdata-filter-converted.conf`
- 2. `uberAgent-ESA-am-converted.conf`
+ 1. `uberAgent-ESA-am-converted.conf`
 
-`uberAgent-eventdata-filter-converted.conf` contains excluded DNS queries. All other rules are converted to `uberAgent-ESA-am-converted.conf`.
+All supported rules are serialized to `uberAgent-ESA-am-converted.conf`.
 
-For more information about the setup of uberAgent, see the documentation about [Event Data Filtering](https://docs.citrix.com/en-us/uberagent/current-release/uxm-features-configuration/event-data-filtering) and [Threat Detection Engine](https://docs.citrix.com/en-us/uberagent/current-release/esa-features-configuration/threat-detection-engine).
-
+For more information about the setup of uberAgent, see the documentation about [Threat Detection Engine](https://uberagent.com/docs/uberagent/latest/esa-features-configuration/threat-detection-engine/).
 
 ## Syntax
 
@@ -71,6 +69,30 @@ vl.Sysmon.Converter -i filePath1 -o outputFolder -r 1 2 12 -s 75 -v 6.1
 - 6.2
 - 7.0
 - 7.1
+- 7.2
+- 7.3
+- 7.4
+- 7.5
+- 8.0
+
+Unknown version values are logged as warnings and fall back to the latest supported release.
+
+### Validation
+
+The solution contains an xUnit test project that covers the converter semantics that are easiest to regress:
+
+- Sysmon include/exclude precedence.
+- Default Sysmon field semantics (`or` for repeated fields, `and` across different fields).
+- Nested `<Rule>` / `<RuleGroup>` parentheses.
+- Repeated event elements inside one `<RuleGroup>` and sysmon-modular event wrapper files.
+- `OriginalFileName` stage-one mapping.
+- Version parsing for current uberAgent releases.
+
+Run the validation suite with:
+
+```cmd
+dotnet test vl.Sysmon.Converter.sln
+```
 
 ## Example
 A **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](https://github.com/SwiftOnSecurity/sysmon-config):
@@ -123,7 +145,7 @@ A **ProcessCreate** excerpt from the [Sysmon configuration of SwiftOnSecurity](h
 </Sysmon>
 ```
 After executing the command `vl.Sysmon.Converter -i C:\tmp\example.xml -o C:\tmp\exampleOutput\`
-you should see **uberAgent-ESA-am-converted.conf** with the following content: 
+you should see **uberAgent-ESA-am-converted.conf** containing an `[ActivityMonitoringRule]` stanza. The converter preserves Sysmon's include/exclude and group-relation semantics and emits escaped uAQL string literals.
 
 ```  ini
 [ActivityMonitoringRule]
@@ -131,7 +153,7 @@ RuleName = ProcessStart converted rule
 EventType = Process.Start
 Tag = processstart-1-converted-rule
 RiskScore = 50
-Query = not ((Process.CommandLine == r"C:\Windows\System32\RuntimeBroker.exe -Embedding" or Process.Path == r"C:\Program Files (x86)\Common Files\microsoft shared\ink\TabTip32.exe" or istartswith(Parent.CommandLine, r"%SystemRoot%\system32\csrss.exe ObjectDirectory=\Windows") or Parent.CommandLine == r"C:\windows\system32\wermgr.exe -queuereporting" or Parent.Path == r"C:\Windows\system32\SearchIndexer.exe" or Process.CommandLine == r"C:\Windows\system32\svchost.exe -k appmodel -s StateRepository" or Process.CommandLine == r"C:\Windows\system32\svchost.exe -k wsappx" or Parent.CommandLine == r"C:\Windows\system32\svchost.exe -k netsvcs" or Parent.CommandLine == r"C:\Windows\system32\svchost.exe -k localSystemNetworkRestricted" or Process.CommandLine == r"C:\Windows\system32\deviceenroller.exe /c /AutoEnrollMDM" or istartswith(Process.CommandLine, r"\"C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe\" --type=") or istartswith(Process.CommandLine, r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\ngen.exe") or istartswith(Process.CommandLine, r"C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319\Ngen.exe") or Process.Path == r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe" or Process.Path == r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe" or Process.Path == r"C:\Windows\Microsoft.Net\Framework64\v3.0\WPF\PresentationFontCache.exe" or icontains(Parent.CommandLine, r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ngentask.exe") or Parent.Path == r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe" or Parent.Path == r"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ngentask.exe" or Parent.Path == r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe" or Parent.Path == r"C:\Windows\Microsoft.NET\Framework\v4.0.30319\ngentask.exe" or Process.Path == r"C:\Program Files\Microsoft Office\Office16\MSOSYNC.EXE" or Process.Path == r"C:\Program Files (x86)\Microsoft Office\Office16\MSOSYNC.EXE" or Process.Path == r"C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe" or Parent.Path == r"C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeClickToRun.exe" or Parent.Path == r"C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe" or Process.Path == r"C:\Program Files\Windows Media Player\wmpnscfg.exe" or istartswith(Process.CommandLine, r"\"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe\" --type=") or istartswith(Process.CommandLine, r"\"C:\Program Files\Google\Chrome\Application\chrome.exe\" --type=")))
+Query = not (Process.CommandLine == "C:\\Windows\\System32\\RuntimeBroker.exe -Embedding" or ...)
 ```
 
 ## Limitations
@@ -144,7 +166,12 @@ The following Sysmon event IDs are not yet supported by uberAgent and are ignore
 - 19: WMI filter
 - 20: WMI consumer
 - 21: WMI consumer filter
+- 23: FileDelete
+    - Not fully supported and treated as `ID: 26 - File Delete Logged`.
 - 24: ClipboardChange
+- 27: File Block Executable
+- 28: File Block Shredding
+- 29: File Executable Detected
 
 ### Sysmon fields
 
@@ -154,22 +181,20 @@ The following Sysmon fields are not yet supported by uberAgent and are ignored d
 - Contents
 - CurrentDirectory
 - Description
-- Details (Registry)
 - Device
 - Guid
 - Initiated
 - IntegrityLevel
 - LogonGuid
 - LogonId
-- OriginalFileName
 - Product
-- SourceImage
-- SourcePort
 - SourceProcessGuid
 - TargetProcessGuid
+- SourceImage
 - UtcTime
-- Details
-- Network source details
+- QueryStatus
+
+`OriginalFileName` is supported as stage-one mapping. Until uberAgent exposes a dedicated `OriginalFileName` property, the converter maps it to the corresponding process or image name field.
 
 ### Rule names
 
@@ -203,3 +228,4 @@ This project uses the following third-party libraries:
 
 - [CommandLineParser](https://github.com/commandlineparser/commandline)
 - [Serilog](https://serilog.net/)
+- [xUnit](https://xunit.net/) for tests

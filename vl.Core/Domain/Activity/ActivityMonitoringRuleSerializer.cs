@@ -8,8 +8,6 @@ namespace vl.Core.Domain.Activity
 
    public static class ActivityMonitoringRuleSerializer
    {
-      private static readonly Dictionary<EventType, int> EventCounter = new ();
-
       /*
          [ActivityMonitoringRule]
          Id = 00000000-0000-0000-0000-000000000000
@@ -23,6 +21,7 @@ namespace vl.Core.Domain.Activity
       public static void Serialize(ActivitySerializeOptions options)
       {
          var sb = new StringBuilder();
+         var eventCounter = new Dictionary<EventType, int>();
          using (var sw = new StringWriter(sb))
          {
             foreach (var rule in options.Rules)
@@ -36,7 +35,7 @@ namespace vl.Core.Domain.Activity
                   rule.Name = $"{rule.EventType} converted rule";
 
                if (string.IsNullOrEmpty(rule.Tag))
-                  rule.Tag = $"{rule.EventType}-{GetEventCounter(rule.EventType)}-converted-rule";
+                  rule.Tag = $"{rule.EventType}-{GetEventCounter(eventCounter, rule.EventType)}-converted-rule";
 
                sw.WriteLine($"RuleId = {rule.Id}");
                sw.WriteLine($"RuleName = {rule.Name}");
@@ -57,12 +56,12 @@ namespace vl.Core.Domain.Activity
          options.Stream.Write(contentsUtf8);
       }
 
-      private static int GetEventCounter(EventType ruleEventType)
+      private static int GetEventCounter(Dictionary<EventType, int> eventCounter, EventType ruleEventType)
       {
-         if (EventCounter.ContainsKey(ruleEventType))
-            return ++EventCounter[ruleEventType];
+         if (eventCounter.ContainsKey(ruleEventType))
+            return ++eventCounter[ruleEventType];
 
-         EventCounter.Add(ruleEventType, 1);
+         eventCounter.Add(ruleEventType, 1);
          return 1;
       }
    }

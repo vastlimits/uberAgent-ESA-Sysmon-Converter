@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using vl.Core.Domain.Activity;
 
 namespace vl.Core.Domain.Attributes
 {
@@ -37,12 +37,6 @@ namespace vl.Core.Domain.Attributes
 
       public static string TransformTrailingBackslashes(string itemValue)
       {
-         var quotes = itemValue.Count(c => c == '"');
-
-         itemValue = itemValue.Replace(@"\", @"\\");
-         if (quotes >= 2)
-            itemValue = itemValue.Trim().Replace("\"", "\\\"");
-
          return itemValue;
       }
 
@@ -55,9 +49,11 @@ namespace vl.Core.Domain.Attributes
          };
       }
 
+      public UAVersion SupporteduAVersion => UASupportedVersion;
       public bool IsSupportedByCurrentUberAgentVersion(UAVersion uaVersion) => uaVersion >= UASupportedVersion;
 
       public abstract TransformDataType GetDataType();
-      public abstract string GetTargetField(string value);
+      public abstract string GetTargetFieldByContext(EventType eventType, string value);
+      public abstract string[] GetTargetFields();
    }
 }
