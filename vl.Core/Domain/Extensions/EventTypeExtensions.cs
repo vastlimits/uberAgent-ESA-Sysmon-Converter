@@ -32,7 +32,7 @@ namespace vl.Core.Domain.Extensions
             EventType.RegKeySave => "Reg.Key.Save",
             EventType.RegKeyReplace => "Reg.Key.Replace",
             EventType.RegAny => "Reg.Any",
-            EventType.DnsQuery => "DNS.Event",
+            EventType.DnsQuery => "DNS.Query",
             EventType.CreateRemoteThread => "Process.CreateRemoteThread",
             EventType.ProcessTampering => "Process.TamperingEvent",
             EventType.DriverLoad => "Driver.Load",
