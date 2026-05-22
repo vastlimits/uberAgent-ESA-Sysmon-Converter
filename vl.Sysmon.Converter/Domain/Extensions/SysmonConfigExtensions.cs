@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using vl.Core.Domain.Activity;
@@ -9,6 +9,9 @@ internal static class SysmonConfigExtensions
 {
    internal static SysmonEventFilteringRuleListed GetSysmonRules(this Sysmon config, SysmonEventFilteringRuleListed groups)
    {
+      if (config?.EventFiltering == null)
+         return groups;
+
       var filteringRulesListedProperties = groups.GetType().GetProperties();
 
       var sysmonEventFilteringProperties = typeof(SysmonEventFiltering).GetProperties().Where(c => c.Name != "Items").ToArray();
@@ -48,33 +51,61 @@ internal static class SysmonConfigExtensions
       if (filteringRuleGroups == null)
          return filteringRulesListed;
 
-      var properties = typeof(SysmonEventFilteringRuleGroup).GetProperties();
+      var properties = typeof(SysmonEventFilteringRuleGroup)
+         .GetProperties()
+         .Where(prop => prop.Name != nameof(SysmonEventFilteringRuleGroup.name) &&
+                        prop.Name != nameof(SysmonEventFilteringRuleGroup.groupRelation));
 
       foreach (var rule in filteringRuleGroups)
       {
-         var (currentRuleName, currentRuleValue) = properties.ToDictionary(prop => prop.Name, prop => prop.GetValue(rule, null))
-            .FirstOrDefault(c => c.Value != null);
-         var filteringRulesListedProperty = filteringRulesListedProperties
-            .FirstOrDefault(c => c.Name.Equals(currentRuleName))
-            ?.GetValue(filteringRulesListed, null);
-            
-         filteringRulesListedProperty?.GetType().GetMethod("Add")
-            ?.Invoke(filteringRulesListedProperty, new[] {currentRuleValue});
+         foreach (var property in properties)
+         {
+            var currentRuleValue = property.GetValue(rule, null);
+            if (currentRuleValue == null)
+               continue;
 
-         if (currentRuleValue == null)
-            continue;
+            foreach (var eventRule in GetEventRules(currentRuleValue))
+            {
+               SetRuleGroupMetadata(eventRule, rule);
 
-         var filteringRuleExtendedProperties = currentRuleValue.GetType().GetProperties();
+               var filteringRulesListedProperty = filteringRulesListedProperties
+                  .FirstOrDefault(c => c.Name.Equals(property.Name))
+                  ?.GetValue(filteringRulesListed, null);
 
-         var filteringRuleExtendedName = filteringRuleExtendedProperties.FirstOrDefault(c => c.Name.Equals("name"));
-         var filteringRuleExtendedGroupRelation =
-            filteringRuleExtendedProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"));
-
-         filteringRuleExtendedName?.SetValue(currentRuleValue, rule.name);
-         filteringRuleExtendedGroupRelation?.SetValue(currentRuleValue, rule.groupRelation);
+               filteringRulesListedProperty?.GetType().GetMethod("Add")
+                  ?.Invoke(filteringRulesListedProperty, new[] { eventRule });
+            }
+         }
       }
 
       return filteringRulesListed;
+   }
+
+   private static IEnumerable<object> GetEventRules(object value)
+   {
+      if (value is Array array)
+      {
+         foreach (var item in array)
+         {
+            if (item != null)
+               yield return item;
+         }
+      }
+      else
+      {
+         yield return value;
+      }
+   }
+
+   private static void SetRuleGroupMetadata(object eventRule, SysmonEventFilteringRuleGroup ruleGroup)
+   {
+      var filteringRuleExtendedProperties = eventRule.GetType().GetProperties();
+      var filteringRuleExtendedName = filteringRuleExtendedProperties.FirstOrDefault(c => c.Name.Equals("name"));
+      var filteringRuleExtendedGroupRelation =
+         filteringRuleExtendedProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"));
+
+      filteringRuleExtendedName?.SetValue(eventRule, ruleGroup.name);
+      filteringRuleExtendedGroupRelation?.SetValue(eventRule, ruleGroup.groupRelation);
    }
 
    private static Hashes[] GetHashAlgorithms(Sysmon config)

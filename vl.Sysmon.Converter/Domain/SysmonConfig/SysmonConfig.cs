@@ -362,176 +362,195 @@ public partial class SysmonEventFiltering
 public partial class SysmonEventFilteringRuleGroup
 {
 
-   private SysmonEventFilteringRuleGroupFileDeleteDetected fileDeleteDetectedField;
+   private SysmonEventFilteringRuleGroupFileDeleteDetected[] fileDeleteDetectedField;
 
-   private SysmonEventFilteringRuleGroupProcessTampering processTamperingField;
+   private SysmonEventFilteringRuleGroupProcessTampering[] processTamperingField;
 
-   private SysmonEventFilteringRuleGroupClipboardChange clipboardChangeField;
+   private SysmonEventFilteringRuleGroupClipboardChange[] clipboardChangeField;
 
-   private SysmonEventFilteringRuleGroupFileDelete fileDeleteField;
+   private SysmonEventFilteringRuleGroupFileDelete[] fileDeleteField;
 
-   private SysmonEventFilteringRuleGroupDnsQuery dnsQueryField;
+   private SysmonEventFilteringRuleGroupDnsQuery[] dnsQueryField;
 
-   private SysmonEventFilteringRuleGroupWmiEvent wmiEventField;
+   private SysmonEventFilteringRuleGroupWmiEvent[] wmiEventField;
 
-   private SysmonEventFilteringRuleGroupPipeEvent pipeEventField;
+   private SysmonEventFilteringRuleGroupPipeEvent[] pipeEventField;
 
-   private SysmonEventFilteringRuleGroupFileCreateStreamHash fileCreateStreamHashField;
+   private SysmonEventFilteringRuleGroupFileCreateStreamHash[] fileCreateStreamHashField;
 
-   private SysmonEventFilteringRuleGroupRegistryEvent registryEventField;
+   private SysmonEventFilteringRuleGroupRegistryEvent[] registryEventField;
 
-   private SysmonEventFilteringRuleGroupFileCreate fileCreateField;
+   private SysmonEventFilteringRuleGroupFileCreate[] fileCreateField;
 
-   private SysmonEventFilteringRuleGroupProcessAccess processAccessField;
+   private SysmonEventFilteringRuleGroupProcessAccess[] processAccessField;
 
-   private SysmonEventFilteringRuleGroupRawAccessRead rawAccessReadField;
+   private SysmonEventFilteringRuleGroupRawAccessRead[] rawAccessReadField;
 
-   private SysmonEventFilteringRuleGroupCreateRemoteThread createRemoteThreadField;
+   private SysmonEventFilteringRuleGroupCreateRemoteThread[] createRemoteThreadField;
 
-   private SysmonEventFilteringRuleGroupImageLoad imageLoadField;
+   private SysmonEventFilteringRuleGroupImageLoad[] imageLoadField;
 
-   private SysmonEventFilteringRuleGroupDriverLoad driverLoadField;
+   private SysmonEventFilteringRuleGroupDriverLoad[] driverLoadField;
 
-   private SysmonEventFilteringRuleGroupProcessTerminate processTerminateField;
+   private SysmonEventFilteringRuleGroupProcessTerminate[] processTerminateField;
 
-   private SysmonEventFilteringRuleGroupNetworkConnect networkConnectField;
+   private SysmonEventFilteringRuleGroupNetworkConnect[] networkConnectField;
 
-   private SysmonEventFilteringRuleGroupFileCreateTime fileCreateTimeField;
+   private SysmonEventFilteringRuleGroupFileCreateTime[] fileCreateTimeField;
 
-   private SysmonEventFilteringRuleGroupProcessCreate processCreateField;
+   private SysmonEventFilteringRuleGroupProcessCreate[] processCreateField;
 
    private string nameField;
 
    private string groupRelationField;
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupFileDeleteDetected FileDeleteDetected
+   [System.Xml.Serialization.XmlElementAttribute("FileDeleteDetected")]
+   public SysmonEventFilteringRuleGroupFileDeleteDetected[] FileDeleteDetected
    {
       get { return this.fileDeleteDetectedField; }
       set { this.fileDeleteDetectedField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupProcessTampering ProcessTampering
+   [System.Xml.Serialization.XmlElementAttribute("ProcessTampering")]
+   public SysmonEventFilteringRuleGroupProcessTampering[] ProcessTampering
    {
       get { return this.processTamperingField; }
       set { this.processTamperingField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupClipboardChange ClipboardChange
+   [System.Xml.Serialization.XmlElementAttribute("ClipboardChange")]
+   public SysmonEventFilteringRuleGroupClipboardChange[] ClipboardChange
    {
       get { return this.clipboardChangeField; }
       set { this.clipboardChangeField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupFileDelete FileDelete
+   [System.Xml.Serialization.XmlElementAttribute("FileDelete")]
+   public SysmonEventFilteringRuleGroupFileDelete[] FileDelete
    {
       get { return this.fileDeleteField; }
       set { this.fileDeleteField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupDnsQuery DnsQuery
+   [System.Xml.Serialization.XmlElementAttribute("DnsQuery")]
+   public SysmonEventFilteringRuleGroupDnsQuery[] DnsQuery
    {
       get { return this.dnsQueryField; }
       set { this.dnsQueryField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupWmiEvent WmiEvent
+   [System.Xml.Serialization.XmlElementAttribute("WmiEvent")]
+   public SysmonEventFilteringRuleGroupWmiEvent[] WmiEvent
    {
       get { return this.wmiEventField; }
       set { this.wmiEventField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupPipeEvent PipeEvent
+   [System.Xml.Serialization.XmlElementAttribute("PipeEvent")]
+   public SysmonEventFilteringRuleGroupPipeEvent[] PipeEvent
    {
       get { return this.pipeEventField; }
       set { this.pipeEventField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupFileCreateStreamHash FileCreateStreamHash
+   [System.Xml.Serialization.XmlElementAttribute("FileCreateStreamHash")]
+   public SysmonEventFilteringRuleGroupFileCreateStreamHash[] FileCreateStreamHash
    {
       get { return this.fileCreateStreamHashField; }
       set { this.fileCreateStreamHashField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupRegistryEvent RegistryEvent
+   [System.Xml.Serialization.XmlElementAttribute("RegistryEvent")]
+   public SysmonEventFilteringRuleGroupRegistryEvent[] RegistryEvent
    {
       get { return this.registryEventField; }
       set { this.registryEventField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupFileCreate FileCreate
+   [System.Xml.Serialization.XmlElementAttribute("FileCreate")]
+   public SysmonEventFilteringRuleGroupFileCreate[] FileCreate
    {
       get { return this.fileCreateField; }
       set { this.fileCreateField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupProcessAccess ProcessAccess
+   [System.Xml.Serialization.XmlElementAttribute("ProcessAccess")]
+   public SysmonEventFilteringRuleGroupProcessAccess[] ProcessAccess
    {
       get { return this.processAccessField; }
       set { this.processAccessField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupRawAccessRead RawAccessRead
+   [System.Xml.Serialization.XmlElementAttribute("RawAccessRead")]
+   public SysmonEventFilteringRuleGroupRawAccessRead[] RawAccessRead
    {
       get { return this.rawAccessReadField; }
       set { this.rawAccessReadField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupCreateRemoteThread CreateRemoteThread
+   [System.Xml.Serialization.XmlElementAttribute("CreateRemoteThread")]
+   public SysmonEventFilteringRuleGroupCreateRemoteThread[] CreateRemoteThread
    {
       get { return this.createRemoteThreadField; }
       set { this.createRemoteThreadField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupImageLoad ImageLoad
+   [System.Xml.Serialization.XmlElementAttribute("ImageLoad")]
+   public SysmonEventFilteringRuleGroupImageLoad[] ImageLoad
    {
       get { return this.imageLoadField; }
       set { this.imageLoadField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupDriverLoad DriverLoad
+   [System.Xml.Serialization.XmlElementAttribute("DriverLoad")]
+   public SysmonEventFilteringRuleGroupDriverLoad[] DriverLoad
    {
       get { return this.driverLoadField; }
       set { this.driverLoadField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupProcessTerminate ProcessTerminate
+   [System.Xml.Serialization.XmlElementAttribute("ProcessTerminate")]
+   public SysmonEventFilteringRuleGroupProcessTerminate[] ProcessTerminate
    {
       get { return this.processTerminateField; }
       set { this.processTerminateField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupNetworkConnect NetworkConnect
+   [System.Xml.Serialization.XmlElementAttribute("NetworkConnect")]
+   public SysmonEventFilteringRuleGroupNetworkConnect[] NetworkConnect
    {
       get { return this.networkConnectField; }
       set { this.networkConnectField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupFileCreateTime FileCreateTime
+   [System.Xml.Serialization.XmlElementAttribute("FileCreateTime")]
+   public SysmonEventFilteringRuleGroupFileCreateTime[] FileCreateTime
    {
       get { return this.fileCreateTimeField; }
       set { this.fileCreateTimeField = value; }
    }
 
    /// <remarks/>
-   public SysmonEventFilteringRuleGroupProcessCreate ProcessCreate
+   [System.Xml.Serialization.XmlElementAttribute("ProcessCreate")]
+   public SysmonEventFilteringRuleGroupProcessCreate[] ProcessCreate
    {
       get { return this.processCreateField; }
       set { this.processCreateField = value; }

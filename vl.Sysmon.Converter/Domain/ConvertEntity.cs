@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Serilog;
 using vl.Core.Domain;
 using vl.Core.Domain.Activity;
@@ -12,227 +11,168 @@ namespace vl.Sysmon.Converter.Domain;
 
 public static class ConvertEntity
 {
-   private static readonly List<string> NotSupportedItemCache = new();
-
-   private static string ConvertQuery(string field, string condition, string value)
-   {
-      return condition switch
-      {
-         "is" => $"{field} == r\"{value}\"",
-         "begin with" => $"istartswith({field}, r\"{value}\")",
-         "end with" => $"iendswith({field}, r\"{value}\")",
-         "contains" => $"icontains({field}, r\"{value}\")",
-         "image" => $"icontains({field}, r\"{value}\")",
-         _ => throw new NotImplementedException()
-      };
-   }
    private static string ConvertQuery(IReadOnlyList<SysmonCondition> conditions, string mainGroupRelation)
    {
       if (conditions == null || conditions.Count == 0)
          return string.Empty;
 
-      var queryBuilder = new StringBuilder();
-      var exclude = conditions[0].OnMatch.Equals(Constants.SysmonExcludeOnMatchString);
-
-      if (exclude)
-         queryBuilder.Append("not (");
-      else
-         queryBuilder.Append("(");
-
-      var conditionsGrouped = conditions.GroupBy(c => c.RuleId).ToDictionary(c => c.Key, c => c.ToList());
-
-      for (var groupIndex = 0; groupIndex < conditionsGrouped.Count; groupIndex++)
-      {
-         var (_, sysmonConditions) = conditionsGrouped.ElementAt(groupIndex);
-
-         if (groupIndex == 0)
-         {
-            if (conditionsGrouped.Count > 1)
-            {
-               queryBuilder.Append("(");
-            }
-         }
-         else
-         {
-            queryBuilder.Append($") {mainGroupRelation} (");
-         }
-
-         var groupRelation = string.Empty;
-         var sysmonConditionsGroupedByField = sysmonConditions.GroupBy(c => c.SysmonOriginalFieldName).ToArray();
-
-         for (var i = 0; i < sysmonConditionsGroupedByField.Length; i++)
-         {
-            var lastValueInGroupFields = i + 1 == sysmonConditionsGroupedByField.Length;
-
-            var group = sysmonConditionsGroupedByField[i];
-            var groupArray = group.ToArray();
-            for (var d = 0; d < groupArray.Length; d++)
-            {
-               var item = group.ElementAt(d);
-               var lastValueInGroup = d + 1 == groupArray.Length;
-
-               groupRelation = item.GroupRelation;
-               var innerRuleGroupRelation = lastValueInGroup ? string.Empty : $" {item.GroupRelation} ";
-               var query = string.Empty;
-               item.Value = item.Value.Replace("%%", "%");
-
-               if (item.Value.EndsWith(@"\") && !item.Value.EndsWith(@"\\"))
-                  item.Value = item.Value.Replace(@"\", @"\\");
-
-               switch (item.Condition)
-               {
-                  case "is":
-                     query = $"{item.MainField} == {item.GetValueFormated()}{innerRuleGroupRelation}";
-                     break;
-                  case "is any":
-                     // Currently there is no uAQL function for contains 'all' or 'any'.
-                     var splittedIsItemCondition = item.Value.Split(';').Select(x => $"{x.Trim()}").ToArray();
-
-                     // Start the group with an opening parenthesis
-                     query += "(";
-
-                     foreach (var s in splittedIsItemCondition)
-                     {
-                        if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
-                        {
-                           query += $"{item.MainField} == \"{s.Replace(@"\", @"\\")}\" or ";
-                        }
-                        else
-                        {
-                           query += $"{item.MainField} == \"{s}\" or ";
-                        }
-                     }
-
-                     query = query.Remove(query.Length - 4, 4);
-
-                     // Close the group with a closing parenthesis
-                     query += ")";
-
-                     if (!lastValueInGroup)
-                        query += $" {mainGroupRelation} ";
-
-                     break;
-                  case "begin with":
-                     query = $"istartswith({item.MainField}, {item.GetValueFormated()}){innerRuleGroupRelation}";
-                     break;
-                  case "end with":
-                     query = $"iendswith({item.MainField}, {item.GetValueFormated()}){innerRuleGroupRelation}";
-                     break;
-                  case "image":
-                     if (item.Fields.Length == 2)
-                        query = $"({item.Fields[0]} == {item.GetValueFormated()} or {item.Fields[1]} == {item.GetValueFormated()}){innerRuleGroupRelation}";
-                     else
-                        query = $"{item.MainField} == {item.GetValueFormated()}{innerRuleGroupRelation}";
-                     break;
-                  case "contains":
-                     query = $"icontains({item.MainField}, {item.GetValueFormated()}){innerRuleGroupRelation}";
-                     break;
-                  case "contains all":
-                  case "contains any":
-                     // Currently there is no uAQL function for contains 'all' or 'any'.
-                     bool containsAll = item.Condition.EndsWith("all");
-                     var splittedItemCondition = item.Value.Split(';').Select(x => $"{x.Trim()}").ToArray();
-                     var relation = containsAll ? " and " : " or ";
-
-                     // Start the group with an opening parenthesis
-                     query += "(";
-
-                     foreach (var s in splittedItemCondition)
-                     {
-                        if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
-                        {
-                           query += $"icontains({item.MainField}, \"{s.Replace(@"\", @"\\")}\"){relation}";
-                        }
-                        else
-                        {
-                           query += $"icontains({item.MainField}, \"{s}\"){relation}";
-                        }
-                     }
-
-                     query = query.Remove(query.Length - relation.Length, relation.Length);
-
-                     // Close the group with a closing parenthesis
-                     query += ")";
-
-                     if (!lastValueInGroup)
-                     {
-                        if (groupIndex == 0)
-                           query += $" {mainGroupRelation} ";
-                        else
-                           query += $" {innerRuleGroupRelation} ";
-                     }
-
-                     break;
-                  case "is not":
-                     query = $"{item.MainField} != {item.GetValueFormated()}{innerRuleGroupRelation}";
-                     break;
-                  case "not end with":
-                     query = $"iendswith({item.MainField}, {item.GetValueFormated()}) == false{innerRuleGroupRelation}";
-                     break;
-                  case "excludes":
-                     query = $"icontains({item.MainField}, {item.GetValueFormated()}) == false{innerRuleGroupRelation}";
-                     break;
-                  case "excludes any":
-                  case "excludes all":
-                     // Currently there is no uAQL function for contains 'all' or 'any'.
-                     bool excludesAll = item.Condition.EndsWith("all");
-                     splittedItemCondition = item.Value.Split(';').Select(x => $"{x.Trim()}").ToArray();
-                     relation = excludesAll ? " and " : " or ";
-
-                     // Start the group with an opening parenthesis
-                     query += "not (";
-
-                     foreach (var s in splittedItemCondition)
-                     {
-                        if (s.EndsWith(@"\") && !s.EndsWith(@"\\"))
-                        {
-                           query += $"icontains({item.MainField}, \"{s.Replace(@"\", @"\\")}\") {relation}";
-                        }
-                        else
-                        {
-                           query += $"icontains({item.MainField}, \"{s}\") {relation}";
-                        }
-                     }
-
-                     query = query.Remove(query.Length - relation.Length, relation.Length);
-
-                     // Close the group with a closing parenthesis
-                     query += ")";
-
-                     if (!lastValueInGroup)
-                        query += $" {mainGroupRelation} ";
-
-                     break;
-                  default:
-                     Log.Error("Condition: {condition} is not implemented.", item.Condition);
-                     throw new NotImplementedException();
-               }
-
-               if (string.IsNullOrEmpty(query))
-                  continue;
-
-               queryBuilder.Append($"{query}");
-            }
-
-            if (!lastValueInGroupFields)
-            {
-               queryBuilder.Append($" {groupRelation} ");
-            }
-         }
-      }
-
-      // close rule
-      if (conditionsGrouped.Count > 1)
-      {
-         queryBuilder.Append(")");
-      }
-
-      queryBuilder.Append(")");
-
-      return queryBuilder.ToString();
+      return BuildRuleExpression(conditions, UaqExpressionFactory.ParseRelation(mainGroupRelation))?.ToQuery() ?? string.Empty;
    }
 
    public static string Convert(SysmonCondition[] conditions, string mainGroupRelation) => ConvertQuery(conditions, mainGroupRelation);
+
+   private static UaqExpression BuildRuleExpression(IReadOnlyList<SysmonCondition> conditions, UaqRelation? groupRelation)
+   {
+      var ruleGroups = conditions.GroupBy(c => c.RuleId)
+         .Select(c => new
+         {
+            RuleId = c.Key,
+            Conditions = c.ToArray()
+         })
+         .ToArray();
+
+      if (ruleGroups.Length == 0)
+         return null;
+
+      if (ruleGroups.Length == 1 && ruleGroups[0].RuleId == 0)
+         return BuildConditionSet(ruleGroups[0].Conditions, groupRelation);
+
+      var expressions = ruleGroups.Select(ruleGroup =>
+      {
+         var relation = ruleGroup.RuleId == 0
+            ? null
+            : UaqExpressionFactory.ParseRelation(ruleGroup.Conditions.FirstOrDefault()?.GroupRelation);
+
+         return BuildConditionSet(ruleGroup.Conditions, relation);
+      });
+
+      return UaqExpressionFactory.Combine(groupRelation ?? UaqRelation.Or, expressions);
+   }
+
+   private static UaqExpression BuildConditionSet(IReadOnlyList<SysmonCondition> conditions, UaqRelation? groupRelation)
+   {
+      if (groupRelation.HasValue)
+         return UaqExpressionFactory.Combine(groupRelation.Value, conditions.Select(CreateConditionExpression));
+
+      var fieldExpressions = conditions.GroupBy(c => c.SysmonOriginalFieldName)
+         .Select(BuildDefaultFieldExpression);
+
+      return UaqExpressionFactory.Combine(UaqRelation.And, fieldExpressions);
+   }
+
+   private static UaqExpression BuildDefaultFieldExpression(IGrouping<string, SysmonCondition> fieldConditions)
+   {
+      var positiveExpressions = fieldConditions
+         .Where(condition => !IsNegativeCondition(condition.Condition))
+         .Select(CreateConditionExpression)
+         .ToArray();
+      var negativeExpressions = fieldConditions
+         .Where(condition => IsNegativeCondition(condition.Condition))
+         .Select(CreateConditionExpression)
+         .ToArray();
+
+      var fieldParts = new List<UaqExpression>();
+      var positiveExpression = UaqExpressionFactory.Combine(UaqRelation.Or, positiveExpressions);
+      if (positiveExpression != null)
+         fieldParts.Add(positiveExpression);
+
+      var negativeExpression = UaqExpressionFactory.Combine(UaqRelation.And, negativeExpressions);
+      if (negativeExpression != null)
+         fieldParts.Add(negativeExpression);
+
+      return UaqExpressionFactory.Combine(UaqRelation.And, fieldParts);
+   }
+
+   private static UaqExpression CreateConditionExpression(SysmonCondition item)
+   {
+      var condition = (item.Condition ?? "is").Trim().ToLowerInvariant();
+      var normalizedValue = NormalizeSysmonValue(item.Value);
+      var values = IsMultiValueCondition(condition)
+         ? SplitConditionValues(normalizedValue)
+         : string.IsNullOrEmpty(normalizedValue)
+            ? []
+            : [normalizedValue];
+
+      if (values.Length == 0)
+      {
+         Log.Warning("Ignoring empty Sysmon condition value for {field}.", item.SysmonOriginalFieldName);
+         return null;
+      }
+
+      UaqExpression CompareValue(string value)
+      {
+         var formattedValue = FormatValue(item, value);
+         return condition switch
+         {
+            "is" => new UaqPredicateExpression($"{item.MainField} == {formattedValue}"),
+            "image" => new UaqPredicateExpression($"{item.MainField} == {formattedValue}"),
+            "is not" => new UaqPredicateExpression($"{item.MainField} != {formattedValue}"),
+            "begin with" => new UaqPredicateExpression($"istartswith({item.MainField}, {formattedValue})"),
+            "not begin with" => new UaqPredicateExpression($"istartswith({item.MainField}, {formattedValue}) == false"),
+            "end with" => new UaqPredicateExpression($"iendswith({item.MainField}, {formattedValue})"),
+            "not end with" => new UaqPredicateExpression($"iendswith({item.MainField}, {formattedValue}) == false"),
+            "contains" => new UaqPredicateExpression($"icontains({item.MainField}, {formattedValue})"),
+            "excludes" => new UaqPredicateExpression($"icontains({item.MainField}, {formattedValue}) == false"),
+            "less than" => new UaqPredicateExpression($"{item.MainField} < {formattedValue}"),
+            "more than" => new UaqPredicateExpression($"{item.MainField} > {formattedValue}"),
+            _ => throw new NotImplementedException()
+         };
+      }
+
+      return condition switch
+      {
+         "is any" => UaqExpressionFactory.Combine(UaqRelation.Or, values.Select(value => new UaqPredicateExpression($"{item.MainField} == {FormatValue(item, value)}"))),
+         "contains any" => UaqExpressionFactory.Combine(UaqRelation.Or, values.Select(value => new UaqPredicateExpression($"icontains({item.MainField}, {FormatValue(item, value)})"))),
+         "contains all" => UaqExpressionFactory.Combine(UaqRelation.And, values.Select(value => new UaqPredicateExpression($"icontains({item.MainField}, {FormatValue(item, value)})"))),
+         "excludes any" => new UaqNotExpression(UaqExpressionFactory.Combine(UaqRelation.And, values.Select(value => new UaqPredicateExpression($"icontains({item.MainField}, {FormatValue(item, value)})")))),
+         "excludes all" => new UaqNotExpression(UaqExpressionFactory.Combine(UaqRelation.Or, values.Select(value => new UaqPredicateExpression($"icontains({item.MainField}, {FormatValue(item, value)})")))),
+         _ => CompareValue(values.Single())
+      };
+   }
+
+   private static bool IsNegativeCondition(string condition)
+   {
+      return (condition ?? "is").Trim().ToLowerInvariant() switch
+      {
+         "is not" => true,
+         "not begin with" => true,
+         "not end with" => true,
+         "excludes" => true,
+         "excludes any" => true,
+         "excludes all" => true,
+         _ => false
+      };
+   }
+
+   private static bool IsMultiValueCondition(string condition)
+   {
+      return condition switch
+      {
+         "is any" => true,
+         "contains any" => true,
+         "contains all" => true,
+         "excludes any" => true,
+         "excludes all" => true,
+         _ => false
+      };
+   }
+
+   private static string NormalizeSysmonValue(string value) => (value ?? string.Empty).Replace("%%", "%").Trim();
+
+   private static string[] SplitConditionValues(string value)
+      => value.Split(';').Select(c => c.Trim()).Where(c => !string.IsNullOrEmpty(c)).ToArray();
+
+   private static string FormatValue(SysmonConditionBase item, string value)
+   {
+      return item.DataType switch
+      {
+         TransformDataType.String => $"\"{EscapeString(value)}\"",
+         TransformDataType.Int => value,
+         _ => throw new ArgumentOutOfRangeException()
+      };
+   }
+
+   private static string EscapeString(string value) => value.Replace(@"\", @"\\").Replace("\"", "\\\"");
 
    public static IEnumerable<SysmonCondition> ParseRule(EventType eventType, object rule)
    {
@@ -247,7 +187,7 @@ public static class ConvertEntity
       var ruleProperties = rule.GetType().GetProperties();
       var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items"))?.GetValue(rule, null);
       var onMatchProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("onmatch"))?.GetValue(rule, null)?.ToString();
-      var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null)?.ToString()?.ToLower() ?? "or";
+      var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null)?.ToString()?.ToLowerInvariant();
 
       if (itemsProperty == null)
          return conditions;
@@ -272,16 +212,16 @@ public static class ConvertEntity
                if (subRuleset.Count == 0)
                   continue;
 
-               var subRuleGroupRelation = subRuleset.FirstOrDefault()?.GroupRelation ?? "or";
+               var subRuleGroupRelation = subRuleset.FirstOrDefault()?.GroupRelation;
 
                var removedUnsupported = subRuleset.RemoveAll(c => !c.IsSupportedByCurrentUberAgentVersion);
-               if (removedUnsupported > 0 && subRuleGroupRelation.Contains("and"))
+               if (removedUnsupported > 0 && !string.Equals(subRuleGroupRelation, "or", StringComparison.OrdinalIgnoreCase))
                {
-                  Log.Warning("Found {0} unsupported rules in {1}, the entire rule is ignored due to logical concatenation <and>.", removedUnsupported, ruleItemName);
+                  Log.Warning("Found {0} unsupported rules in {1}, the entire rule is ignored due to logical concatenation <and> or default field semantics.", removedUnsupported, ruleItemName);
                   continue;
                }
 
-               if (removedUnsupported > 0 && subRuleGroupRelation.Contains("or"))
+               if (removedUnsupported > 0 && string.Equals(subRuleGroupRelation, "or", StringComparison.OrdinalIgnoreCase))
                {
                   Log.Warning("Found {0} unsupported rules in {1}, only the unsupported rules have been removed, due to logical concatenation <or>.", removedUnsupported, ruleItemName);
                }
@@ -304,7 +244,8 @@ public static class ConvertEntity
                DataType = baseProperties.DataType,
                Condition = baseProperties.Condition,
                OnMatch = onMatchProperty,
-               RuleId = 0
+               RuleId = 0,
+               IsSupportedByCurrentUberAgentVersion = baseProperties.IsSupportedByCurrentUberAgentVersion
             });
          }
       }
@@ -324,7 +265,7 @@ public static class ConvertEntity
 
       var ruleProperties = rule.GetType().GetProperties();
       var itemsProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("Items"))?.GetValue(rule, null);
-      var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null).ToString().ToLower();
+      var groupRelationProperty = ruleProperties.FirstOrDefault(c => c.Name.Equals("groupRelation"))?.GetValue(rule, null)?.ToString()?.ToLowerInvariant();
 
       if (itemsProperty is not IList<object> ruleItems || ruleItems.Count == 0)
       {
@@ -401,7 +342,7 @@ public static class ConvertEntity
    [TransformField("SourceIsIpv6", "Net.Target.IpIsV6", UAVersion.UA_VERSION_6_2)]
    [TransformField("SourceIp", "Net.Source.Ip", UAVersion.UA_VERSION_6_2)]
    [TransformField("SourceHostname", "Net.Source.Name", UAVersion.UA_VERSION_6_2)]
-   [TransformField("SourcePort", "Net.Source.Port", UAVersion.UA_VERSION_6_2)]
+   [TransformField("SourcePort", "Net.Source.Port", TransformDataType.Int, UAVersion.UA_VERSION_6_2)]
    [TransformField("SourcePortName", "Net.Source.PortName", UAVersion.UA_VERSION_6_2)]
    [TransformField("DestinationIsIpv6", "Net.Target.IpIsV6", UAVersion.UA_VERSION_6_2)]
    [TransformField("DestinationPortName", "Net.Target.PortName", UAVersion.UA_VERSION_6_2)]
@@ -444,19 +385,22 @@ public static class ConvertEntity
       if (string.IsNullOrEmpty(itemName))
       {
          Log.Error("ItemName is empty.");
-         return new SysmonConditionBase();
+         return null;
       }
 
       var itemProperties = item.GetType().GetProperties();
       var itemValue = itemProperties.FirstOrDefault(c => c.Name.Equals("Value"))?.GetValue(item, null)?.ToString();
       var itemCondition = itemProperties.FirstOrDefault(c => c.Name.Equals("condition"))?.GetValue(item, null)?.ToString();
 
-      if (string.IsNullOrEmpty(itemValue))
-         return null;
-
       // EventType is ignored here because we have already read it before.
       if (itemName.EndsWith("EventType"))
          return null;
+
+      if (string.IsNullOrWhiteSpace(itemValue))
+      {
+         Log.Warning("Ignoring empty Sysmon condition value for {field}.", itemName);
+         return null;
+      }
 
       Func<EventType, object, SysmonConditionBase> methodAction = CreateSysmonBaseCondition;
       var methodInfo = methodAction.Method;
@@ -465,13 +409,9 @@ public static class ConvertEntity
       var notSupportedAttributes = methodInfo.GetCustomAttributes(typeof(FieldNotSupportedAttribute));
       foreach (var attribute in (IEnumerable<FieldNotSupportedAttribute>)notSupportedAttributes)
       {
-         if (NotSupportedItemCache.Contains(itemName))
-            return null;
-
          if (itemName.EndsWith(attribute.SourceField))
          {
             Log.Warning(Constants.RuleNotSupportedTemplate, attribute.SourceField, attribute.Reason);
-            NotSupportedItemCache.Add(itemName);
             return null;
          }
       }
